@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>他的空间 | 他的相册</title>
+    <link rel="stylesheet" href="../css/nav.css">
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/base.css" />
+    <link rel="stylesheet" href="../css/trip.css" />
+    <!-- <link rel="stylesheet" href="../10/gun.css" /> -->
+    <style type="text/css">
+        ul li {
+            margin-top: 20px;
+        }
+
+        h4 {
+            text-align: left;
+        }
+
+        hr {
+            width: 100%;
+            color: #987cb9;
+            SIZE: 1px
+        }
+
+        header {
+            text-align: center;
+            background-color: #00b4ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #wrap {
+            width: 100%;
+            height: 500px;
+            border: 1px solid #000;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #list {
+            position: absolute;
+            -webkit-animation: 10s move infinite linear;
+            /*自动滚动*/
+            width: 200%;
+        }
+
+        #list li {
+            list-style: none;
+            float: left;
+        }
+
+        @-webkit-keyframes move {
+            0% {
+                left: 0;
+            }
+
+            100% {
+                left: -500px;
+            }
+        }
+
+        @keyframes move {
+            0% {
+                left: 0;
+            }
+
+            100% {
+                left: -500px;
+            }
+        }
+
+        #wrap:hover #list {
+            -webkit-animation-play-state: paused;
+            /*动画暂停播放*/
+        }
+    </style>
+</head>
+
+<body>
+    <!--头部-->
+    <div class="nav">
+        <!--   头部导航 navigator     -->
+        <img src="../img/头像.jpg" alt="logo 图">
+        <span class="title">个人空间</span>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+        <a href="index.html">
+            <p>个人信息</p>
+        </a>
+        <a href="blog.html">
+            <p>他的语录</p>
+        </a>
+        <a href="collect.html">
+            <p>他的收藏</p>
+        </a>
+        <a href="interest.html">
+            <p>兴趣爱好</p>
+        </a>
+        <a href="trip.html">
+            <p>他的相册</p>
+        </a>
+        <a href="../welcome.html">
+            <p>返回首页</p>
+        </a>
+    </div>
+	<script type="text/javascript" src="js/yinghua.js"></script>
+    <!--主体-->
+    <div id="main">
+        
+        <div class="record">
+            <div class="title1">
+                <h2>综艺&nbsp;.&nbsp;节目</h2>
+                <p>Variety&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Program</p>
+            </div>
+            <div class="content1">
+                <div class="box">
+                    <img src="../img/log1.png" width="260px" height="180px" />
+                    <div class="section">
+                        <h2>南波万的聚会<span>2022.10.30</span></h2>
+                        <p>秋意正浓，一起露营。
+						秋色可观，友谊圆满。
+                        </p>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="section">
+                        <h2>名侦探学院<span>2019.11.03</span></h2>
+                        <p>没想过自己的心事可以写成故事，不会因结局难猜时针停止，
+						指针如何导航，你是我唯一方向，
+						站在舞台中央，期待着可以发光，
+						要成为怎样的人，来发挥想象
+                        </p>
+                    </div>
+                    <img src="../img/log2.png" width="260px" height="180px" />
+                </div>
+                <div class="box">
+                    <img src="../img/log3.png" width="260px" height="180px" />
+                    <div class="section">
+                        <h2>密室大逃脱<span>2019.04.01</span></h2>
+                        <p>
+                            节目中大神玩家们会被送到不同主题的密室内，需要相互协助才能完成逃脱。
+							其间仅能依靠细节暗示，搭配解锁各种机关，逐渐开启新的空间，并还原完整故事情节
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="photos">
+            <div class="title2">
+                <div class="line"></div>
+                <h2>星星&nbsp;.&nbsp;影集</h2>
+                <p>Start&nbsp;Album</p>
+            </div>
+            <div class="content2">
+                <ul class="bigView">
+                    <li id="img1"><img src="../img/trip1.jpg" width="700" height="400" /></li>
+                    <li id="img2"><img src="../img/trip2.jpg" width="700" height="400" /></li>
+                    <li id="img3"><img src="../img/trip3.jpg" width="700" height="400" /></li>
+                    <li id="img4"><img src="../img/trip4.jpg" width="700" height="400" /></li>
+                    <li id="img5"><img src="../img/trip5.jpg" width="700" height="400" /></li>
+                    <li id="img6"><img src="../img/trip6.jpg" width="700" height="400" /></li>
+                    <li id="img7"><img src="../img/trip7.jpg" width="700" height="400" /></li>
+                    <li id="img8"><img src="../img/trip8.jpg" width="700" height="400" /></li>
+                    <li id="img9"><img src="../img/trip9.jpg" width="700" height="400" /></li>
+                    <li id="img10"><img src="../img/trip10.jpg" width="700" height="400" /></li>
+                </ul>
+                <!--隐藏滚动条-->
+                <div class="smallBox">
+
+                    <ul class="smallView">
+                        <li><a href="#img1"><img src="../img/trip1.jpg" /></a></li>
+                        <li><a href="#img2"><img src="../img/trip2.jpg" /></a></li>
+                        <li><a href="#img3"><img src="../img/trip3.jpg" /></a></li>
+                        <li><a href="#img4"><img src="../img/trip4.jpg" /></a></li>
+                        <li><a href="#img5"><img src="../img/trip5.jpg" /></a></li>
+                        <li><a href="#img6"><img src="../img/trip6.jpg" /></a></li>
+                        <li><a href="#img7"><img src="../img/trip7.jpg" /></a></li>
+                        <li><a href="#img8"><img src="../img/trip8.jpg" /></a></li>
+                        <li><a href="#img9"><img src="../img/trip9.jpg" /></a></li>
+                        <li><a href="#img9"><img src="../img/trip10.jpg" /></a></li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <!--尾部-->
+    <div>
+        <div id="wrap">
+            <ul id="list">
+                <!-- <li><a href="#img1"><img src="../img/lu.png"width="1000" height="1000"/></a></li> -->
+                <li><a href="#img3"><img src="../img/lu1.jpg" /></a></li>
+                <li><a href="#img4"><img src="../img/lu3.jpg" /></a></li>
+                <li><a href="#img5"><img src="../img/lu4.jpg" /></a></li>
+                <li><a href="#img6"><img src="../img/lu5.jpg" /></a></li>
+                <li><a href="#img7"><img src="../img/lu6.jpg" /></a></li>
+                <li><a href="#img8"><img src="../img/lu1.jpg" /></a></li>
+                <li><a href="#img9"><img src="../img/lu2.jpg" /></a></li>
+                <li><a href="#img9"><img src="../img/lu3.jpg" /></a></li>
+                </li>
+            </ul>
+
+        </div>
+
+<p>
+	
+</p>
+</body>
+
+</html>
