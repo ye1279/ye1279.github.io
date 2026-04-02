@@ -1,57 +1,9 @@
 <!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="UTF-8">
-    <title>荣耀之神的空间</title>
-    <link rel="stylesheet" href="../css/nav.css">
-    <link rel="stylesheet" href="../css/index.css">
-    <link rel="stylesheet" href="../css/base.css" />
-    <link rel="stylesheet" href="../css/trip.css" />
-    <!-- <link rel="stylesheet" href="../10/gun.css" /> -->
-   
-<body>
-    <!-- 手动播放 -->
-    <!--  <audio id="audio" controls="controls"> -->
-  
-    <!--头部-->
-    <div class="nav">
-        <!--   头部导航 navigator     -->
-        <img src="../img/头像.jpg" alt="logo 图">
-        <span class="title">荣耀之神的空间</span>
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
-        <a href="xinxi.html">
-            <p>小叶的资料</p>
-        </a>
-        <a href="collect.html">
-            <p>小叶的日常衣橱</p>
-        </a>
-        <a href="interest.html">
-            <p>小叶的古风衣橱</p>
-        </a>
-        <a href="food.html">
-            <p>小叶的西幻及其他衣橱</p>
-        </a>
-         <a href="tongren.html">
-            <p>小叶同人衣橱</p>
-        </a>
-        <a href="trip.html">
-            <p>荣耀留言板</p>
-        </a>
-        <a href="search.html">
-            <p>导航</p>
-        </a>
-        <a href="../index.html" >
-            <p>返回首页</p>
-        </a>
-    </div>
-
-<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>荣耀留言板</title>
+    <title>荣耀留言板 | 稳定版</title>
     <style>
         * {
             margin: 0;
@@ -95,14 +47,9 @@
             margin-top: 10px;
             color: #a3f5d9;
         }
-        .admin-badge {
-            background: #ff9e3e;
-            color: #1a1c2e;
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            margin-left: 10px;
-            font-weight: bold;
+        .cloud-status.error {
+            background: #5a3e3e;
+            color: #ffb2b2;
         }
         .form-group {
             margin-bottom: 18px;
@@ -270,11 +217,6 @@
         .delete-admin:hover {
             background: rgba(255, 80, 80, 0.3);
         }
-        .admin-delete-hint {
-            font-size: 0.6rem;
-            color: #ff9e9e;
-            margin-left: 8px;
-        }
         .empty-state, .loading {
             text-align: center;
             padding: 48px;
@@ -312,8 +254,6 @@
                 padding: 14px;
             }
         }
-        
-        /* 管理员验证弹窗 */
         .admin-prompt {
             position: fixed;
             top: 0;
@@ -384,17 +324,17 @@
 </div>
 
 <script>
-    // ==================== 配置 ====================
-    const API_BASE = 'https://mockapi.io/clone/69ce82af33a09f831b7d9e53';
-    const API_URL = `${API_BASE}/messages`;
+    // ==================== Supabase 配置（已填写） ====================
+    const SUPABASE_URL = 'https://rplphccqcrozpcurfzgs.supabase.co';
+    const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_O81lipQiYDJfpA_nO64tLA_8WRgGdUl';
+    // ===================================================================
     
-    // 管理员密码（你可以修改这个密码）
-    const ADMIN_PASSWORD = 'calle0529';  // 修改成你想要的密码
+    // 管理员密码
+    const ADMIN_PASSWORD = 'calle0529';
     
-    // 免费图床 API
+    // 图床 API
     const IMGBB_UPLOAD_URL = 'https://freeimage.host/api/1/upload';
     const IMGBB_API_KEY = '6d207e02198a847aa98d0a2a901485be';
-    // ===========================================
     
     // 访客标识
     function getVisitorId() {
@@ -407,7 +347,6 @@
     }
     const visitorId = getVisitorId();
     
-    // 管理员状态
     let isAdmin = sessionStorage.getItem('isAdmin') === 'true';
     
     // DOM 元素
@@ -423,9 +362,26 @@
     const removeImageBtn = document.getElementById('removeImageBtn');
     
     let currentImageUrl = null;
-    let isUploading = false;
     
-    // 管理员验证弹窗
+    // Supabase 请求封装
+    async function supabaseFetch(endpoint, options = {}) {
+        const url = `${SUPABASE_URL}/rest/v1/${endpoint}`;
+        const response = await fetch(url, {
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                'apikey': SUPABASE_PUBLISHABLE_KEY,
+                'Authorization': `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
+                ...options.headers
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`请求失败: ${response.status}`);
+        }
+        return response.json();
+    }
+    
+    // 管理员验证
     function promptAdminPassword() {
         return new Promise((resolve) => {
             const overlay = document.createElement('div');
@@ -440,11 +396,9 @@
                 </div>
             `;
             document.body.appendChild(overlay);
-            
             const input = overlay.querySelector('#adminPasswordInput');
             const confirmBtn = overlay.querySelector('#adminConfirmBtn');
             const cancelBtn = overlay.querySelector('#adminCancelBtn');
-            
             confirmBtn.onclick = () => {
                 const pwd = input.value;
                 overlay.remove();
@@ -454,20 +408,16 @@
                 overlay.remove();
                 resolve(false);
             };
-            input.onkeypress = (e) => {
-                if (e.key === 'Enter') confirmBtn.click();
-            };
             input.focus();
         });
     }
     
-    // 成为管理员
     async function becomeAdmin() {
         const success = await promptAdminPassword();
         if (success) {
             sessionStorage.setItem('isAdmin', 'true');
             isAdmin = true;
-            showTip('✅ 管理员模式已启用，现在可以删除任何留言', '#a95bc3');
+            showTip('✅ 管理员模式已启用', '#a95bc3');
             await loadMessages();
         } else {
             showTip('❌ 密码错误', '#ff5e5e');
@@ -482,81 +432,52 @@
             formData.append('type', 'file');
             formData.append('action', 'upload');
             formData.append('format', 'json');
-            
-            fetch(IMGBB_UPLOAD_URL, {
-                method: 'POST',
-                body: formData
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data && data.image && data.image.url) {
-                    resolve(data.image.url);
-                } else if (data && data.image && data.image.display_url) {
-                    resolve(data.image.display_url);
-                } else {
-                    reject(new Error('上传失败'));
-                }
-            })
-            .catch(reject);
+            fetch(IMGBB_UPLOAD_URL, { method: 'POST', body: formData })
+                .then(res => res.json())
+                .then(data => {
+                    if (data && data.image && data.image.url) {
+                        resolve(data.image.url);
+                    } else {
+                        reject(new Error('上传失败'));
+                    }
+                })
+                .catch(reject);
         });
     }
     
-    // 上传区域点击
-    uploadArea.addEventListener('click', () => {
-        imageInput.click();
-    });
+    uploadArea.addEventListener('click', () => imageInput.click());
     
-    // 选择图片
     imageInput.addEventListener('change', async (e) => {
         const file = e.target.files[0];
         if (!file) return;
-        
         if (file.size > 5 * 1024 * 1024) {
             alert('图片不能超过5MB');
             return;
         }
-        
-        if (!file.type.startsWith('image/')) {
-            alert('请选择图片文件');
-            return;
-        }
-        
         const reader = new FileReader();
-        reader.onload = function(evt) {
+        reader.onload = (evt) => {
             previewImg.src = evt.target.result;
             imagePreview.style.display = 'inline-block';
         };
         reader.readAsDataURL(file);
-        
         statusDiv.innerHTML = "📤 上传图片中...";
-        statusDiv.style.background = "#4a3f6e";
-        isUploading = true;
-        
         try {
             const imageUrl = await uploadImage(file);
             currentImageUrl = imageUrl;
             statusDiv.innerHTML = "✅ 图片已上传";
-            statusDiv.style.background = "#1f4f3a";
             setTimeout(() => {
-                if (statusDiv.innerHTML === "✅ 图片已上传") {
-                    statusDiv.innerHTML = "✅ 云端在线 · 实时共享";
-                }
+                statusDiv.innerHTML = "✅ 云端在线";
             }, 2000);
         } catch (error) {
-            console.error('上传失败:', error);
-            alert('图片上传失败，请重试');
+            alert('图片上传失败');
             imagePreview.style.display = 'none';
             currentImageUrl = null;
             statusDiv.innerHTML = "✅ 云端在线";
-            statusDiv.style.background = "#1f4f3a";
-        } finally {
-            isUploading = false;
         }
     });
     
     removeImageBtn.addEventListener('click', () => {
         imagePreview.style.display = 'none';
-        previewImg.src = '';
         currentImageUrl = null;
         imageInput.value = '';
     });
@@ -565,21 +486,12 @@
     async function loadMessages() {
         try {
             messagesList.innerHTML = '<div class="loading">📡 加载留言中...</div>';
-            
-            const response = await fetch(API_URL);
-            
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}`);
-            }
-            
-            const messages = await response.json();
+            const messages = await supabaseFetch('messages?order=createdAt.desc&limit=100');
             
             if (!messages || messages.length === 0) {
                 messagesList.innerHTML = '<div class="empty-state">✨ 暂无留言，来写第一句吧～</div>';
                 return;
             }
-            
-            messages.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             
             let html = '';
             for (const msg of messages) {
@@ -589,7 +501,6 @@
                 const isMyMessage = (msg.visitorId === visitorId);
                 const imageUrl = msg.imageUrl;
                 
-                // 删除按钮逻辑
                 let deleteButton = '';
                 if (isAdmin) {
                     deleteButton = `<button class="delete-btn delete-admin" onclick="deleteMessageAsAdmin('${msg.id}')">🗑️ 管理员删除</button>`;
@@ -598,25 +509,24 @@
                 }
                 
                 html += `
-                    <div class="message-card" data-id="${msg.id}">
+                    <div class="message-card">
                         <div class="message-header">
-                            <span class="message-author">🧙 ${author}${isAdmin ? '<span class="admin-badge">👑 管理员</span>' : ''}</span>
+                            <span class="message-author">🧙 ${author}</span>
                             <span class="message-time">📅 ${time}</span>
                         </div>
                         ${content ? `<div class="message-content">${content}</div>` : ''}
-                        ${imageUrl ? `<img src="${imageUrl}" class="message-image" onclick="event.stopPropagation();viewImage('${imageUrl}')" alt="留言图片">` : ''}
-                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                            ${deleteButton}
-                        </div>
+                        ${imageUrl ? `<img src="${imageUrl}" class="message-image" onclick="viewImage('${imageUrl}')" alt="留言图片">` : ''}
+                        <div>${deleteButton}</div>
                     </div>
                 `;
             }
             messagesList.innerHTML = html;
-            statusDiv.innerHTML = "✅ 云端在线 · 实时共享";
+            statusDiv.innerHTML = "✅ 云端在线";
         } catch (error) {
             console.error('加载失败:', error);
-            messagesList.innerHTML = '<div class="empty-state">⚠️ 加载失败，请刷新页面重试</div>';
-            statusDiv.innerHTML = "⚠️ 连接异常，刷新重试";
+            messagesList.innerHTML = '<div class="empty-state">⚠️ 加载失败，请检查 Supabase 配置或网络</div>';
+            statusDiv.innerHTML = "⚠️ 连接失败";
+            statusDiv.classList.add('error');
         }
     }
     
@@ -624,29 +534,15 @@
     async function publishMessage() {
         const author = authorInput.value.trim();
         const content = contentInput.value.trim();
-        
-        if (!author) {
-            alert("请填写昵称");
-            return;
-        }
-        if (!content && !currentImageUrl) {
-            alert("请填写留言内容或上传图片");
-            return;
-        }
-        if (author.length > 30) {
-            alert("昵称不能超过30个字");
-            return;
-        }
+        if (!author) { alert("请填写昵称"); return; }
+        if (!content && !currentImageUrl) { alert("请填写留言内容或上传图片"); return; }
         
         publishBtn.disabled = true;
         publishBtn.textContent = "发布中...";
         
         try {
-            const response = await fetch(API_URL, {
+            await supabaseFetch('messages', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
                 body: JSON.stringify({
                     author: author,
                     content: content || '',
@@ -656,68 +552,39 @@
                 })
             });
             
-            if (!response.ok) {
-                throw new Error(`发布失败: ${response.status}`);
-            }
-            
             authorInput.value = '';
             contentInput.value = '';
             imagePreview.style.display = 'none';
-            previewImg.src = '';
             currentImageUrl = null;
-            imageInput.value = '';
             await loadMessages();
-            
-            showTip('✨ 留言发布成功！所有人可见 ✨', '#a95bc3');
-            
+            showTip('✨ 留言发布成功！', '#a95bc3');
         } catch (error) {
-            console.error('发布失败:', error);
-            alert('发布失败：' + error.message + '\n请稍后重试');
+            alert('发布失败：' + error.message);
         } finally {
             publishBtn.disabled = false;
             publishBtn.textContent = "📨 发布留言";
         }
     }
     
-    // 普通用户删除自己的留言
     window.deleteMyMessage = async function(id) {
-        if (!confirm('确定删除这条留言吗？删除后无法恢复。')) return;
-        
+        if (!confirm('确定删除吗？')) return;
         try {
-            const response = await fetch(`${API_URL}/${id}`, {
-                method: 'DELETE'
-            });
-            
-            if (!response.ok) {
-                throw new Error('删除失败');
-            }
-            
-            showTip('🗑️ 留言已删除', '#ff9e9e');
+            await supabaseFetch(`messages?id=eq.${id}`, { method: 'DELETE' });
+            showTip('留言已删除', '#ff9e9e');
             await loadMessages();
         } catch (error) {
-            console.error('删除失败:', error);
-            alert('删除失败，请重试');
+            alert('删除失败');
         }
     };
     
-    // 管理员删除任何留言
     window.deleteMessageAsAdmin = async function(id) {
-        if (!confirm('⚠️ 管理员删除：确定删除这条留言吗？删除后无法恢复。')) return;
-        
+        if (!confirm('管理员删除？')) return;
         try {
-            const response = await fetch(`${API_URL}/${id}`, {
-                method: 'DELETE'
-            });
-            
-            if (!response.ok) {
-                throw new Error('删除失败');
-            }
-            
-            showTip('🗑️ 管理员已删除该留言', '#ff5e5e');
+            await supabaseFetch(`messages?id=eq.${id}`, { method: 'DELETE' });
+            showTip('管理员已删除', '#ff5e5e');
             await loadMessages();
         } catch (error) {
-            console.error('删除失败:', error);
-            alert('删除失败，请重试');
+            alert('删除失败');
         }
     };
     
@@ -731,16 +598,7 @@
     function showTip(message, color) {
         const tip = document.createElement('div');
         tip.textContent = message;
-        tip.style.position = 'fixed';
-        tip.style.bottom = '20px';
-        tip.style.left = '50%';
-        tip.style.transform = 'translateX(-50%)';
-        tip.style.backgroundColor = color || '#a95bc3';
-        tip.style.color = 'white';
-        tip.style.padding = '10px 24px';
-        tip.style.borderRadius = '40px';
-        tip.style.zIndex = '999';
-        tip.style.fontSize = '14px';
+        tip.style.cssText = `position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:${color};color:white;padding:10px 24px;border-radius:40px;z-index:999;font-size:14px;`;
         document.body.appendChild(tip);
         setTimeout(() => tip.remove(), 2500);
     }
@@ -755,40 +613,18 @@
         });
     }
     
-    // 绑定事件
     publishBtn.addEventListener('click', publishMessage);
-    contentInput.addEventListener('keydown', (e) => {
-        if (e.ctrlKey && e.key === 'Enter') {
-            e.preventDefault();
-            publishMessage();
-        }
-    });
     
-    // 检查是否有管理员按钮（在页面底部添加一个隐藏的管理员入口）
     const adminEntry = document.createElement('div');
-    adminEntry.style.position = 'fixed';
-    adminEntry.style.bottom = '10px';
-    adminEntry.style.left = '10px';
-    adminEntry.style.background = 'rgba(0,0,0,0.5)';
-    adminEntry.style.padding = '4px 12px';
-    adminEntry.style.borderRadius = '20px';
-    adminEntry.style.fontSize = '12px';
-    adminEntry.style.cursor = 'pointer';
-    adminEntry.style.zIndex = '9999';
+    adminEntry.style.cssText = 'position:fixed;bottom:10px;left:10px;background:rgba(0,0,0,0.5);padding:4px 12px;border-radius:20px;font-size:12px;cursor:pointer;z-index:9999;';
     adminEntry.innerHTML = isAdmin ? '👑 管理员模式' : '🔑 管理员入口';
-    adminEntry.onclick = () => {
-        if (isAdmin) {
-            showTip('当前已是管理员模式', '#a95bc3');
-        } else {
-            becomeAdmin();
-        }
-    };
+    adminEntry.onclick = () => isAdmin ? showTip('已是管理员模式', '#a95bc3') : becomeAdmin();
     document.body.appendChild(adminEntry);
     
-    // 加载留言
+    // 启动
     loadMessages();
     setInterval(loadMessages, 30000);
 </script>
 </body>
 </html>
-<!--const ADMIN_PASSWORD = 'yexiu0529';  // 修改成你想要的密码大约在389行-->
+<!--const ADMIN_PASSWORD = 'calle0529';  // 修改成你想要的密码大约在行-->
