@@ -1,0 +1,131 @@
+li{
+	list-style: none;
+}
+#main{
+	width: 100%;
+	height: 930px;
+}
+#main .interest{
+	width: 100%;
+	height: 400px;
+	/*background: cyan;*/
+	margin: 0 auto;
+	overflow: hidden;
+}
+#main .interest .title{
+	width: 160px;
+	height: 60px;
+	/*background: red;*/
+	margin: 25px auto;
+}
+#main .interest .title p{
+	width: 100%;
+	height: 25px;
+	text-align: center;
+	line-height: 25px;
+	color: #97895c;
+	font-size: 16px;
+	font-family: "仿宋";
+}
+#main .interest .title span{
+	font-size: 25px;
+	color: #e29c44;
+	float: left;
+	margin-left: 5px;
+}
+#main .interest .title h2{
+	font-size: 27px;
+	float: right;
+	color: #97895c;
+}
+#main .interest .view1{
+	width: 960px;
+	height: 160px;
+	/*background: blue;*/
+	margin: 30px auto;
+}
+#main .interest .view1 li{
+	width: 230px;
+	height: 160px;
+	margin: 0 5px;
+	float: left;
+}
+#main .interest .view1 img{
+	width: 228px;
+	height: 158px;
+	border: 1px solid gray;
+}
+#main .interest .view2{
+	width: 750px;
+	height: 45px;
+	/*background: yellow;*/
+	margin: 20px auto;
+}
+#main .interest .view2 .choic{
+	width: 45px;
+	height: 45px;
+	/*background: gold;*/
+	text-align: center;
+	float: left;
+}
+#main .interest .view2 .choic p{
+	font-size: 15px;
+	width: 45px;
+	height: 15px;
+	line-height: 15px;
+	color: #97895c;
+}
+#main .interest .view2 .line{
+	width: 190px;
+	height: 37px;
+	float: left;
+	border-bottom: 2px solid #65cbd0;
+}
+
+#main .singer{
+	width: 100%;
+	height: 530px;
+	background: whitesmoke;
+	overflow: hidden;
+}
+#main .singer .title{
+	width: 170px;
+	height: 45px;
+	/*background: green;*/
+	margin: 25px auto;
+	border-bottom: 2px solid #636363;
+	
+	text-align: center;
+	line-height: 45px;
+	
+}
+#main .singer .title h2{
+	font-size: 25px;
+	float: right;
+	color: #97895c;
+}
+#main .singer .content{
+	width: 960px;
+	height: 350px;
+	/*background: purple;*/
+	margin: 30px auto;
+}
+#main .singer .content img{
+	width: 350px;
+	height: 350px;
+	float: left;
+}
+#main .singer .content p{
+	width: 550px;
+	height: 300px;
+	margin-top: 50px;
+	/*background: gold;*/
+	float: right;
+	font-size: 18px;
+	line-height: 40px;
+}
+#main .singer .content span{
+	color: #5473aa;
+	font-size: 25px;
+	margin-top: 20px;
+}

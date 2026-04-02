@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>荣耀之神的空间</title>
+    <meta name="theme-color" content="#ffc91d"/>
+    <link rel="icon" href="../img/favicon.ico" />
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/index.css" >
+    <link href="../css/kico.css" rel="stylesheet" type="text/css"/>
+    <link href="../css/paul.css" rel="stylesheet" type="text/css"/>
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1"/>
+    <style>
+        /* ========== 全局文字颜色设为白色 ========== */
+        body {
+            color: #ffffff !important;
+        }
+        
+        p, h1, h2, h3, h4, h5, h6, span, div, li, a {
+            color: #ffffff;
+        }
+        
+        /* 链接保持白色，悬停变浅 */
+        a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            color: #d4b8ff;
+        }
+        
+        /* ========== 图片统一尺寸优化 ========== */
+        .works-item {
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 12px;
+            background: #2c2e33;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .works-item img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            object-position: center;
+            transition: filter 0.25s ease, transform 0.3s ease;
+        }
+        
+        .works-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+        }
+        
+        .works-item:hover img {
+            filter: brightness(0.92);
+            transform: scale(1.02);
+        }
+        
+        /* 放大镜提示 */
+        .works-item::after {
+            content: "🔍";
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            font-size: 16px;
+            padding: 5px 10px;
+            border-radius: 30px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            pointer-events: none;
+            backdrop-filter: blur(4px);
+            z-index: 5;
+        }
+        
+        .works-item:hover::after {
+            opacity: 0.9;
+        }
+        
+        /* ========== 模态框样式 - 支持滚动移动 ========== */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0);
+            z-index: -9999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .image-modal.show {
+            display: block;
+            z-index: 9998;
+            background-color: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(10px);
+            opacity: 1;
+        }
+        
+        /* 图片容器 - 支持滚动和拖拽移动 */
+        .modal-image-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            cursor: grab;
+            z-index: 9999;
+        }
+        
+        .modal-image-container:active {
+            cursor: grabbing;
+        }
+        
+        /* 图片包装器 - 用于居中显示并支持滚动 */
+        .modal-image-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 100%;
+            min-height: 100%;
+            padding: 40px;
+        }
+        
+        /* 放大的图片 - 可缩放，支持滚动查看 */
+        .modal-image-wrapper img {
+            display: block;
+            max-width: none;
+            width: auto;
+            height: auto;
+            max-height: 90vh;
+            border-radius: 12px;
+            box-shadow: 0 30px 55px rgba(0, 0, 0, 0.5), 0 0 0 5px rgba(169, 91, 195, 0.6);
+            transform: scale(1);
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            pointer-events: auto;
+            background: #1a1c1f;
+            cursor: grab;
+        }
+        
+        .modal-image-wrapper img:active {
+            cursor: grabbing;
+        }
+        
+        .modal-image-wrapper img.show {
+            opacity: 1;
+        }
+        
+        /* 图片完全放大模式（当图片本身大于视口时，用户可以滚动查看） */
+        .image-modal.zoom-fit .modal-image-wrapper img {
+            max-width: 90vw;
+            max-height: 90vh;
+            width: auto;
+            height: auto;
+        }
+        
+        /* 控制栏 - 缩放和关闭按钮 */
+        .modal-controls {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            border-radius: 50px;
+            z-index: 10000;
+            pointer-events: auto;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .modal-controls button {
+            background: rgba(169, 91, 195, 0.9);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-controls button:hover {
+            background: #6e2a85;
+            transform: scale(1.05);
+        }
+        
+        .modal-controls .zoom-value {
+            color: white;
+            font-size: 14px;
+            padding: 0 12px;
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+        }
+        
+        /* 关闭按钮（右上角） */
+        .modal-close-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 48px;
+            height: 48px;
+            background: rgba(169, 91, 195, 0.95);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-close-btn:hover {
+            background: #6e2a85;
+            transform: scale(1.08) rotate(90deg);
+        }
+        
+        /* 重置按钮 */
+        .modal-reset-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            z-index: 10000;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .modal-reset-btn:hover {
+            background: rgba(169, 91, 195, 0.9);
+            transform: scale(1.05);
+        }
+        
+        /* 滚动条样式 */
+        .modal-image-container::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        .modal-image-container::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+        }
+        
+        .modal-image-container::-webkit-scrollbar-thumb {
+            background: rgba(169, 91, 195, 0.6);
+            border-radius: 4px;
+        }
+        
+        .modal-image-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(169, 91, 195, 0.9);
+        }
+        
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .works-item::after {
+                font-size: 14px;
+                padding: 4px 8px;
+                bottom: 8px;
+                right: 8px;
+            }
+            .modal-controls button {
+                width: 36px;
+                height: 36px;
+                font-size: 18px;
+            }
+            .modal-close-btn {
+                width: 40px;
+                height: 40px;
+                top: 15px;
+                right: 15px;
+                font-size: 24px;
+            }
+            .modal-image-wrapper {
+                padding: 20px;
+            }
+        }
+        
+        /* 保持原有样式 */
+        body.modal-open {
+            overflow: hidden;
+        }
+        
+        .title {
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+        
+        .row {
+            margin-bottom: 20px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #2c2e33;
+            margin-top: 40px;
+            color: #ffffff;
+        }
+        
+        /* ========== 荣誉记录模块样式 ========== */
+        .honor-box {
+            background: rgba(44, 46, 51, 0.6);
+            border-radius: 20px;
+            padding: 28px 32px;
+            margin-top: 10px;
+            border-left: 5px solid #a95bc3;
+            line-height: 1.8;
+            font-size: 0.95rem;
+            color: #ffffff;
+            text-align: justify;
+        }
+        
+        .honor-box p {
+            margin: 0;
+            color: #ffffff;
+        }
+        
+        @media (max-width: 768px) {
+            .honor-box {
+                padding: 18px 20px;
+                font-size: 0.85rem;
+            }
+        }
+        
+        /* 个人信息卡片文字颜色 */
+        .col-l-4 p {
+            color: #ffffff;
+        }
+        
+        /* 导航栏文字保持原有样式，但确保可见 */
+        .nav a p {
+            color: #ffffff;
+        }
+        
+        .nav .title {
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+  <!--头部-->
+    <div class="nav">
+        <img src="../img/头像.jpg" alt="logo 图">
+        <span class="title">荣耀之神的空间</span>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+        <a href="index.html" ><p>小叶的资料</p></a>
+        <a href="collect.html" ><p>小叶的日常衣橱</p></a>
+        <a href="interest.html"><p>小叶的古风衣橱</p></a>
+        <a href="food.html" ><p>小叶的西幻及其他衣橱</p></a>
+        <a href="tongren.html"><p>小叶同人衣橱</p></a>
+        <a href="trip.html" ><p>荣耀留言板</p></a>
+        <a href="search.html" ><p>导航</p></a>
+        <a href="../welcome.html" ><p>返回首页</p></a>
+    </div>  
+<main>
+    <section>
+        <div>
+            <h2 class="title">个人信息</h2>
+            <div class="row">
+                <div class="col-l-4">
+                    <p>姓名：叶修</p>
+                    <p>性别：男</p>
+                    <p>生日：5月29日</p>
+                    <p>英文名: Ye Xiu</p>
+                    <p>身高：178cm</p>
+                </div>
+                <div class="col-l-4">
+                    <p>星座: 双子座</p>
+                    <p>登场作品: 全职高手</p>
+                    <p>血型: AB型</p>
+                    <p>出生地：B市</p>
+                    <p>荣誉称号: 荣耀教科书、战术大师、荣耀之神、荣耀第一人、斗神</p>
+                </div>
+                <div class="col-l-4">
+                    <p>能力评定：<br>
+                    战术：★★★★★★<br>
+                    操作：★★★★★★<br>
+                    意识：★★★★★★<br>
+                    统率力：★★★★★★<br>
+                    经验：★★★★★★</p>
+                </div>
+            </div>
+        </div>
+    </section>
+ 
+    <section id="works">
+        <div>
+            <h2 class="title">人设和账号卡人设图</h2>
+            <div class="row" id="imageGridContainer">
+                <div class="col-s-6">
+                    <div class="works-item" data-img-src="../img/works/web1.jpg">
+                        <img src="../img/works/web1.jpg" alt="人设图1" loading="lazy">
+                    </div>
+                </div>
+                <div class="col-s-6">
+                    <div class="works-item" data-img-src="../img/works/web2.jpg">
+                        <img src="../img/works/web2.jpg" alt="人设图2" loading="lazy">
+                    </div>
+                </div>
+                <div class="col-s-6">
+                    <div class="works-item" data-img-src="../img/works/web3.jpg">
+                        <img src="../img/works/web3.jpg" alt="人设图3" loading="lazy">
+                    </div>
+                </div>
+                <div class="col-s-6">
+                    <div class="works-item" data-img-src="../img/works/web4.jpg">
+                        <img src="../img/works/web4.jpg" alt="人设图4" loading="lazy">
+                    </div>
+                </div>
+                <div class="col-s-6">
+                    <div class="works-item" data-img-src="../img/works/web5.jpg">
+                        <img src="../img/works/web5.jpg" alt="人设图5" loading="lazy">
+                    </div>
+                </div>
+                <div class="col-s-6">
+                    <div class="works-item" data-img-src="../img/works/web6.jpg">
+                        <img src="../img/works/web6.jpg" alt="人设图6" loading="lazy">
+                    </div>
+                </div>
+                <div class="col-s-6">
+                    <div class="works-item" data-img-src="../img/works/web7.jpg">
+                        <img src="../img/works/web7.jpg" alt="人设图7" loading="lazy">
+                    </div>
+                </div>
+                <div class="col-s-6">
+                    <div class="works-item" data-img-src="../img/works/web8.jpg">
+                        <img src="../img/works/web8.jpg" alt="人设图8" loading="lazy">
+                    </div>
+                </div>
+                <div class="col-s-6">
+                    <div class="works-item" data-img-src="../img/works/web9.jpg">
+                        <img src="../img/works/web9.jpg" alt="人设图9" loading="lazy">
+                    </div>
+                </div>
+                <div class="col-s-6">
+                    <div class="works-item" data-img-src="../img/works/web10.jpg">
+                        <img src="../img/works/web10.jpg" alt="人设图9" loading="lazy">
+                    </div>
+                </div>
+                <div class="col-s-6">
+                    <div class="works-item" data-img-src="../img/works/web11.jpg">
+                        <img src="../img/works/web11.jpg" alt="人设图9" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section>
+        <div>
+            <h2 class="title">🏆 荣誉记录</h2>
+            <div class="honor-box">
+                <p>
+                    首个也是唯一的王朝缔造者：叶修率领的嘉世战队在荣耀职业联赛1-3赛季连续获得联盟总冠军，开创了荣耀职业联盟有史以来第一个也是至今唯一一个三连冠的王朝战队。<br><br>
+                    最多最有价值选手纪录保持者：在1-3赛季以及第10赛季斩获最有价值选手（MVP），接近至今为止赛季的一半数量。<br><br>
+                    新秀挑战赛：全明星周末活动中的"新秀挑战赛"记录中，叶修创造了一项"新秀挑战赛上被点名最多"的纪录，无论是单届，还是总数，他都是冠军。第一届和第八届全明星赛中，报名参加新秀挑战赛的七名新秀，均点名了叶修。<br><br>
+                    50级入神之领域：叶修在第十区使用散人君莫笑，升级至50级后，便挑战神之领域任务（此时挑战等级提高至70级）。在叶修的操作下，君莫笑成了荣耀史上第一个50级就冲进神之领域的角色。<br><br>
+                    荣耀职业联赛：叶修从第一赛季开始连续参加了八个赛季，在第八赛季时中途退役。后返回职业联盟参加了第十赛季。<br><br>
+                    连胜纪录：叶修在第十赛季常规赛创下了37连胜，到季后赛总决赛总共45连胜。<br><br>
+                    获得冠军：第一、二、三、十赛季总冠军，挑战赛冠军。
+                    其他荣耀：两次输出之星，一次一击必杀，第十赛季单挑之王，第四到第七赛季和苏沐橙连续获得四次最佳搭档。
+                </p>
+            </div>
+        </div>
+        <div>
+            <h2 class="title">题外话</h2>
+            <div class="honor-box">
+                <p>
+                    该网站会继续更新。
+                    如果您有清晰的官图服设或者网站没有的服设，请投递邮箱：319930889@qq.com 邮箱标题：叶修服设
+                    同人服设也可投递，请标明CN和使用服设的相关要求。
+                    如果可以请附上您的cn，此栏专门感谢名单，排名不分先后。
+                    特别鸣谢：
+                    xhsID:404,清水,那时你放开的手,上行,即使如此也依然爱着你,溪依遥荷薇,唧唧复唧唧,【见南山】【小菜帮】
+                    CN:
+                    webID：
+                    
+                    
+                </p>
+            </div>
+        </div>
+    </section>
+   
+    
+    <footer>
+        <p>© 0529 By YeXiu .</p>
+    </footer>
+</main>
+
+<!-- 模态框组件 -->
+<div id="imageModal" class="image-modal">
+    <div class="modal-close-btn" id="modalCloseBtn">✕</div>
+    <div class="modal-reset-btn" id="modalResetBtn" title="重置视图">⟳</div>
+    
+    <div class="modal-image-container" id="modalImageContainer">
+        <div class="modal-image-wrapper" id="modalImageWrapper">
+            <img id="modalImage" alt="放大图片">
+        </div>
+    </div>
+    
+    <div class="modal-controls">
+        <button id="zoomOutBtn" title="缩小">−</button>
+        <span class="zoom-value" id="zoomValue">100%</span>
+        <button id="zoomInBtn" title="放大">+</button>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // DOM 元素
+        const container = document.getElementById('imageGridContainer');
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const closeBtn = document.getElementById('modalCloseBtn');
+        const resetBtn = document.getElementById('modalResetBtn');
+        const imageContainer = document.getElementById('modalImageContainer');
+        const zoomInBtn = document.getElementById('zoomInBtn');
+        const zoomOutBtn = document.getElementById('zoomOutBtn');
+        const zoomValueSpan = document.getElementById('zoomValue');
+        
+        // 状态变量
+        let isModalOpen = false;
+        let currentScale = 1;
+        let currentImageSrc = '';
+        
+        // 缩放步长
+        const ZOOM_STEP = 0.25;
+        const MIN_SCALE = 0.5;
+        const MAX_SCALE = 4;
+        
+        // 更新缩放显示
+        function updateZoomDisplay() {
+            zoomValueSpan.textContent = Math.round(currentScale * 100) + '%';
+            if (modalImage) {
+                modalImage.style.transform = `scale(${currentScale})`;
+                modalImage.style.transformOrigin = 'center center';
+            }
+        }
+        
+        // 重置缩放和滚动位置
+        function resetZoomAndScroll() {
+            currentScale = 1;
+            updateZoomDisplay();
+            if (imageContainer) {
+                imageContainer.scrollTop = 0;
+                imageContainer.scrollLeft = 0;
+            }
+        }
+        
+        // 放大
+        function zoomIn() {
+            if (currentScale < MAX_SCALE) {
+                currentScale = Math.min(currentScale + ZOOM_STEP, MAX_SCALE);
+                updateZoomDisplay();
+            }
+        }
+        
+        // 缩小
+        function zoomOut() {
+            if (currentScale > MIN_SCALE) {
+                currentScale = Math.max(currentScale - ZOOM_STEP, MIN_SCALE);
+                updateZoomDisplay();
+            }
+        }
+        
+        // 打开模态框
+        function openModal(imgSrc) {
+            if (!modal || !modalImage) return;
+            
+            currentImageSrc = imgSrc;
+            currentScale = 1;
+            updateZoomDisplay();
+            
+            modalImage.src = imgSrc;
+            modalImage.style.transform = `scale(1)`;
+            modalImage.classList.remove('show');
+            
+            // 重置滚动位置
+            if (imageContainer) {
+                imageContainer.scrollTop = 0;
+                imageContainer.scrollLeft = 0;
+            }
+            
+            // 强制重绘
+            void modalImage.offsetWidth;
+            
+            modal.classList.add('show');
+            
+            setTimeout(() => {
+                modalImage.classList.add('show');
+            }, 10);
+            
+            document.body.classList.add('modal-open');
+            isModalOpen = true;
+        }
+        
+        // 关闭模态框
+        function closeModal() {
+            if (!modal || !modalImage) return;
+            
+            modalImage.classList.remove('show');
+            
+            setTimeout(() => {
+                modal.classList.remove('show');
+                setTimeout(() => {
+                    if (!modal.classList.contains('show')) {
+                        modalImage.src = '';
+                        currentImageSrc = '';
+                        currentScale = 1;
+                        updateZoomDisplay();
+                    }
+                }, 100);
+            }, 200);
+            
+            document.body.classList.remove('modal-open');
+            isModalOpen = false;
+        }
+        
+        // 事件委托：处理所有图片点击
+        if (container) {
+            container.addEventListener('click', function(e) {
+                let target = e.target;
+                let worksItem = null;
+                
+                while (target && target !== container) {
+                    if (target.classList && target.classList.contains('works-item')) {
+                        worksItem = target;
+                        break;
+                    }
+                    target = target.parentElement;
+                }
+                
+                if (worksItem) {
+                    e.stopPropagation();
+                    let imgSrc = worksItem.getAttribute('data-img-src');
+                    if (!imgSrc) {
+                        const img = worksItem.querySelector('img');
+                        if (img) {
+                            imgSrc = img.getAttribute('src');
+                        }
+                    }
+                    
+                    if (imgSrc) {
+                        openModal(imgSrc);
+                    }
+                }
+            });
+        }
+        
+        // 关闭按钮事件
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                closeModal();
+            });
+        }
+        
+        // 重置按钮
+        if (resetBtn) {
+            resetBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                resetZoomAndScroll();
+            });
+        }
+        
+        // 缩放按钮
+        if (zoomInBtn) {
+            zoomInBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                zoomIn();
+            });
+        }
+        
+        if (zoomOutBtn) {
+            zoomOutBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                zoomOut();
+            });
+        }
+        
+        // 点击模态框背景关闭（点击容器空白区域）
+        if (imageContainer) {
+            imageContainer.addEventListener('click', function(e) {
+                if (e.target === imageContainer) {
+                    closeModal();
+                }
+            });
+        }
+        
+        // 鼠标滚轮缩放
+        if (imageContainer) {
+            imageContainer.addEventListener('wheel', function(e) {
+                if (isModalOpen) {
+                    e.preventDefault();
+                    if (e.deltaY < 0) {
+                        zoomIn();
+                    } else {
+                        zoomOut();
+                    }
+                }
+            }, { passive: false });
+        }
+        
+        // 拖拽移动图片（通过滚动容器实现）
+        let isDragging = false;
+        let startX, startY;
+        let scrollLeft, scrollTop;
+        
+        if (imageContainer) {
+            imageContainer.addEventListener('mousedown', function(e) {
+                // 如果点击的是图片本身，也要支持拖拽
+                if (e.target === modalImage || imageContainer.contains(e.target)) {
+                    isDragging = true;
+                    startX = e.pageX - imageContainer.offsetLeft;
+                    startY = e.pageY - imageContainer.offsetTop;
+                    scrollLeft = imageContainer.scrollLeft;
+                    scrollTop = imageContainer.scrollTop;
+                    imageContainer.style.cursor = 'grabbing';
+                    e.preventDefault();
+                }
+            });
+            
+            window.addEventListener('mousemove', function(e) {
+                if (!isDragging) return;
+                e.preventDefault();
+                const x = e.pageX - imageContainer.offsetLeft;
+                const y = e.pageY - imageContainer.offsetTop;
+                const walkX = (x - startX) * 1.5;
+                const walkY = (y - startY) * 1.5;
+                imageContainer.scrollLeft = scrollLeft - walkX;
+                imageContainer.scrollTop = scrollTop - walkY;
+            });
+            
+            window.addEventListener('mouseup', function() {
+                isDragging = false;
+                if (imageContainer) {
+                    imageContainer.style.cursor = 'grab';
+                }
+            });
+        }
+        
+        // ESC键关闭
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && isModalOpen) {
+                closeModal();
+            }
+        });
+        
+        // 防止点击图片时关闭模态框
+        if (modalImage) {
+            modalImage.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        }
+        
+        // 图片加载完成后自动调整滚动容器光标
+        if (modalImage) {
+            modalImage.addEventListener('load', function() {
+                if (imageContainer) {
+                    imageContainer.style.cursor = 'grab';
+                }
+            });
+        }
+        
+        // 懒加载优化
+        if ('IntersectionObserver' in window) {
+            const lazyImages = document.querySelectorAll('.works-item img[loading="lazy"]');
+            const imageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        imageObserver.unobserve(img);
+                    }
+                });
+            });
+            lazyImages.forEach(img => imageObserver.observe(img));
+        }
+        
+        const totalImages = document.querySelectorAll('.works-item').length;
+        console.log(`图片放大功能已启用，共 ${totalImages} 张图片，支持滚轮缩放和拖拽移动`);
+    })();
+</script>
+</body>
+</html>

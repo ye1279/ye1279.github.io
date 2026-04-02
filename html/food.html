@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+    <title>荣耀之神的空间</title>
+    <link rel="stylesheet" href="../css/nav.css">
+    <link rel="stylesheet" href="../css/index.css" >
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/animate.css">
+    <link rel="stylesheet" href="../css/templatemo_style.css">
+    <link rel="icon" href="./picture/favicon.ico">
+    
+    <style>
+        /* ========== 统一图片尺寸优化 ========== */
+        .animated.umScaleIn {
+            animation-duration: 0.6s;
+            animation-fill-mode: both;
+        }
+        
+        /* 图片容器统一尺寸 - 固定宽高比，支持大量图片 */
+        .project-item {
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            overflow: hidden;
+            border-radius: 12px;
+            background: #2c2e33;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .project-item img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            object-position: center;
+            transition: filter 0.25s ease, transform 0.3s ease;
+        }
+        
+        /* 悬停效果 */
+        .project-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+        }
+        
+        .project-item:hover img {
+            filter: brightness(0.92);
+            transform: scale(1.02);
+        }
+        
+        /* 放大镜提示 */
+        .project-item::after {
+            content: "🔍";
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            font-size: 16px;
+            padding: 5px 10px;
+            border-radius: 30px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            pointer-events: none;
+            backdrop-filter: blur(4px);
+            z-index: 5;
+        }
+        
+        .project-item:hover::after {
+            opacity: 0.9;
+        }
+        
+        /* ========== 模态框样式 ========== */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0);
+            z-index: -9999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .image-modal.show {
+            display: block;
+            z-index: 9998;
+            background-color: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(10px);
+            opacity: 1;
+        }
+        
+        .modal-image-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        
+        .modal-image-wrapper img {
+            display: block;
+            max-width: 85vw;
+            max-height: 85vh;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: 20px;
+            box-shadow: 0 30px 55px rgba(0, 0, 0, 0.5), 0 0 0 5px rgba(169, 91, 195, 0.6);
+            transform: scale(0.85);
+            opacity: 0;
+            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.2), opacity 0.25s ease;
+            pointer-events: auto;
+            background: #1a1c1f;
+        }
+        
+        .modal-image-wrapper img.show {
+            transform: scale(1);
+            opacity: 1;
+        }
+        
+        .modal-image-wrapper img:hover {
+            transform: scale(1.01);
+            filter: brightness(1.02);
+        }
+        
+        .modal-close-btn {
+            position: fixed;
+            top: 25px;
+            right: 35px;
+            width: 48px;
+            height: 48px;
+            background: rgba(169, 91, 195, 0.95);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            pointer-events: auto;
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-close-btn:hover {
+            background: #6e2a85;
+            transform: scale(1.08) rotate(90deg);
+        }
+        
+        /* 网格间距优化 - 支持大量图片 */
+        .projects-holder .row {
+            margin: 0 -12px;
+        }
+        
+        .projects-holder [class*="col-"] {
+            padding: 0 12px 24px 12px;
+        }
+        
+        /* 加载更多按钮 */
+        .load-more-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .load-more-btn {
+            background: #a95bc3;
+            color: white;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 40px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .load-more-btn:hover {
+            background: #6e2a85;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .project-item::after {
+                font-size: 14px;
+                padding: 4px 8px;
+                bottom: 8px;
+                right: 8px;
+            }
+            .modal-image-wrapper img {
+                max-width: 92vw;
+                max-height: 80vh;
+            }
+            .modal-close-btn {
+                width: 40px;
+                height: 40px;
+                top: 15px;
+                right: 20px;
+                font-size: 28px;
+            }
+        }
+        
+        body.modal-open {
+            overflow: hidden;
+        }
+        
+        .copyright p a {
+            color: #ccc;
+            text-decoration: none;
+        }
+        .copyright p a:hover {
+            color: #a95bc3;
+        }
+        
+        div[style*="border-bottom: 2px solid #46494f;"] {
+            margin: 20px 0;
+        }
+        
+        /* 图片加载占位效果 */
+        .project-item img {
+            background: linear-gradient(135deg, #2c2e33 0%, #3a3d44 100%);
+        }
+    </style>
+</head>
+
+<body>
+  <!--头部-->
+    <div class="nav">
+        <img src="../img/头像.jpg" alt="logo 图">
+        <span class="title">荣耀之神的空间</span>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+        <a href="index.html" ><p>小叶的资料</p></a>
+        <a href="collect.html" ><p>小叶的日常衣橱</p></a>
+        <a href="interest.html"><p>小叶的古风衣橱</p></a>
+        <a href="food.html" ><p>小叶的西幻及其他衣橱</p></a>
+        <a href="tongren.html" ><p>小叶同人衣橱</p></a>
+        <a href="trip.html" ><p>荣耀留言板</p></a>
+        <a href="search.html" ><p>导航</p></a>
+        <a href="../welcome.html" ><p>返回首页</p></a>
+    </div>     
+
+<br/><br/><br/><br/><br/>
+
+<div id="menu-container">
+    <div id="menu-1" class="homepage home-section container">
+        <div class="home-intro text-center">
+            <h2 class="welcome-title animated fadeInLeft">小叶的西幻及其他衣橱</p></h2>
+            <div style="border-bottom: 2px solid #46494f;"></div>
+
+        <section id="project">
+            <div class="projects-holder">
+                <!-- 图片网格容器 - 动态生成，便于管理大量图片 -->
+                <div id="imageGridContainer" class="row">
+                    <!-- 图片将通过JS动态生成，便于修改路径 -->
+                </div>
+                
+                <!-- 加载更多按钮（如果图片超过初始显示数量） -->
+                <div class="load-more-container" id="loadMoreContainer" style="display: none;">
+                    <button class="load-more-btn" id="loadMoreBtn">加载更多图片 +</button>
+                </div>
+            </div>
+        </section>
+
+        <div style="border-bottom: 2px solid #46494f;"></div> <br />
+        <footer>
+            <div class="blog-header text-center">
+                <div class="row">
+                    <div class="col-md-12 copyright">
+                        <p><a href="index.html">回到首页</a></p>
+                        <p> &copy; 0529&nbsp;&nbsp; By&nbsp;&nbsp;<a href="#">YeXiu</a>&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <span class="border-top"></span>
+        <span class="border-left"></span>
+        <span class="border-right"></span>
+        <span class="border-bottom"></span>
+    </div>
+</div>
+
+<!-- 模态框组件 -->
+<div id="imageModal" class="image-modal">
+    <div class="modal-backdrop-area"></div>
+    <div class="modal-close-btn" id="modalCloseBtn">✕</div>
+    <div class="modal-image-wrapper">
+        <img id="modalImage" alt="放大图片">
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ========== 图片配置区域 - 方便修改路径 ==========
+        // 方式一：统一路径配置（推荐，修改这里即可）
+        const IMAGE_CONFIG = {
+            // 图片基础路径
+            basePath: '../img/clothes/',
+            // 图片文件名格式：支持两种格式
+            // 格式1: 1 (1).jpg, 1 (2).jpg ... 适用于括号命名
+            // 格式2: 1.jpg, 2.jpg ... 适用于简单数字命名
+            namingPattern: 'bracket', // 'bracket' 或 'simple' 或 'custom'
+            // 图片总数（根据实际图片数量修改）
+            totalImages: 12,
+            // 自定义图片名称列表（如果使用custom模式，在这里定义所有图片名）
+            customNames: [],
+            // 每行显示的列数配置（响应式）
+            cols: {
+                md: 3,  // 中等屏幕每行4张 (col-md-4)
+                sm: 7   // 小屏幕每行2张 (col-sm-6)
+            }
+        };
+        
+        // 方式二：也可以直接在这里定义所有图片路径（更直观）
+        // 取消注释下面的数组，并注释掉自动生成逻辑即可使用
+        /*
+        const IMAGE_LIST = [
+            '../img/clothes/1 (1).jpg',
+            '../img/clothes/1 (2).jpg',
+            '../img/clothes/1 (3).jpg',
+            '../img/clothes/1 (4).jpg',
+            // ... 添加更多图片路径
+        ];
+        */
+        
+        // 自动生成图片路径列表
+        function generateImageList() {
+            const config = IMAGE_CONFIG;
+            const images = [];
+            
+            // 如果使用自定义列表模式
+            if (config.namingPattern === 'custom' && config.customNames.length > 0) {
+                return config.customNames.map(name => config.basePath + name);
+            }
+            
+            // 自动生成图片路径
+            for (let i = 1; i <= config.totalImages; i++) {
+                let fileName;
+                if (config.namingPattern === 'bracket') {
+                    // 格式: 1 (1).jpg, 1 (2).jpg, 1 (3).jpg...
+                    fileName = `1 (${i}).jpg`;
+                } else {
+                    // 简单数字格式: 1.jpg, 2.jpg, 3.jpg...
+                    fileName = `${i}.jpg`;
+                }
+                images.push(config.basePath + fileName);
+            }
+            return images;
+        }
+        
+        // 获取列样式类名
+        function getColumnClass() {
+            const cols = IMAGE_CONFIG.cols;
+            return `col-md-${cols.md} col-sm-${cols.sm}`;
+        }
+        
+        // 渲染图片网格
+        function renderImageGrid(images, startIndex = 0, batchSize = 20) {
+            const container = document.getElementById('imageGridContainer');
+            if (!container) return;
+            
+            const endIndex = Math.min(startIndex + batchSize, images.length);
+            const newImages = images.slice(startIndex, endIndex);
+            
+            newImages.forEach((imgSrc, idx) => {
+                const actualIndex = startIndex + idx;
+                const colDiv = document.createElement('div');
+                colDiv.className = `${getColumnClass()} p-${actualIndex + 1} animated umScaleIn`;
+                
+                colDiv.innerHTML = `
+                    <div class="project-item" data-img-src="${imgSrc}">
+                        <img src="${imgSrc}" alt="现代日常服设${actualIndex + 1}" loading="lazy">
+                    </div>
+                `;
+                container.appendChild(colDiv);
+            });
+            
+            return endIndex;
+        }
+        
+        // 初始化模态框功能
+        function initModal() {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const closeBtn = document.getElementById('modalCloseBtn');
+            let isModalOpen = false;
+            
+            // 打开模态框
+            function openModal(imgSrc) {
+                if (!modal || !modalImage) return;
+                modalImage.src = imgSrc;
+                modalImage.classList.remove('show');
+                void modalImage.offsetWidth;
+                modal.classList.add('show');
+                setTimeout(() => {
+                    modalImage.classList.add('show');
+                }, 10);
+                document.body.classList.add('modal-open');
+                isModalOpen = true;
+            }
+            
+            // 关闭模态框
+            function closeModal() {
+                if (!modal || !modalImage) return;
+                modalImage.classList.remove('show');
+                setTimeout(() => {
+                    modal.classList.remove('show');
+                    setTimeout(() => {
+                        if (!modal.classList.contains('show')) {
+                            modalImage.src = '';
+                        }
+                    }, 100);
+                }, 200);
+                document.body.classList.remove('modal-open');
+                isModalOpen = false;
+            }
+            
+            // 事件委托：监听所有 .project-item 的点击
+            const container = document.getElementById('imageGridContainer');
+            if (container) {
+                container.addEventListener('click', function(e) {
+                    let target = e.target;
+                    let projectItem = null;
+                    
+                    while (target && target !== container) {
+                        if (target.classList && target.classList.contains('project-item')) {
+                            projectItem = target;
+                            break;
+                        }
+                        target = target.parentElement;
+                    }
+                    
+                    if (projectItem) {
+                        e.stopPropagation();
+                        let imgSrc = projectItem.getAttribute('data-img-src');
+                        if (!imgSrc) {
+                            const img = projectItem.querySelector('img');
+                            if (img) imgSrc = img.getAttribute('src');
+                        }
+                        if (imgSrc) openModal(imgSrc);
+                    }
+                });
+            }
+            
+            // 关闭按钮
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    closeModal();
+                });
+            }
+            
+            // 点击背景关闭
+            const backdropArea = document.querySelector('.modal-backdrop-area');
+            if (backdropArea) {
+                backdropArea.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    closeModal();
+                });
+            }
+            
+            // 点击模态框背景关闭
+            if (modal) {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) closeModal();
+                });
+            }
+            
+            // ESC关闭
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && isModalOpen) closeModal();
+            });
+            
+            // 防止点击图片关闭
+            if (modalImage) {
+                modalImage.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            }
+            
+            const modalWrapper = document.querySelector('.modal-image-wrapper');
+            if (modalWrapper) {
+                modalWrapper.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            }
+        }
+        
+        // 懒加载优化
+        function initLazyLoad() {
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            const src = img.getAttribute('src');
+                            if (src && img.complete === false) {
+                                // 图片已设置src，无需额外操作
+                            }
+                            observer.unobserve(img);
+                        }
+                    });
+                });
+                
+                document.querySelectorAll('.project-item img').forEach(img => {
+                    observer.observe(img);
+                });
+            }
+        }
+        
+        // ========== 主程序 ==========
+        // 生成图片列表
+        let imageList = [];
+        
+        // 检查是否使用自定义图片列表
+        if (typeof IMAGE_LIST !== 'undefined' && IMAGE_LIST.length > 0) {
+            imageList = IMAGE_LIST;
+        } else {
+            imageList = generateImageList();
+        }
+        
+        console.log(`📷 图片配置：共 ${imageList.length} 张图片`);
+        console.log(`📁 图片路径示例：${imageList[0] || '无图片'}`);
+        
+        // 分批渲染（支持大量图片，避免一次性渲染过多）
+        const BATCH_SIZE = 24; // 每批渲染24张
+        let currentIndex = 0;
+        
+        function loadMoreImages() {
+            const newIndex = renderImageGrid(imageList, currentIndex, BATCH_SIZE);
+            currentIndex = newIndex;
+            
+            // 更新加载更多按钮显示
+            const loadMoreContainer = document.getElementById('loadMoreContainer');
+            if (loadMoreContainer) {
+                if (currentIndex < imageList.length) {
+                    loadMoreContainer.style.display = 'block';
+                } else {
+                    loadMoreContainer.style.display = 'none';
+                }
+            }
+        }
+        
+        // 初始渲染第一批
+        loadMoreImages();
+        
+        // 绑定加载更多按钮
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener('click', function() {
+                loadMoreImages();
+                // 添加简单动画反馈
+                this.textContent = '加载中...';
+                setTimeout(() => {
+                    if (currentIndex < imageList.length) {
+                        this.textContent = `加载更多图片 (${currentIndex}/${imageList.length}) +`;
+                    } else {
+                        this.textContent = '已加载全部图片 ✓';
+                        setTimeout(() => {
+                            this.textContent = '加载更多图片 +';
+                        }, 2000);
+                    }
+                }, 100);
+            });
+        }
+        
+        // 初始化模态框
+        initModal();
+        
+        // 图片加载完成后初始化懒加载
+        setTimeout(initLazyLoad, 500);
+        
+        // 显示统计信息
+        const totalItems = document.querySelectorAll('.project-item').length;
+        console.log(`✅ 图片放大功能已启用，已加载 ${totalItems} / ${imageList.length} 张图片`);
+        
+        // ========== 路径配置说明 ==========
+        console.log(`
+        ═══════════════════════════════════════════════════════
+        📷 图片路径配置指南：
+        
+        1. 修改图片路径请编辑 IMAGE_CONFIG 对象：
+           - basePath: 图片文件夹路径（当前: '../img/clothes/'）
+           - totalImages: 图片总数（当前: ${IMAGE_CONFIG.totalImages}）
+           - namingPattern: 文件名格式
+             * 'bracket': 1 (1).jpg, 1 (2).jpg ...
+             * 'simple': 1.jpg, 2.jpg, 3.jpg ...
+             * 'custom': 使用 customNames 数组自定义
+        
+        2. 如果图片名称不规则，可以使用自定义模式：
+           设置 namingPattern: 'custom'
+           在 customNames 数组中列出所有文件名
+        
+        3. 也可以直接使用 IMAGE_LIST 数组（取消注释即可）
+        
+        4. 当前配置：
+           - 路径: ${IMAGE_CONFIG.basePath}
+           - 总数: ${IMAGE_CONFIG.totalImages}
+           - 格式: ${IMAGE_CONFIG.namingPattern}
+        ═══════════════════════════════════════════════════════
+        `);
+    })();
+</script>
+</body>
+</html>

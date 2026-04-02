@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+    <title>荣耀之神的空间</title>
+    <link rel="stylesheet" href="../css/nav.css">
+    <link rel="stylesheet" href="../css/index.css" >
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/animate.css">
+    <link rel="stylesheet" href="../css/templatemo_style.css">
+    <link rel="icon" href="../img/picture/favicon.ico">
+    
+    <style>
+        /* ========== 统一图片尺寸和样式 ========== */
+        .animated.umScaleIn {
+            animation-duration: 0.6s;
+            animation-fill-mode: both;
+        }
+        
+        /* 图片容器统一尺寸 - 固定宽高比4:3，所有图片放大前统一尺寸 */
+        .project-item {
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            overflow: hidden;
+            border-radius: 12px;
+            background: #2c2e33;
+            width: 100%;
+            /* 统一宽高比 4:3 - 确保放大前所有图片尺寸一致 */
+            aspect-ratio: 4 / 3;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 图片统一填充方式 - 保持比例居中裁剪，视觉统一 */
+        .project-item img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            object-position: center;
+            transition: filter 0.25s ease, transform 0.3s ease;
+        }
+        
+        /* 悬停效果 */
+        .project-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+        }
+        
+        .project-item:hover img {
+            filter: brightness(0.92);
+            transform: scale(1.02);
+        }
+        
+        /* 放大镜提示 */
+        .project-item::after {
+            content: "🔍";
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            font-size: 16px;
+            padding: 5px 10px;
+            border-radius: 30px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            pointer-events: none;
+            backdrop-filter: blur(4px);
+            z-index: 5;
+            font-family: system-ui;
+        }
+        
+        .project-item:hover::after {
+            opacity: 0.9;
+        }
+        
+        /* 网格间距优化 */
+        .projects-holder .row {
+            margin: 0 -12px;
+        }
+        
+        .projects-holder [class*="col-"] {
+            padding: 0 12px 24px 12px;
+        }
+        
+        /* ========== 模态框样式（点击放大） ========== */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0);
+            z-index: -9999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .image-modal.show {
+            display: block;
+            z-index: 9998;
+            background-color: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(10px);
+            opacity: 1;
+        }
+        
+        .modal-image-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        
+        /* 放大后的图片 - 保持原图比例，不裁剪 */
+        .modal-image-wrapper img {
+            display: block;
+            max-width: 85vw;
+            max-height: 85vh;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: 20px;
+            box-shadow: 0 30px 55px rgba(0, 0, 0, 0.5), 0 0 0 5px rgba(169, 91, 195, 0.6);
+            transform: scale(0.85);
+            opacity: 0;
+            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.2), opacity 0.25s ease;
+            pointer-events: auto;
+            background: #1a1c1f;
+        }
+        
+        .modal-image-wrapper img.show {
+            transform: scale(1);
+            opacity: 1;
+        }
+        
+        .modal-image-wrapper img:hover {
+            transform: scale(1.01);
+            filter: brightness(1.02);
+        }
+        
+        .modal-close-btn {
+            position: fixed;
+            top: 25px;
+            right: 35px;
+            width: 48px;
+            height: 48px;
+            background: rgba(169, 91, 195, 0.95);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            pointer-events: auto;
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-close-btn:hover {
+            background: #6e2a85;
+            transform: scale(1.08) rotate(90deg);
+        }
+        
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .project-item::after {
+                font-size: 14px;
+                padding: 4px 8px;
+                bottom: 8px;
+                right: 8px;
+            }
+            .modal-image-wrapper img {
+                max-width: 92vw;
+                max-height: 80vh;
+            }
+            .modal-close-btn {
+                width: 40px;
+                height: 40px;
+                top: 15px;
+                right: 20px;
+                font-size: 28px;
+            }
+        }
+        
+        body.modal-open {
+            overflow: hidden;
+        }
+        
+        .overlay {
+            display: none;
+        }
+        
+        .copyright p a {
+            color: #ccc;
+            text-decoration: none;
+        }
+        .copyright p a:hover {
+            color: #a95bc3;
+        }
+        
+        div[style*="border-bottom: 2px solid #46494f;"] {
+            margin: 20px 0;
+        }
+        
+        /* 图片加载占位效果 */
+        .project-item img {
+            background: linear-gradient(135deg, #2c2e33 0%, #3a3d44 100%);
+        }
+        
+        .home-intro {
+            margin-bottom: 30px;
+        }
+        
+        .load-more-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .load-more-btn {
+            background: #a95bc3;
+            color: white;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 40px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .load-more-btn:hover {
+            background: #6e2a85;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* 额外确保所有图片容器在放大前尺寸完全统一 */
+        @media (min-width: 1200px) {
+            .project-item {
+                aspect-ratio: 4 / 3;
+            }
+        }
+        
+        @media (max-width: 1199px) and (min-width: 768px) {
+            .project-item {
+                aspect-ratio: 4 / 3;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .project-item {
+                aspect-ratio: 4 / 3;
+            }
+        }
+    </style>
+</head>
+
+<body>
+  <!--头部-->
+    <div class="nav">
+        <img src="../img/头像.jpg" alt="logo 图">
+        <span class="title">荣耀之神的空间</span>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+        <a href="index.html" ><p>小叶的资料</p></a>
+        <a href="collect.html" ><p>小叶的日常衣橱</p></a>
+        <a href="interest.html"><p>小叶的古风衣橱</p></a>
+        <a href="food.html" ><p>小叶的西幻及其他衣橱</p></a>
+        <a href="tongren.html" ><p>小叶同人衣橱</p></a>
+        <a href="trip.html" ><p>荣耀留言板</p></a>
+        <a href="search.html" ><p>导航</p></a>
+        <a href="../welcome.html" ><p>返回首页</p></a>
+    </div>  
+
+<header class="site-header container animated fadeInDown">
+    
+</header>
+
+<div id="menu-container">
+    <div id="menu-1" class="homepage home-section container">
+        <div class="home-intro text-center">
+            <h3 class="animated fadeInRight">小叶的西幻及其他衣橱</h3>
+            
+        </div>
+        <div style="border-bottom: 2px solid #46494f;"></div>
+        <br /><br />
+
+        <!-- 图片网格 - 动态生成，所有图片放大前统一尺寸 -->
+        <div class="projects-holder">
+            <div class="row" id="imageGridContainer">
+                <!-- 图片将通过JS动态生成 -->
+            </div>
+            
+            <div class="load-more-container" id="loadMoreContainer" style="display: none;">
+                <button class="load-more-btn" id="loadMoreBtn">加载更多图片 +</button>
+            </div>
+        </div>
+        
+        <div style="border-bottom: 2px solid #46494f;"></div> <br />
+        
+        <footer>
+            <div class="blog-header text-center">
+                <div class="row">
+                    <div class="col-md-12 copyright">
+                        <p><a href="index.html">回到首页</a></p>
+                        <p> 0529&nbsp;&nbsp; By&nbsp;&nbsp;<a href="#">YeXiu</a>&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        
+        <span class="border-top"></span>
+        <span class="border-left"></span>
+        <span class="border-right"></span>
+        <span class="border-bottom"></span>
+        
+     
+    </div>
+</div>
+
+<!-- 模态框组件 -->
+<div id="imageModal" class="image-modal">
+    <div class="modal-backdrop-area"></div>
+    <div class="modal-close-btn" id="modalCloseBtn">✕</div>
+    <div class="modal-image-wrapper">
+        <img id="modalImage" alt="放大图片">
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ============================================================
+        // 图片配置区域 - 简单修改这里即可
+        // ============================================================
+        
+        // 方式一：批量生成图片路径（推荐）
+        const IMAGE_CONFIG = {
+            // 图片基础路径（古风图片文件夹）
+            basePath: '../img/gufeng/',
+            // 文件名格式：'bracket' 括号命名 或 'simple' 数字命名
+            namingPattern: 'bracket',  // 'bracket' 或 'simple'
+            // 图片总数（根据实际图片数量修改，支持20-100+张）
+            totalImages: 8,
+            // 每批加载数量（优化性能）
+            batchSize: 24
+        };
+        
+        // 方式二：也可以直接在这里定义所有图片路径（更直观，适用于不规则命名）
+        // 取消注释下面的数组，并设置 useCustomList = true
+        /*
+        const useCustomList = true;
+        const IMAGE_LIST = [
+            '../img/gufeng/1 (1).jpg',
+            '../img/gufeng/1 (2).jpg',
+            '../img/gufeng/1 (3).jpg',
+            '../img/gufeng/1 (4).jpg',
+            '../img/gufeng/1 (5).jpg',
+            // ... 继续添加更多图片
+        ];
+        */
+        
+        // ============================================================
+        
+        // 是否使用自定义列表
+        const useCustomList = false;
+        
+        // 生成图片路径列表
+        function generateImageList() {
+            if (useCustomList && typeof IMAGE_LIST !== 'undefined') {
+                return IMAGE_LIST;
+            }
+            
+            const images = [];
+            const config = IMAGE_CONFIG;
+            
+            for (let i = 1; i <= config.totalImages; i++) {
+                let fileName;
+                if (config.namingPattern === 'bracket') {
+                    // 格式: 1 (1).jpg, 1 (2).jpg, 1 (3).jpg...
+                    fileName = `1 (${i}).jpg`;
+                } else {
+                    // 简单数字格式: 1.jpg, 2.jpg, 3.jpg...
+                    fileName = `${i}.jpg`;
+                }
+                images.push(config.basePath + fileName);
+            }
+            return images;
+        }
+        
+        // 获取列样式类名（响应式布局）
+        function getColumnClass(index, total) {
+            // 根据图片数量智能分配列数
+            if (total <= 9) {
+                return 'col-md-4 col-sm-6';
+            }
+            // 前4张用大列，让布局更有层次
+            if (index < 4 && total > 12) {
+                return 'col-md-3 col-sm-6';
+            }
+            return 'col-md-4 col-sm-6';
+        }
+        
+        // ============================================================
+        // 渲染图片网格（所有图片统一尺寸，由CSS aspect-ratio控制）
+        // ============================================================
+        const container = document.getElementById('imageGridContainer');
+        let allImages = [];
+        let currentIndex = 0;
+        let batchSize = 24;
+        
+        function renderBatch() {
+            if (!container) return;
+            
+            const endIndex = Math.min(currentIndex + batchSize, allImages.length);
+            const newImages = allImages.slice(currentIndex, endIndex);
+            
+            newImages.forEach((imgSrc, idx) => {
+                const actualIndex = currentIndex + idx;
+                const colDiv = document.createElement('div');
+                const colClass = getColumnClass(actualIndex, allImages.length);
+                // 添加淡入淡出动画类
+                colDiv.className = `${colClass} animated umScaleIn`;
+                
+                // 注意：data-img-src 存储原始图片路径用于放大，确保放大时显示原图
+                colDiv.innerHTML = `
+                    <div class="project-item" data-img-src="${imgSrc}">
+                        <img src="${imgSrc}" alt="古风图片${actualIndex + 1}" loading="lazy">
+                    </div>
+                `;
+                container.appendChild(colDiv);
+            });
+            
+            currentIndex = endIndex;
+            
+            // 更新加载更多按钮
+            const loadMoreContainer = document.getElementById('loadMoreContainer');
+            if (loadMoreContainer) {
+                if (currentIndex < allImages.length) {
+                    loadMoreContainer.style.display = 'block';
+                    const btn = document.getElementById('loadMoreBtn');
+                    if (btn) btn.textContent = `加载更多图片 (${currentIndex}/${allImages.length}) +`;
+                } else {
+                    loadMoreContainer.style.display = 'none';
+                }
+            }
+        }
+        
+        // ============================================================
+        // 图片放大功能
+        // ============================================================
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const closeBtn = document.getElementById('modalCloseBtn');
+        let isModalOpen = false;
+        
+        function openModal(imgSrc) {
+            if (!modal || !modalImage) return;
+            modalImage.src = imgSrc;
+            modalImage.classList.remove('show');
+            void modalImage.offsetWidth;
+            modal.classList.add('show');
+            setTimeout(() => {
+                modalImage.classList.add('show');
+            }, 10);
+            document.body.classList.add('modal-open');
+            isModalOpen = true;
+        }
+        
+        function closeModal() {
+            if (!modal || !modalImage) return;
+            modalImage.classList.remove('show');
+            setTimeout(() => {
+                modal.classList.remove('show');
+                setTimeout(() => {
+                    if (!modal.classList.contains('show')) {
+                        modalImage.src = '';
+                    }
+                }, 100);
+            }, 200);
+            document.body.classList.remove('modal-open');
+            isModalOpen = false;
+        }
+        
+        // 事件委托监听图片点击
+        if (container) {
+            container.addEventListener('click', function(e) {
+                let target = e.target;
+                let projectItem = null;
+                
+                while (target && target !== container) {
+                    if (target.classList && target.classList.contains('project-item')) {
+                        projectItem = target;
+                        break;
+                    }
+                    target = target.parentElement;
+                }
+                
+                if (projectItem) {
+                    e.stopPropagation();
+                    let imgSrc = projectItem.getAttribute('data-img-src');
+                    if (!imgSrc) {
+                        const img = projectItem.querySelector('img');
+                        if (img) imgSrc = img.getAttribute('src');
+                    }
+                    if (imgSrc) openModal(imgSrc);
+                }
+            });
+        }
+        
+        // 关闭按钮
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                closeModal();
+            });
+        }
+        
+        // 点击背景关闭
+        const backdropArea = document.querySelector('.modal-backdrop-area');
+        if (backdropArea) {
+            backdropArea.addEventListener('click', function(e) {
+                e.stopPropagation();
+                closeModal();
+            });
+        }
+        
+        // 点击模态框背景关闭
+        if (modal) {
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) closeModal();
+            });
+        }
+        
+        // ESC键关闭
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && isModalOpen) closeModal();
+        });
+        
+        // 防止点击图片时关闭
+        if (modalImage) {
+            modalImage.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        }
+        
+        const modalWrapper = document.querySelector('.modal-image-wrapper');
+        if (modalWrapper) {
+            modalWrapper.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        }
+        
+        // 懒加载优化
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        observer.unobserve(entry.target);
+                    }
+                });
+            });
+            setTimeout(() => {
+                document.querySelectorAll('.project-item img').forEach(img => {
+                    observer.observe(img);
+                });
+            }, 500);
+        }
+        
+        // ============================================================
+        // 初始化
+        // ============================================================
+        allImages = generateImageList();
+        batchSize = IMAGE_CONFIG.batchSize || 24;
+        
+        console.log(`📷 古风衣橱图片配置：共 ${allImages.length} 张图片`);
+        console.log(`📁 图片路径示例：${allImages[0] || '无图片'}`);
+        console.log(`🎨 所有图片放大前统一尺寸：4:3 比例（aspect-ratio: 4/3）`);
+        
+        // 初始渲染
+        renderBatch();
+        
+        // 加载更多按钮
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener('click', function() {
+                renderBatch();
+                this.textContent = '加载中...';
+                setTimeout(() => {
+                    if (currentIndex < allImages.length) {
+                        this.textContent = `加载更多图片 (${currentIndex}/${allImages.length}) +`;
+                    } else {
+                        this.textContent = '已加载全部图片 ✓';
+                        setTimeout(() => {
+                            const container = document.getElementById('loadMoreContainer');
+                            if (container) container.style.display = 'none';
+                        }, 1500);
+                    }
+                }, 100);
+            });
+        }
+        
+        console.log(`
+        ═══════════════════════════════════════════════════════
+        🖼️ 古风衣橱 - 图片统一尺寸说明：
+        
+        1. 所有图片放大前统一尺寸：4:3 宽高比
+           - 使用 CSS aspect-ratio: 4/3 强制统一
+           - 图片使用 object-fit: cover 居中裁剪
+           - 确保所有缩略图视觉上完全一致
+        
+        2. 修改图片数量：更改 IMAGE_CONFIG.totalImages（当前: ${IMAGE_CONFIG.totalImages}）
+        
+        3. 修改图片路径：更改 IMAGE_CONFIG.basePath（当前: ${IMAGE_CONFIG.basePath}）
+        
+        4. 修改文件名格式：更改 namingPattern 为 'bracket' 或 'simple'
+        
+        当前配置：
+        - 路径: ${IMAGE_CONFIG.basePath}
+        - 总数: ${IMAGE_CONFIG.totalImages}
+        - 格式: ${IMAGE_CONFIG.namingPattern === 'bracket' ? '括号命名 1 (1).jpg' : '数字命名 1.jpg'}
+        - 缩略图尺寸: 统一 4:3
+        - 放大图尺寸: 原图比例，最大 85vw/85vh
+        ═══════════════════════════════════════════════════════
+        `);
+    })();
+</script>
+</body>
+</html>

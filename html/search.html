@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>百度一下，你就知道</title>
+    <link rel="stylesheet" href="../css/nav.css">
+    <link rel="stylesheet" href="../css/index.css">
+    <script type="text/javascript" src="js/new_file.js"></script>
+
+    <style>
+        baby {
+            margin: 0;
+            padding: 0;
+        }
+
+        .b {
+            font-size: 15px;
+        }
+
+        .back-img {
+            border: 1px solid #000000;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0px;
+            left: 0px;
+            background-color: #000000;
+            opacity: 0.3;
+            z-index: 100;
+            display: none;
+        }
+
+        .login {
+            border: 1px solid #000000;
+            width: 390px;
+            height: 500px;
+            position: absolute;
+            top: 26%;
+            left: 39%;
+            background-color: white;
+            z-index: 110;
+            display: none;
+        }
+
+        .login-top {
+            position: absolute;
+            width: 100%;
+            height: 10%;
+            background-color: #F7F7F7;
+        }
+
+        .close-login {
+            display: block;
+            position: absolute;
+            right: 10px;
+            top: 8px;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            font-size: 30px;
+            color: dimgrey;
+        }
+
+        .close-login:hover {
+            color: darkkhaki;
+            cursor: pointer;
+        }
+
+        .login-top:hover {
+            cursor: move;
+        }
+    </style>
+
+    <script>
+        //点击登录
+        function login() {
+            //获取覆盖图层对象
+            var backimg = document.getElementById("backimg");
+            //登录框的div对象
+            var login = document.getElementById("move_div");
+
+            login.style.display = "block";
+            backimg.style.display = "block";
+
+        }
+
+        //隐藏登录弹出框
+        function loginClose() {
+            //登录框的div对象
+            var login = document.getElementById("move_div");
+            //获取覆盖图层对象
+            var backimg = document.getElementById("backimg");
+
+            login.style.display = "none";
+            backimg.style.display = "none";
+
+        }
+
+
+        /*
+         * 分析：
+         * 获取鼠标实时移动的坐标；m_move_x,m_move_y
+         * 鼠标按下时的坐标；m_down_x,m_down_y
+         * div的坐标；dx,dy
+         * 鼠标按下时，鼠标与div的偏移量；md_x,md_y
+         * div的新坐标；ndx,ndy
+         */
+
+        var isDown = false; //记录鼠标状态
+        var move_div; //要操作的div对象
+        var m_move_x, m_move_y, m_down_x, m_down_y, dx, dy, md_x, md_y, ndx, ndy;
+
+        //鼠标按下
+        function down() {
+            move_div = document.getElementById("move_div");
+            isDown = true;
+
+            //获取鼠标按下时坐标
+            m_down_x = event.pageX;
+            m_down_y = event.pageY;
+
+            //获取div坐标
+            dx = move_div.offsetLeft;
+            dy = move_div.offsetTop;
+
+            //获取鼠标与div偏移量
+            md_x = m_down_x - dx;
+            md_y = m_down_y - dy;
+        }
+
+        //鼠标移动
+        function move() {
+            move_div = document.getElementById("move_div");
+
+            //实时更新div的坐标
+            dx = move_div.offsetLeft;
+            dy = move_div.offsetTop;
+
+            //获取鼠标移动实时坐标
+            m_move_x = event.pageX;
+            m_move_y = event.pageY;
+
+            //鼠标按下时移动才触发
+            if (isDown) {
+
+                //获取新div坐标，鼠标实时坐标 - 鼠标与div的偏移量
+                ndx = m_move_x - md_x;
+                ndy = m_move_y - md_y;
+
+                //把新div坐标值赋给div对象
+                move_div.style.left = ndx + "px";
+                move_div.style.top = ndy + "px";
+
+            }
+
+        }
+
+        //鼠标释放
+        function up() {
+            isDown = false;
+        }
+    </script>
+
+</head>
+
+<body>
+    <div class="nav">
+        <!--   头部导航 navigator     -->
+        <img src="../img/头像.jpg" alt="logo 图">
+        <span class="title">荣耀之神的空间</span>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+        <a href="index.html">
+            <p>小叶的资料</p>
+        </a>
+        <a href="collect.html">
+            <p>小叶日常衣橱</p>
+        </a>
+        <a href="interest.html">
+            <p>小叶的古风衣橱</p>
+        </a>
+        <a href="food.html">
+            <p>小叶的西幻及其他衣橱</p>
+        </a>
+          <a href="tongren.html">
+            <p>小叶同人衣橱</p>
+        </a>
+        <a href="trip.html" ><p>荣耀留言板</p></a>
+        <a href="search.html">
+            <p>导航</p>
+        </a>
+        <a href="../welcome.html">
+            <p>返回首页</p>
+        </a>
+    </div>
+    <div id="backimg" class="back-img"></div>
+
+    <!--<div id="move_div" class="login">
+
+        登录弹出框顶部
+        <div class="login-top" onmousedown="down()" onmouseup="up()" onmousemove="move()">
+            <img src="img/baidu.png" style="margin-top: 10px; height: 30px;" />
+            <b style="top: 5px; color: dimgrey;">登录百度账号</b>
+            <span class="close-login" onclick="loginClose()">×</span>
+        </div>
+
+        <div style="margin-top: 50px; margin-left: 280px; ">
+            <img src="img/shouji.png"/ style="width: 10px; height: 10px;">
+            <a>短信快捷登录</a>
+
+        </div>
+
+    </div>-->
+
+
+    <table border="0px" width="100%" height="900px">
+        <tr height="8%">
+            <td align="right">
+                <div class="b">
+                    <b>
+                     
+                        
+                        <a href="https://www.qidian.com/book/1887208/" style="color: dimgrey;">起点全职高手</a>&nbsp;
+                        <a href="https://weibo.com/p/10080872f22060bfd8ccf707aafe803aa24d11/super_index" style="color: dimgrey;">微博叶修超话</a>&nbsp;
+                        <a href="https://baike.baidu.com/item/%E5%8F%B6%E4%BF%AE/19328925#8-1" style="color: dimgrey;">叶修百度百科</a>&nbsp;
+                        <a href="https://www.xiaohongshu.com/explore" style="color: dimgrey;">小红书</a>&nbsp;
+                        <a href="https://www.mihuashi.com/" style="color: dimgrey;">米画师</a>&nbsp;
+                        <a href="https://huajia.163.com/" style="color: dimgrey;">画加</a>&nbsp;
+                        <a href="https://www.bilibili.com/" style="color: dimgrey;">Bilibili官网</a>&nbsp;
+                        
+                       <!--<u style="color: dimgrey; cursor: pointer;" onclick="login()">登录</u>&nbsp;--> 
+                    </b>
+                   
+                    
+                </div>
+            </td>
+        </tr>
+        <tr height="42%">
+
+            <td align="center">
+                <!--图片-->
+                <p>
+                    <img src="../img/baidu.png" width="270px" />
+                </p>
+                <!--搜索框-->
+                <p>
+                    <form action="https://www.baidu.com/s">
+                        <input type="text" name="wd" value="" style="width: 540px;height: 37px;font-size: 21px;" />
+
+                        <button type="submit"
+                            style="border: 0;width: 100px;height: 39px;background-color:#3385FF ;color: #ffffff; font-size: 18px;">百度一下</button>
+
+                    </form>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td align="center">
+                <!-- <p><img src="img/eweima.png"/></p> -->
+                <b>
+                    <p>我的百度</p>
+                </b>
+                <h5>
+                    <p>
+                        <a href="" style="color: dimgrey;">把百度设为主页</a>&nbsp;&nbsp;
+                        <a href="" style="color: dimgrey;">关于百度</a>&nbsp;&nbsp;
+                        <a href="" style="color: dimgrey;">About Baidu</a>&nbsp;&nbsp;
+                        <a href="" style="color: dimgrey;">百度推广</a>
+
+                    </p>
+                </h5>
+
+                <p>
+                    <h5>©2017 Baidu <a href="" style="color: dimgrey;">使用百度前必读</a>&nbsp; <a href=""
+                            style="color: dimgrey;">意见反馈</a>&nbsp; 京ICP证030173号 <a href=""
+                            style="color: dimgrey;">京公网安备11000002000001号</a></h5>
+
+                </p>
+            </td>
+        </tr>
+
+
+
+    </table>
+
+</body>
+
+</html>

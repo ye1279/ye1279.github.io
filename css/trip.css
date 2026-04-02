@@ -1,0 +1,150 @@
+#main{
+	width: 100%;
+	height: 1150px;
+}
+#main .record{
+	width: 100%;
+	height: 550px;
+	/*background: pink;*/
+	overflow: hidden;
+}
+#main .record .title1{
+	width: 200px;
+	height: 50px;
+	border: 1px solid #5473aa;
+	margin: 55px auto;
+}
+#main .record .title1 h2{
+	width: 130px;
+	height: 30px;
+	font-size: 25px;
+	background: white;
+	margin-left: 35px;
+	margin-top: -15px;
+	text-align: center;
+	line-height: 30px;
+	color: #97895c;
+}
+#main .record .title1 p{
+	width: 200px;
+	height: 35px;
+	text-align: center;
+	line-height: 35px;
+	font-size: 15px;
+	font-family: "arial black";
+	color: #97895c;
+}
+#main .record .content1{
+	width: 780px;
+	height: 360px;
+	margin: -15px auto;
+	/*background: gold;*/
+}
+#main .record .content1 .box{
+	width: 260px;
+	height: 360px;
+	float: left;
+}
+#main .record .content1 .box .section{
+	width: 260px;
+	height: 180px;
+}
+#main .record .content1 .box .section h2{
+	width: 260px;
+	height: 50px;
+	/*background: red;*/
+	text-align: center;
+	line-height: 50px;
+	font-family: "仿宋";
+}
+#main .record .content1 .box .section h2 span{
+	width: 50px;
+	/*background: yellow;*/
+	font-size: 15px;
+	color: gray;
+}
+#main .record .content1 .box .section p{
+	height: 130px;
+	line-height: 22px;
+	padding: 12px 20px;
+	font-size: 13px;
+}
+
+li{
+	list-style: none;
+}
+#main .photos{
+	width: 100%;
+	height: 600px;
+	background: whitesmoke;
+	overflow: hidden;
+}
+#main .photos .title2{
+	width: 300px;
+	height: 80px;
+	/*background: yellow;*/
+	margin: 35px auto;
+}
+#main .photos .title2 .line{
+	height: 30px;
+	border-bottom: 2px solid #5473aa;
+}
+#main .photos .title2 h2{
+	color: #97895c;
+	width: 140px;
+	background: whitesmoke;
+	text-align: center;
+	margin-left: 80px;
+	margin-top: -15px;
+}
+#main .photos .title2 p{
+	width: 300px;
+	height: 35px;
+	line-height: 35px;
+	text-align: center;
+	font-size: 15px;
+	font-family: "arial black";
+	color: #97895c;
+}
+#main .content2{
+	width: 850px;
+	height: 450px;
+	/*background: red;*/
+	background: rgba(1,1,1,0.7);
+	margin: -25px auto;
+}
+#main .content2 .bigView{
+	width: 700px;
+	height: 400px;
+	/*background: blue;*/
+	float: left;
+	margin-top: 25px;
+	margin-left: 40px;
+	overflow: hidden;
+}
+#main .content2 .bigView img{
+	width: 700px;	
+	height: 400px;
+}
+/*通过外层套大盒子，将滚动条隐去*/
+#main .content2 .smallBox{
+	width: 64px;
+	float: right;
+	overflow-x: hidden;
+	margin-top: 25px;
+	margin-right: 40px;
+}
+#main .content2 .smallView{
+	width: 84px;
+	height: 400px;
+	/*保证里面的可以滑动*/
+	/*overflow: auto;*/
+	overflow-y: scroll;
+}
+#main .content2 .smallView img{
+	width: 55px;
+	height: 60px;
+	float: left;
+	margin-bottom: 4px;
+	border: 1px solid white;
+}
