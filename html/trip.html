@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>荣耀留言板 | 荣耀之神的空间</title>
     <style>
         * {
@@ -13,7 +13,7 @@
 
         body {
             background: linear-gradient(135deg, #1a1c2e 0%, #2d2a4a 100%);
-            font-family: 'Segoe UI', 'PingFang SC', Roboto, sans-serif;
+            font-family: 'Segoe UI', 'PingFang SC', Roboto, 'Helvetica Neue', sans-serif;
             padding: 0;
             min-height: 100vh;
             color: #f0f0f0;
@@ -23,10 +23,10 @@
         .nav {
             background: rgba(20, 18, 32, 0.95);
             backdrop-filter: blur(10px);
-            padding: 12px 30px;
+            padding: 12px 20px;
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 12px;
             flex-wrap: wrap;
             position: sticky;
             top: 0;
@@ -34,13 +34,13 @@
             border-bottom: 1px solid rgba(169, 91, 195, 0.3);
         }
         .nav img {
-            width: 45px;
-            height: 45px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             object-fit: cover;
         }
         .nav .title {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             font-weight: bold;
             background: linear-gradient(135deg, #f5e7a3, #c084fc);
             background-clip: text;
@@ -51,6 +51,7 @@
             color: #e0d4ff;
             text-decoration: none;
             transition: 0.2s;
+            font-size: 0.85rem;
         }
         .nav a:hover {
             color: #c084fc;
@@ -63,66 +64,91 @@
         .main-container {
             max-width: 1100px;
             margin: 0 auto;
-            padding: 30px 24px 50px;
+            padding: 20px 16px 40px;
         }
 
         /* 页面标题区 */
         .page-header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
         .page-header h1 {
-            font-size: 2.2rem;
+            font-size: 1.8rem;
             background: linear-gradient(135deg, #f5e7a3, #c084fc);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         .page-header p {
             color: #b6a9e0;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
         }
         .divider {
             height: 2px;
             background: linear-gradient(90deg, transparent, rgba(169, 91, 195, 0.6), transparent);
-            margin: 20px 0 30px;
+            margin: 15px 0 25px;
         }
 
-        /* ========== Twikoo 评论框样式 ========== */
+        /* ========== Twikoo 评论框样式 - 手机优化 ========== */
         #tcomment {
-            background: rgba(30, 28, 45, 0.5);
-            border-radius: 28px;
-            padding: 10px 5px 20px 5px;
+            background: rgba(30, 28, 45, 0.4);
+            border-radius: 24px;
+            padding: 8px 4px 20px 4px;
+            min-height: 400px;
+        }
+        
+        /* 确保评论容器可见且有合适宽度 */
+        .twikoo {
+            width: 100% !important;
+            overflow-x: hidden !important;
         }
         
         /* 隐藏邮箱和网址输入框 */
         .twikoo .tk-field-mail,
         .twikoo .tk-field-url,
         .twikoo .tk-input-mail,
-        .twikoo .tk-input-url {
+        .twikoo .tk-input-url,
+        .twikoo .el-form-item__label[for="mail"],
+        .twikoo .el-form-item__label[for="url"] {
             display: none !important;
         }
         
         /* 调整昵称输入框占满整行 */
         .twikoo .tk-field-nick {
             width: 100% !important;
+            display: block !important;
         }
         .twikoo .tk-input-nick {
             width: 100% !important;
         }
         
-        /* 主要评论框样式 */
+        /* 主要评论框样式 - 移动端适配 */
         .twikoo .tk-comment,
         .twikoo .tk-submit,
-        .twikoo .tk-replies,
-        .twikoo .tk-content {
+        .twikoo .tk-replies {
             background: rgba(34, 30, 54, 0.7) !important;
             backdrop-filter: blur(4px);
             border-radius: 20px !important;
             border: 1px solid rgba(169, 91, 195, 0.2) !important;
+            margin-bottom: 16px !important;
         }
         
+        /* 评论列表区域 */
+        .twikoo .tk-comments {
+            margin-top: 20px;
+        }
+        
+        /* 单条评论卡片 */
+        .twikoo .tk-row {
+            background: rgba(40, 36, 58, 0.6) !important;
+            border-radius: 18px !important;
+            margin-bottom: 16px !important;
+            padding: 14px !important;
+            border: 1px solid rgba(169, 91, 195, 0.15) !important;
+        }
+        
+        /* 输入框样式 */
         .twikoo .tk-input,
         .twikoo .el-textarea__inner,
         .twikoo .el-input__inner {
@@ -130,21 +156,25 @@
             border-color: #4a3f6e !important;
             color: #f3eefc !important;
             border-radius: 20px !important;
+            font-size: 14px !important;
         }
         
+        /* 输入框聚焦 */
         .twikoo .tk-input:focus,
         .twikoo .el-textarea__inner:focus {
             border-color: #a95bc3 !important;
             box-shadow: 0 0 0 2px rgba(169, 91, 195, 0.3) !important;
         }
         
+        /* 按钮样式 */
         .twikoo .tk-btn-primary,
         .twikoo .el-button--primary {
             background: linear-gradient(95deg, #a95bc3, #7b2c9e) !important;
             border: none !important;
             border-radius: 40px !important;
-            padding: 8px 22px !important;
+            padding: 8px 20px !important;
             font-weight: bold !important;
+            font-size: 14px !important;
         }
         
         .twikoo .tk-btn-primary:hover {
@@ -152,6 +182,7 @@
             box-shadow: 0 4px 12px rgba(169, 91, 195, 0.4);
         }
         
+        /* 文字颜色 */
         .twikoo .tk-nick,
         .twikoo .tk-nick a,
         .twikoo .tk-content p,
@@ -159,12 +190,14 @@
             color: #e0d4ff !important;
         }
         
-        .twikoo .tk-reply-link {
-            color: #c084fc !important;
+        .twikoo .tk-content {
+            font-size: 14px;
+            line-height: 1.5;
         }
         
-        .twikoo .tk-row {
-            background: transparent !important;
+        .twikoo .tk-reply-link {
+            color: #c084fc !important;
+            font-size: 13px;
         }
         
         .twikoo .tk-badge {
@@ -172,9 +205,45 @@
             color: #e0d4ff !important;
         }
         
-        /* 滚动条 */
+        /* 分页器样式 */
+        .twikoo .tk-page {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .twikoo .el-pagination {
+            justify-content: center;
+        }
+        .twikoo .el-pagination button,
+        .twikoo .el-pagination .el-pager li {
+            background: rgba(34, 30, 54, 0.8) !important;
+            color: #e0d4ff !important;
+            border-radius: 8px !important;
+            margin: 0 4px !important;
+        }
+        .twikoo .el-pagination .el-pager li.active {
+            background: #a95bc3 !important;
+            color: white !important;
+        }
+        
+        /* 加载提示 */
+        .twikoo .tk-loading {
+            color: #c9a5f0;
+            text-align: center;
+            padding: 30px;
+        }
+        
+        /* 空状态提示 */
+        .twikoo .tk-empty {
+            text-align: center;
+            padding: 40px;
+            color: #b6a9e0;
+            background: rgba(34, 30, 54, 0.5);
+            border-radius: 24px;
+        }
+        
+        /* 手机端滚动条优化 */
         .twikoo ::-webkit-scrollbar {
-            width: 5px;
+            width: 4px;
         }
         .twikoo ::-webkit-scrollbar-track {
             background: #2b2342;
@@ -184,34 +253,94 @@
             background: #a95bc3;
             border-radius: 10px;
         }
-
+        
+        /* 评论框表单布局 - 移动端优化 */
+        .twikoo .el-form-item {
+            margin-bottom: 16px !important;
+        }
+        
+        /* 确保昵称输入框可见 */
+        .twikoo .tk-field-nick .el-form-item__label {
+            color: #c9a5f0 !important;
+            font-size: 13px !important;
+        }
+        
+        /* 隐藏不必要的元素 */
+        .twikoo .tk-preview {
+            display: none !important;
+        }
+        
+        /* 确保评论列表正确显示 */
+        .twikoo .tk-replies {
+            margin-left: 40px !important;
+            border-left: 2px solid rgba(169, 91, 195, 0.3) !important;
+            padding-left: 12px !important;
+        }
+        
+        /* 手机端缩小边距 */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 15px 12px 30px;
+            }
+            .page-header h1 {
+                font-size: 1.5rem;
+            }
+            .nav {
+                padding: 10px 12px;
+                gap: 8px;
+            }
+            .nav img {
+                width: 35px;
+                height: 35px;
+            }
+            .nav .title {
+                font-size: 0.95rem;
+            }
+            .nav a {
+                font-size: 0.75rem;
+            }
+            #tcomment {
+                padding: 5px 2px 15px 2px;
+            }
+            .twikoo .tk-row {
+                padding: 12px !important;
+            }
+            .twikoo .tk-replies {
+                margin-left: 20px !important;
+                padding-left: 8px !important;
+            }
+            .twikoo .tk-content {
+                font-size: 13px;
+            }
+            .twikoo .tk-nick {
+                font-size: 14px;
+            }
+            .twikoo .tk-time {
+                font-size: 11px;
+            }
+        }
+        
+        /* 小屏手机进一步优化 */
+        @media (max-width: 480px) {
+            .twikoo .tk-replies {
+                margin-left: 12px !important;
+            }
+            .twikoo .tk-row {
+                padding: 10px !important;
+            }
+        }
+        
         footer {
             text-align: center;
-            padding: 30px 20px 20px;
+            padding: 20px 16px;
             background: rgba(44, 46, 51, 0.5);
-            margin-top: 50px;
+            margin-top: 40px;
             color: #9a8fc2;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
         }
         footer a {
             color: #c084fc;
             text-decoration: none;
-        }
-
-        @media (max-width: 768px) {
-            .nav {
-                padding: 10px 16px;
-                gap: 12px;
-            }
-            .nav .title {
-                font-size: 1rem;
-            }
-            .main-container {
-                padding: 20px 16px 30px;
-            }
-            .page-header h1 {
-                font-size: 1.6rem;
-            }
         }
     </style>
 </head>
@@ -221,15 +350,15 @@
 <div class="nav">
     <img src="../img/头像.jpg" alt="logo 图">
     <span class="title">荣耀之神的空间</span>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+    <p>&nbsp;</p>
     <a href="xinxi.html"><p>小叶的资料</p></a>
-    <a href="collect.html"><p>小叶的日常衣橱</p></a>
-    <a href="interest.html"><p>小叶的古风衣橱</p></a>
-    <a href="food.html"><p>小叶的西幻及其他衣橱</p></a>
-    <a href="tongren.html"><p>小叶同人衣橱</p></a>
-    <a href="trip.html"><p>荣耀留言板</p></a>
+    <a href="collect.html"><p>日常衣橱</p></a>
+    <a href="interest.html"><p>古风衣橱</p></a>
+    <a href="food.html"><p>西幻衣橱</p></a>
+    <a href="tongren.html"><p>同人衣橱</p></a>
+    <a href="trip.html"><p>留言板</p></a>
     <a href="search.html"><p>导航</p></a>
-    <a href="../index.html"><p>返回首页</p></a>
+    <a href="../index.html"><p>首页</p></a>
 </div>
 
 <!-- ========== 主内容区 ========== -->
@@ -237,6 +366,8 @@
     <div class="page-header">
         <h1>✨ 荣耀留言板 ✨</h1>
         <p>在你眼中，叶修是什么样的人？</p>
+        <p> 那些关于你和叶修的故事</p>
+        
         <div class="divider"></div>
     </div>
 
@@ -245,7 +376,7 @@
 </div>
 
 <footer>
-    <p>© 0529 By YeXiu . | Powered by Twikoo 评论系统</p>
+    <p>© 0529 By YeXiu | Powered by Twikoo 评论系统</p>
 </footer>
 
 <!-- ========== Twikoo 脚本 ========== -->
@@ -255,7 +386,61 @@
     // 你的 Twikoo 后端地址
     const TWIKOO_ENV_ID = 'https://calle1.netlify.app/.netlify/functions/twikoo';
     
-    // 初始化 Twikoo（不配置任何图片上传相关参数，使用默认行为）
+    // 强制隐藏邮箱和网址字段的函数（更彻底）
+    function hideMailAndUrlFields() {
+        try {
+            // 隐藏邮箱和网址输入框的各种可能选择器
+            const selectors = [
+                '.tk-field-mail', '.tk-field-url',
+                '.tk-input-mail', '.tk-input-url',
+                '.el-form-item__content .tk-input-mail',
+                '.el-form-item__content .tk-input-url',
+                'input[placeholder*="邮箱"]', 'input[placeholder*="邮件"]',
+                'input[placeholder*="网址"]', 'input[placeholder*="网站"]',
+                '.el-form-item[data-prop="mail"]', '.el-form-item[data-prop="url"]'
+            ];
+            
+            selectors.forEach(selector => {
+                document.querySelectorAll(selector).forEach(el => {
+                    if (el.style) el.style.display = 'none';
+                    // 如果是表单项，隐藏整个表单项
+                    const formItem = el.closest('.el-form-item');
+                    if (formItem) formItem.style.display = 'none';
+                });
+            });
+            
+            // 隐藏包含"邮箱"或"网址"文字的标签
+            document.querySelectorAll('.twikoo .el-form-item__label, .twikoo label').forEach(label => {
+                const text = label.textContent || '';
+                if (text.includes('邮箱') || text.includes('邮件') || text.includes('网址') || text.includes('网站')) {
+                    const formItem = label.closest('.el-form-item');
+                    if (formItem) formItem.style.display = 'none';
+                }
+            });
+            
+            // 让昵称框占满宽度并确保可见
+            const nickField = document.querySelector('.tk-field-nick');
+            if (nickField) {
+                nickField.style.width = '100%';
+                nickField.style.display = 'block';
+                const nickFormItem = nickField.closest('.el-form-item');
+                if (nickFormItem) nickFormItem.style.display = 'block';
+            }
+            
+            // 确保评论输入区域可见
+            const commentField = document.querySelector('.tk-field-comment');
+            if (commentField) {
+                commentField.style.display = 'block';
+                commentField.style.width = '100%';
+            }
+            
+            console.log('✅ 已隐藏邮箱和网址字段');
+        } catch(e) {
+            console.warn('隐藏字段时出错:', e);
+        }
+    }
+    
+    // 初始化 Twikoo
     twikoo.init({
         envId: TWIKOO_ENV_ID,
         el: '#tcomment',
@@ -263,59 +448,60 @@
         lang: 'zh-CN'
     }).then(() => {
         console.log('✅ Twikoo 评论系统加载成功');
+        
+        // 等待 DOM 完全渲染后隐藏字段
         setTimeout(() => {
             hideMailAndUrlFields();
+        }, 200);
+        
+        // 多次尝试确保隐藏成功（因为 Twikoo 可能动态渲染）
+        const interval = setInterval(() => {
+            hideMailAndUrlFields();
+            // 检查是否已经有评论显示
+            const commentsExist = document.querySelector('.tk-comments .tk-row');
+            if (commentsExist) {
+                console.log('✅ 评论已成功显示');
+            }
         }, 500);
+        
+        // 10秒后停止轮询
+        setTimeout(() => clearInterval(interval), 10000);
+        
     }).catch(err => {
         console.error('❌ Twikoo 加载失败:', err);
-        document.getElementById('tcomment').innerHTML = `
-            <div style="text-align: center; padding: 40px; background: rgba(34,30,54,0.6); border-radius: 28px;">
-                <p style="color: #ffb2b2;">⚠️ 评论系统加载失败，请稍后刷新重试</p>
-                <p style="font-size: 13px; margin-top: 10px;">如果问题持续存在，请检查网络或联系管理员。</p>
-            </div>
-        `;
+        const container = document.getElementById('tcomment');
+        if (container) {
+            container.innerHTML = `
+                <div style="text-align: center; padding: 40px 20px; background: rgba(34,30,54,0.6); border-radius: 28px;">
+                    <p style="color: #ffb2b2; font-size: 16px;">⚠️ 评论系统加载失败</p>
+                    <p style="font-size: 13px; margin-top: 12px; color: #b6a9e0;">请检查网络连接后刷新页面重试</p>
+                    <button onclick="location.reload()" style="margin-top: 20px; background: #a95bc3; border: none; padding: 8px 24px; border-radius: 30px; color: white; cursor: pointer;">刷新页面</button>
+                </div>
+            `;
+        }
     });
     
-    // 强制隐藏邮箱和网址字段的函数
-    function hideMailAndUrlFields() {
-        // 隐藏邮箱和网址输入框
-        const mailFields = document.querySelectorAll('.tk-field-mail, .tk-input-mail');
-        const urlFields = document.querySelectorAll('.tk-field-url, .tk-input-url');
-        
-        mailFields.forEach(el => {
-            if (el.style) el.style.display = 'none';
-        });
-        urlFields.forEach(el => {
-            if (el.style) el.style.display = 'none';
-        });
-        
-        // 隐藏包含"邮箱"文字的标签行
-        const labels = document.querySelectorAll('.twikoo label');
-        labels.forEach(label => {
-            if (label.textContent.includes('邮箱') || label.textContent.includes('邮件') || label.textContent.includes('网址')) {
-                let parent = label.closest('.el-form-item');
-                if (parent) parent.style.display = 'none';
-            }
-        });
-        
-        // 让昵称框占满宽度
-        const nickField = document.querySelector('.tk-field-nick');
-        if (nickField) {
-            nickField.style.width = '100%';
-        }
-        
-        console.log('已隐藏邮箱和网址字段');
-    }
-    
     // 监听 DOM 变化，确保动态加载的字段也被隐藏
-    const observer = new MutationObserver(function() {
-        hideMailAndUrlFields();
+    let observerTimer = null;
+    const observer = new MutationObserver(function(mutations) {
+        // 防抖，避免频繁执行
+        if (observerTimer) clearTimeout(observerTimer);
+        observerTimer = setTimeout(() => {
+            hideMailAndUrlFields();
+        }, 100);
     });
     observer.observe(document.body, {
         childList: true,
         subtree: true
     });
+    
+    // 页面加载完成后执行一次
+    window.addEventListener('load', function() {
+        hideMailAndUrlFields();
+    });
+    
+    // 处理移动端触摸滚动优化
+    document.addEventListener('touchstart', function() {}, { passive: true });
 </script>
-
 </body>
 </html>
