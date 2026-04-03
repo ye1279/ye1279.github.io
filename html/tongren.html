@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
-    <title>荣耀之神的空间</title>
+    <title>荣耀之神的空间 - 小叶同人衣橱</title>
     <link rel="stylesheet" href="../css/nav.css">
     <link rel="stylesheet" href="../css/index.css" >
     <link rel="stylesheet" href="../css/bootstrap.min.css">
@@ -13,10 +13,89 @@
     <link rel="icon" href="./picture/favicon.ico">
     
     <style>
+        /* ========== 全局背景和文字颜色 ========== */
+        body {
+            background: linear-gradient(135deg, #1a1c2e 0%, #2d2a4a 100%);
+            font-family: 'Segoe UI', 'PingFang SC', Roboto, 'Helvetica Neue', sans-serif;
+            color: #f0f0f0;
+        }
+        
+        /* ========== 导航栏样式（与你喜欢的页面一致） ========== */
+        .nav {
+            background: rgba(20, 18, 32, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(169, 91, 195, 0.3);
+        }
+        .nav img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .nav .title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #f5e7a3, #c084fc);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .nav a {
+            color: #e0d4ff;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        .nav a:hover {
+            color: #c084fc;
+        }
+        .nav p {
+            display: inline;
+        }
+        
+        /* ========== 标题栏样式 ========== */
+        .home-intro {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .welcome-title {
+            font-size: 2rem;
+            background: linear-gradient(135deg, #f5e7a3, #c084fc);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            font-weight: normal;
+            margin-bottom: 10px;
+        }
+        .welcome-title p {
+            font-size: 1rem;
+            color: #b6a9e0;
+            margin-top: 5px;
+        }
+        
         /* ========== 统一图片尺寸优化 ========== */
         .animated.umScaleIn {
+            animation-name: umScaleIn;
             animation-duration: 0.6s;
             animation-fill-mode: both;
+        }
+        
+        @keyframes umScaleIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
         
         /* 图片容器统一尺寸 - 固定宽高比，支持大量图片 */
@@ -39,6 +118,12 @@
             object-fit: cover;
             object-position: center;
             transition: filter 0.25s ease, transform 0.3s ease;
+            opacity: 0;
+            transition: opacity 0.3s ease, filter 0.25s ease, transform 0.3s ease;
+        }
+        
+        .project-item img.loaded {
+            opacity: 1;
         }
         
         /* 悬停效果 */
@@ -277,6 +362,16 @@
             .image-note {
                 font-size: 0.7rem;
             }
+            .welcome-title {
+                font-size: 1.5rem;
+            }
+            .nav {
+                padding: 10px 16px;
+                gap: 12px;
+            }
+            .nav .title {
+                font-size: 1rem;
+            }
         }
         
         body.modal-open {
@@ -303,12 +398,12 @@
 </head>
 
 <body>
-  <!--头部-->
+    <!--头部-->
     <div class="nav">
         <img src="../img/头像.jpg" alt="logo 图">
         <span class="title">荣耀之神的空间</span>
         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
-       <a href="xinxi.html"><p>小叶的资料</p></a>
+        <a href="xinxi.html"><p>小叶的资料</p></a>
         <a href="collect.html" ><p>小叶的日常衣橱</p></a>
         <a href="interest.html"><p>小叶的古风衣橱</p></a>
         <a href="food.html" ><p>小叶的西幻及其他衣橱</p></a>
@@ -316,14 +411,14 @@
         <a href="trip.html" ><p>荣耀留言板</p></a>
         <a href="search.html" ><p>导航</p></a>
         <a href="../index.html" ><p>返回首页</p></a>
-    </div>     
+    </div>       
 
 <br/><br/><br/><br/><br/>
 
 <div id="menu-container">
     <div id="menu-1" class="homepage home-section container">
         <div class="home-intro text-center">
-            <h2 class="welcome-title animated fadeInLeft">小叶同人衣橱</h2>
+            <h2 class="welcome-title animated fadeInLeft">小叶同人衣橱<p>YeXiu'clothes.</p></h2>
             <div style="border-bottom: 2px solid #46494f;"></div>
 
         <section id="project">
@@ -377,16 +472,15 @@
                 nickname: 'xhs:那时你放开的手',
                 note: '日常服设，叶毒唯不建议(?)可以用'
             },
-       
+            // 可以继续添加更多图片
         ];
         
-        // 也可以使用简单模式：只需要修改图片总数，自动生成默认标注
-        // 如果图片数量超过上面定义的数量，会自动补充默认标注
-        const AUTO_GEN_COUNT = 0; // 设置为0表示只使用上面定义的图片，设置大于0会自动生成额外图片
+        // 自动生成额外图片数据（如果需要批量添加）
+        const AUTO_GEN_COUNT = 0;
         
         // 图片基础路径（用于自动生成模式）
         const BASE_PATH = '../img/tongren/';
-        const NAMING_PATTERN = 'bracket'; // 'bracket' 或 'simple'
+        const NAMING_PATTERN = 'bracket';
         
         // 每行显示的列数配置
         const COLS = {
@@ -418,6 +512,11 @@
             return extraImages;
         }
         
+        // 图片加载完成处理
+        function handleImageLoad(imgElement) {
+            imgElement.classList.add('loaded');
+        }
+        
         // 合并所有图片数据
         let allImages = [...IMAGES_DATA];
         if (AUTO_GEN_COUNT > 0) {
@@ -440,7 +539,7 @@
                 colDiv.innerHTML = `
                     <div class="image-card">
                         <div class="project-item" data-img-src="${image.src}">
-                            <img src="${image.src}" alt="${image.nickname}" loading="lazy">
+                            <img src="${image.src}" alt="${escapeHtml(image.nickname)}" loading="lazy">
                         </div>
                         <div class="image-info">
                             <div class="image-nickname">${escapeHtml(image.nickname)}</div>
@@ -449,6 +548,14 @@
                     </div>
                 `;
                 container.appendChild(colDiv);
+                
+                // 为图片添加加载完成事件
+                const img = colDiv.querySelector('.project-item img');
+                if (img.complete) {
+                    handleImageLoad(img);
+                } else {
+                    img.addEventListener('load', () => handleImageLoad(img));
+                }
             });
             
             // 更新加载更多按钮状态
@@ -522,7 +629,6 @@
                 });
             }
             
-            // 关闭按钮
             if (closeBtn) {
                 closeBtn.addEventListener('click', function(e) {
                     e.stopPropagation();
@@ -530,7 +636,6 @@
                 });
             }
             
-            // 点击背景关闭
             const backdropArea = document.querySelector('.modal-backdrop-area');
             if (backdropArea) {
                 backdropArea.addEventListener('click', function(e) {
@@ -539,19 +644,16 @@
                 });
             }
             
-            // 点击模态框背景关闭
             if (modal) {
                 modal.addEventListener('click', function(e) {
                     if (e.target === modal) closeModal();
                 });
             }
             
-            // ESC关闭
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape' && isModalOpen) closeModal();
             });
             
-            // 防止点击图片关闭
             if (modalImage) {
                 modalImage.addEventListener('click', function(e) {
                     e.stopPropagation();
@@ -566,6 +668,37 @@
             }
         }
         
+        // 懒加载优化
+        function initLazyLoad() {
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            observer.unobserve(img);
+                            if (img.complete) {
+                                handleImageLoad(img);
+                            } else {
+                                img.addEventListener('load', () => handleImageLoad(img));
+                            }
+                        }
+                    });
+                });
+                
+                document.querySelectorAll('.project-item img').forEach(img => {
+                    observer.observe(img);
+                });
+            } else {
+                document.querySelectorAll('.project-item img').forEach(img => {
+                    if (img.complete) {
+                        handleImageLoad(img);
+                    } else {
+                        img.addEventListener('load', () => handleImageLoad(img));
+                    }
+                });
+            }
+        }
+        
         // 防XSS辅助函数
         function escapeHtml(str) {
             if (!str) return '';
@@ -575,23 +708,6 @@
                 if (m === '>') return '&gt;';
                 return m;
             });
-        }
-        
-        // 懒加载优化
-        function initLazyLoad() {
-            if ('IntersectionObserver' in window) {
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                });
-                
-                document.querySelectorAll('.project-item img').forEach(img => {
-                    observer.observe(img);
-                });
-            }
         }
         
         // 渲染页面

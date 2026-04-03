@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>荣耀之神的空间</title>
+    <title>荣耀之神的空间-小叶的资料</title>
     <style>
         /* ========== 全局重置与字体 ========== */
         * {
@@ -18,6 +18,108 @@
             padding: 0;
             min-height: 100vh;
             color: #f0f0f0;
+            position: relative;
+        }
+        
+        /* ========== 飘落特效容器 ========== */
+        .falling-leaves {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+        }
+        
+        .leaf-item {
+            position: absolute;
+            top: -30px;
+            font-size: 24px;
+            animation: fallAnimation linear forwards;
+            pointer-events: none;
+            text-shadow: 0 0 2px rgba(0,0,0,0.2);
+            will-change: transform;
+        }
+        
+        .falling-petals {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9998;
+            overflow: hidden;
+        }
+        
+        .petal-item {
+            position: absolute;
+            top: -30px;
+            font-size: 22px;
+            animation: fallAnimation linear forwards;
+            pointer-events: none;
+            filter: drop-shadow(0 0 2px rgba(255,200,200,0.5));
+            will-change: transform;
+        }
+        
+        /* 点击特效 - 花朵与花束 */
+        .click-flower {
+            position: fixed;
+            pointer-events: none;
+            z-index: 10001;
+            font-size: 32px;
+            animation: flowerPop 0.65s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+        }
+        
+        .click-bouquet {
+            position: fixed;
+            pointer-events: none;
+            z-index: 10002;
+            font-size: 34px;
+            animation: bouquetPop 0.7s ease-out forwards;
+        }
+        
+        @keyframes fallAnimation {
+            0% {
+                transform: translateY(-30px) rotate(0deg);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(100vh) rotate(380deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes flowerPop {
+            0% {
+                transform: translate(-50%, -50%) scale(0.2) rotate(0deg);
+                opacity: 1;
+            }
+            40% {
+                transform: translate(-50%, -50%) scale(1.3) rotate(20deg);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.7) rotate(45deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes bouquetPop {
+            0% {
+                transform: translate(-50%, -50%) scale(0.3) rotate(-10deg);
+                opacity: 1;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2) rotate(15deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.6) rotate(35deg);
+                opacity: 0;
+            }
         }
 
         /* ========== 导航栏样式 ========== */
@@ -347,10 +449,16 @@
             .info-grid { grid-template-columns: 1fr; }
             .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
             .honor-box { padding: 18px 20px; }
+            .leaf-item, .petal-item { font-size: 18px; }
+            .click-flower, .click-bouquet { font-size: 26px; }
         }
     </style>
 </head>
 <body>
+
+<!-- 飘落特效容器 -->
+<div class="falling-leaves" id="fallingLeaves"></div>
+<div class="falling-petals" id="fallingPetals"></div>
 
 <!-- ========== 导航栏 ========== -->
 <div class="nav">
@@ -606,7 +714,99 @@
         document.querySelectorAll('.works-item img').forEach(img => observer.observe(img));
     }
     
-    console.log(`✅ 页面加载完成，共 ${imageList.length} 张图片，支持点击放大、滚轮缩放和拖拽移动`);
+    // ==================== 🍂🍃 落叶飘落特效 ====================
+    const leavesContainer = document.getElementById('fallingLeaves');
+    if (leavesContainer) {
+        const leafIcons = ['🍂', '🍃', '🍂', '🍃', '🍂', '🍃', '🍂', '🍃', '🍁'];
+        const MAX_LEAVES = 25 + Math.floor(Math.random() * 18);
+        const LEAF_INTERVAL = 600 + Math.random() * 1000;
+        let currentLeafCount = 0;
+        function createLeaf() {
+            const leaf = document.createElement('div');
+            leaf.className = 'leaf-item';
+            leaf.textContent = leafIcons[Math.floor(Math.random() * leafIcons.length)];
+            leaf.style.left = Math.random() * 100 + '%';
+            const size = 18 + Math.random() * 24;
+            leaf.style.fontSize = size + 'px';
+            const duration = 3.5 + Math.random() * 7;
+            leaf.style.animationDuration = duration + 's';
+            leaf.style.opacity = 0.6 + Math.random() * 0.4;
+            return leaf;
+        }
+        function addLeaf() {
+            if (currentLeafCount >= MAX_LEAVES) return;
+            const leaf = createLeaf();
+            leavesContainer.appendChild(leaf);
+            currentLeafCount++;
+            leaf.addEventListener('animationend', () => { if (leaf.parentNode) leaf.remove(); currentLeafCount--; });
+        }
+        for (let i = 0; i < 10 + Math.floor(Math.random() * 10); i++) setTimeout(() => addLeaf(), i * 150);
+        setInterval(() => addLeaf(), LEAF_INTERVAL);
+        console.log(`🍂 落叶飘落效果已启用 (🍂🍃 最大并发: ${MAX_LEAVES})`);
+    }
+    
+    // ==================== 🌸 花瓣飘落特效 ====================
+    const petalsContainer = document.getElementById('fallingPetals');
+    if (petalsContainer) {
+        const petalIcons = ['🌸', '🌸', '🌼', '🌸', '🌺', '🌸', '🌻', '🌸', '💮', '🌸', '🏵️'];
+        const MAX_PETALS = 22 + Math.floor(Math.random() * 16);
+        const PETAL_INTERVAL = 800 + Math.random() * 1100;
+        let currentPetalCount = 0;
+        function createPetal() {
+            const petal = document.createElement('div');
+            petal.className = 'petal-item';
+            petal.textContent = petalIcons[Math.floor(Math.random() * petalIcons.length)];
+            petal.style.left = Math.random() * 100 + '%';
+            const size = 16 + Math.random() * 22;
+            petal.style.fontSize = size + 'px';
+            const duration = 4 + Math.random() * 8;
+            petal.style.animationDuration = duration + 's';
+            petal.style.opacity = 0.7 + Math.random() * 0.3;
+            return petal;
+        }
+        function addPetal() {
+            if (currentPetalCount >= MAX_PETALS) return;
+            const petal = createPetal();
+            petalsContainer.appendChild(petal);
+            currentPetalCount++;
+            petal.addEventListener('animationend', () => { if (petal.parentNode) petal.remove(); currentPetalCount--; });
+        }
+        for (let i = 0; i < 8 + Math.floor(Math.random() * 8); i++) setTimeout(() => addPetal(), i * 180);
+        setInterval(() => addPetal(), PETAL_INTERVAL);
+        console.log(`🌸 花瓣飘落效果已启用 (🌸🌼 最大并发: ${MAX_PETALS})`);
+    }
+    
+    // ==================== 🌸💐 点击特效：花朵与花束随机 ====================
+    const flowerArray = ['🌸', '🌼', '🌻', '🌺', '🌷', '🌸', '💐', '🌸🌸', '🌼🌸', '🌹', '🌿🌸'];
+    const bouquetArray = ['💐', '🌸💐', '💐🌸', '🌻💐', '🌸🌸🌸', '💐✨', '🌼💐', '🌸💮🌸', '🏵️💐'];
+    
+    function createRandomClickEffect(x, y) {
+        // 随机选择花朵特效(60%)或花束特效(40%)
+        const isFlower = Math.random() > 0.4;
+        const element = document.createElement('div');
+        if (isFlower) {
+            element.className = 'click-flower';
+            const randomFlower = flowerArray[Math.floor(Math.random() * flowerArray.length)];
+            element.textContent = randomFlower;
+        } else {
+            element.className = 'click-bouquet';
+            const randomBouquet = bouquetArray[Math.floor(Math.random() * bouquetArray.length)];
+            element.textContent = randomBouquet;
+        }
+        element.style.left = x + 'px';
+        element.style.top = y + 'px';
+        const randSize = 24 + Math.floor(Math.random() * 28);
+        element.style.fontSize = randSize + 'px';
+        document.body.appendChild(element);
+        element.addEventListener('animationend', () => { if (element.parentNode) element.remove(); });
+    }
+    
+    document.addEventListener('click', (e) => {
+        createRandomClickEffect(e.clientX, e.clientY);
+    });
+    
+    console.log(`✅ 页面加载完成，共 ${imageList.length} 张图片，特效全开：🍂落叶飘落 + 🌸花瓣飘落 + 点击随机🌸💐绽放`);
+    console.log('💡 提示：点击页面任意位置会绽放🌸花朵或💐花束特效！');
 </script>
 </body>
 </html>
