@@ -18,9 +18,128 @@
             background: linear-gradient(135deg, #1a1c2e 0%, #2d2a4a 100%);
             font-family: 'Segoe UI', 'PingFang SC', Roboto, 'Helvetica Neue', sans-serif;
             color: #f0f0f0;
+            position: relative;
+            min-height: 100vh;
         }
         
-        /* ========== 导航栏样式（与你喜欢的页面一致） ========== */
+        /* ========== 飘落特效容器 ========== */
+        .falling-leaves {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+        }
+        
+        .leaf {
+            position: absolute;
+            top: -30px;
+            font-size: 24px;
+            animation: fall linear forwards;
+            pointer-events: none;
+            color: rgba(255, 180, 70, 0.9);
+            text-shadow: 0 0 2px rgba(0,0,0,0.2);
+            will-change: transform;
+        }
+        
+        .falling-trophies {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9998;
+            overflow: hidden;
+        }
+        
+        .trophy {
+            position: absolute;
+            top: -40px;
+            font-size: 28px;
+            animation: trophyFall linear forwards;
+            pointer-events: none;
+            filter: drop-shadow(0 0 4px gold);
+            will-change: transform;
+        }
+        
+        /* 点击特效 - 星光火焰组合 */
+        .click-effect-star {
+            position: fixed;
+            pointer-events: none;
+            z-index: 10001;
+            font-size: 32px;
+            animation: clickPopStar 0.65s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+        }
+        
+        .click-effect-fire {
+            position: fixed;
+            pointer-events: none;
+            z-index: 10002;
+            font-size: 34px;
+            animation: clickPopFire 0.7s ease-out forwards;
+        }
+        
+        @keyframes fall {
+            0% {
+                transform: translateY(-30px) rotate(0deg);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(100vh) rotate(380deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes trophyFall {
+            0% {
+                transform: translateY(-40px) rotate(0deg) scale(1);
+                opacity: 1;
+            }
+            60% {
+                transform: translateY(60vh) rotate(200deg) scale(1.1);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(100vh) rotate(400deg) scale(0.7);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes clickPopStar {
+            0% {
+                transform: translate(-50%, -50%) scale(0.2) rotate(0deg);
+                opacity: 1;
+            }
+            40% {
+                transform: translate(-50%, -50%) scale(1.3) rotate(25deg);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.8) rotate(50deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes clickPopFire {
+            0% {
+                transform: translate(-50%, -50%) scale(0.3) rotate(-10deg);
+                opacity: 1;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2) rotate(15deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.6) rotate(30deg);
+                opacity: 0;
+            }
+        }
+        
+        /* ========== 导航栏样式 ========== */
         .nav {
             background: rgba(20, 18, 32, 0.95);
             backdrop-filter: blur(10px);
@@ -80,7 +199,7 @@
             margin-top: 5px;
         }
         
-        /* ========== 统一图片尺寸优化 ========== */
+        /* ========== 图片样式统一 ========== */
         .animated.umScaleIn {
             animation-name: umScaleIn;
             animation-duration: 0.6s;
@@ -98,7 +217,6 @@
             }
         }
         
-        /* 图片容器统一尺寸 - 固定宽高比，支持大量图片 */
         .project-item {
             position: relative;
             cursor: pointer;
@@ -119,14 +237,12 @@
             object-position: center;
             transition: filter 0.25s ease, transform 0.3s ease;
             opacity: 0;
-            transition: opacity 0.3s ease, filter 0.25s ease, transform 0.3s ease;
         }
         
         .project-item img.loaded {
             opacity: 1;
         }
         
-        /* 悬停效果 */
         .project-item:hover {
             transform: translateY(-4px);
             box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
@@ -137,7 +253,6 @@
             transform: scale(1.02);
         }
         
-        /* 放大镜提示 */
         .project-item::after {
             content: "🔍";
             position: absolute;
@@ -159,7 +274,7 @@
             opacity: 0.9;
         }
         
-        /* ========== 模态框样式 ========== */
+        /* 模态框样式 */
         .image-modal {
             display: none;
             position: fixed;
@@ -217,11 +332,6 @@
             opacity: 1;
         }
         
-        .modal-image-wrapper img:hover {
-            transform: scale(1.01);
-            filter: brightness(1.02);
-        }
-        
         .modal-close-btn {
             position: fixed;
             top: 25px;
@@ -242,7 +352,6 @@
             z-index: 10000;
             pointer-events: auto;
             border: 2px solid rgba(255, 255, 255, 0.9);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
         
         .modal-close-btn:hover {
@@ -250,7 +359,6 @@
             transform: scale(1.08) rotate(90deg);
         }
         
-        /* 网格间距优化 - 支持大量图片 */
         .projects-holder .row {
             margin: 0 -12px;
         }
@@ -259,7 +367,6 @@
             padding: 0 12px 24px 12px;
         }
         
-        /* 加载更多按钮 */
         .load-more-container {
             text-align: center;
             margin: 30px 0;
@@ -274,22 +381,17 @@
             font-size: 16px;
             cursor: pointer;
             transition: all 0.2s;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
         
         .load-more-btn:hover {
             background: #6e2a85;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
         
-        /* 响应式 */
         @media (max-width: 768px) {
             .project-item::after {
                 font-size: 14px;
                 padding: 4px 8px;
-                bottom: 8px;
-                right: 8px;
             }
             .modal-image-wrapper img {
                 max-width: 92vw;
@@ -305,13 +407,9 @@
             .welcome-title {
                 font-size: 1.5rem;
             }
-            .nav {
-                padding: 10px 16px;
-                gap: 12px;
-            }
-            .nav .title {
-                font-size: 1rem;
-            }
+            .leaf { font-size: 18px; }
+            .trophy { font-size: 22px; }
+            .click-effect-star, .click-effect-fire { font-size: 26px; }
         }
         
         body.modal-open {
@@ -330,7 +428,6 @@
             margin: 20px 0;
         }
         
-        /* 图片加载占位效果 */
         .project-item img {
             background: linear-gradient(135deg, #2c2e33 0%, #3a3d44 100%);
         }
@@ -338,7 +435,11 @@
 </head>
 
 <body>
-    <!--头部-->
+    <!-- 飘落特效容器 -->
+    <div class="falling-leaves" id="fallingLeaves"></div>
+    <div class="falling-trophies" id="fallingTrophies"></div>
+
+    <!--头部导航-->
     <div class="nav">
         <img src="../img/头像.jpg" alt="logo 图">
         <span class="title">荣耀之神的空间</span>
@@ -363,12 +464,7 @@
 
         <section id="project">
             <div class="projects-holder">
-                <!-- 图片网格容器 - 动态生成，便于管理大量图片 -->
-                <div id="imageGridContainer" class="row">
-                    <!-- 图片将通过JS动态生成，便于修改路径 -->
-                </div>
-                
-                <!-- 加载更多按钮（如果图片超过初始显示数量） -->
+                <div id="imageGridContainer" class="row"></div>
                 <div class="load-more-container" id="loadMoreContainer" style="display: none;">
                     <button class="load-more-btn" id="loadMoreBtn">加载更多图片 +</button>
                 </div>
@@ -393,7 +489,7 @@
     </div>
 </div>
 
-<!-- 模态框组件 -->
+<!-- 模态框 -->
 <div id="imageModal" class="image-modal">
     <div class="modal-backdrop-area"></div>
     <div class="modal-close-btn" id="modalCloseBtn">✕</div>
@@ -404,128 +500,85 @@
 
 <script>
     (function() {
-        // ========== 图片配置区域 - 方便修改路径 ==========
+        // ========== 图片配置 ==========
         const IMAGE_CONFIG = {
-            // 图片基础路径
             basePath: '../img/spring/',
-            // 图片文件名格式：'bracket' 或 'simple' 或 'custom'
             namingPattern: 'bracket',
-            // 图片总数
             totalImages: 106,
-            customNames: [],
-            // 每行显示的列数配置（响应式）
-            cols: {
-                md: 3,  // 中等屏幕每行3张
-                sm: 6   // 小屏幕每行2张
-            }
+            cols: { md: 3, sm: 6 }
         };
         
-        // 自动生成图片路径列表
         function generateImageList() {
             const config = IMAGE_CONFIG;
             const images = [];
-            
-            if (config.namingPattern === 'custom' && config.customNames.length > 0) {
-                return config.customNames.map(name => config.basePath + name);
-            }
-            
             for (let i = 1; i <= config.totalImages; i++) {
-                let fileName;
-                if (config.namingPattern === 'bracket') {
-                    fileName = `1 (${i}).jpg`;
-                } else {
-                    fileName = `${i}.jpg`;
-                }
+                let fileName = config.namingPattern === 'bracket' ? `1 (${i}).jpg` : `${i}.jpg`;
                 images.push(config.basePath + fileName);
             }
             return images;
         }
         
-        // 获取列样式类名
         function getColumnClass() {
             const cols = IMAGE_CONFIG.cols;
             return `col-md-${cols.md} col-sm-${cols.sm}`;
         }
         
-        // 图片加载完成处理
         function handleImageLoad(imgElement) {
             imgElement.classList.add('loaded');
         }
         
-        // 渲染图片网格
         function renderImageGrid(images, startIndex = 0, batchSize = 24) {
             const container = document.getElementById('imageGridContainer');
             if (!container) return;
-            
             const endIndex = Math.min(startIndex + batchSize, images.length);
             const newImages = images.slice(startIndex, endIndex);
-            
             newImages.forEach((imgSrc, idx) => {
                 const actualIndex = startIndex + idx;
                 const colDiv = document.createElement('div');
-                // 添加动画类，确保所有图片都有相同的淡入效果
                 colDiv.className = `${getColumnClass()} animated umScaleIn`;
-                
                 colDiv.innerHTML = `
                     <div class="project-item" data-img-src="${imgSrc}">
                         <img src="${imgSrc}" alt="现代日常服设${actualIndex + 1}" loading="lazy">
                     </div>
                 `;
                 container.appendChild(colDiv);
-                
-                // 为图片添加加载完成事件
                 const img = colDiv.querySelector('img');
-                if (img.complete) {
-                    handleImageLoad(img);
-                } else {
-                    img.addEventListener('load', () => handleImageLoad(img));
-                }
+                if (img.complete) handleImageLoad(img);
+                else img.addEventListener('load', () => handleImageLoad(img));
             });
-            
             return endIndex;
         }
         
-        // 初始化模态框功能
         function initModal() {
             const modal = document.getElementById('imageModal');
             const modalImage = document.getElementById('modalImage');
             const closeBtn = document.getElementById('modalCloseBtn');
             let isModalOpen = false;
-            
             function openModal(imgSrc) {
                 if (!modal || !modalImage) return;
                 modalImage.src = imgSrc;
                 modalImage.classList.remove('show');
                 void modalImage.offsetWidth;
                 modal.classList.add('show');
-                setTimeout(() => {
-                    modalImage.classList.add('show');
-                }, 10);
+                setTimeout(() => modalImage.classList.add('show'), 10);
                 document.body.classList.add('modal-open');
                 isModalOpen = true;
             }
-            
             function closeModal() {
                 if (!modal || !modalImage) return;
                 modalImage.classList.remove('show');
                 setTimeout(() => {
                     modal.classList.remove('show');
-                    setTimeout(() => {
-                        if (!modal.classList.contains('show')) {
-                            modalImage.src = '';
-                        }
-                    }, 100);
+                    setTimeout(() => { if (!modal.classList.contains('show')) modalImage.src = ''; }, 100);
                 }, 200);
                 document.body.classList.remove('modal-open');
                 isModalOpen = false;
             }
-            
             const container = document.getElementById('imageGridContainer');
             if (container) {
                 container.addEventListener('click', function(e) {
                     let target = e.target;
                     let projectItem = null;
-                    
                     while (target && target !== container) {
                         if (target.classList && target.classList.contains('project-item')) {
                             projectItem = target;
@@ -533,7 +586,6 @@
                         }
                         target = target.parentElement;
                     }
-                    
                     if (projectItem) {
                         e.stopPropagation();
                         let imgSrc = projectItem.getAttribute('data-img-src');
@@ -545,149 +597,132 @@
                     }
                 });
             }
-            
-            if (closeBtn) {
-                closeBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    closeModal();
-                });
-            }
-            
+            if (closeBtn) closeBtn.addEventListener('click', (e) => { e.stopPropagation(); closeModal(); });
             const backdropArea = document.querySelector('.modal-backdrop-area');
-            if (backdropArea) {
-                backdropArea.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    closeModal();
-                });
-            }
-            
-            if (modal) {
-                modal.addEventListener('click', function(e) {
-                    if (e.target === modal) closeModal();
-                });
-            }
-            
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && isModalOpen) closeModal();
-            });
-            
-            if (modalImage) {
-                modalImage.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                });
-            }
-            
+            if (backdropArea) backdropArea.addEventListener('click', () => closeModal());
+            if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && isModalOpen) closeModal(); });
             const modalWrapper = document.querySelector('.modal-image-wrapper');
-            if (modalWrapper) {
-                modalWrapper.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                });
-            }
+            if (modalWrapper) modalWrapper.addEventListener('click', (e) => e.stopPropagation());
         }
         
-        // 懒加载优化
-        function initLazyLoad() {
-            if ('IntersectionObserver' in window) {
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const img = entry.target;
-                            observer.unobserve(img);
-                            // 确保图片加载完成后添加loaded类
-                            if (img.complete) {
-                                handleImageLoad(img);
-                            } else {
-                                img.addEventListener('load', () => handleImageLoad(img));
-                            }
-                        }
-                    });
-                });
-                
-                document.querySelectorAll('.project-item img').forEach(img => {
-                    observer.observe(img);
-                });
-            } else {
-                // 降级处理
-                document.querySelectorAll('.project-item img').forEach(img => {
-                    if (img.complete) {
-                        handleImageLoad(img);
-                    } else {
-                        img.addEventListener('load', () => handleImageLoad(img));
-                    }
-                });
-            }
-        }
-        
-        // ========== 主程序 ==========
         let imageList = generateImageList();
-        
-        console.log(`📷 图片配置：共 ${imageList.length} 张图片`);
-        console.log(`📁 图片路径示例：${imageList[0] || '无图片'}`);
-        
         const BATCH_SIZE = 24;
         let currentIndex = 0;
-        
         function loadMoreImages() {
             const newIndex = renderImageGrid(imageList, currentIndex, BATCH_SIZE);
             currentIndex = newIndex;
-            
             const loadMoreContainer = document.getElementById('loadMoreContainer');
-            if (loadMoreContainer) {
-                if (currentIndex < imageList.length) {
-                    loadMoreContainer.style.display = 'block';
-                } else {
-                    loadMoreContainer.style.display = 'none';
-                }
-            }
+            if (loadMoreContainer) loadMoreContainer.style.display = currentIndex < imageList.length ? 'block' : 'none';
         }
-        
-        // 初始渲染第一批
         loadMoreImages();
-        
         const loadMoreBtn = document.getElementById('loadMoreBtn');
-        if (loadMoreBtn) {
-            loadMoreBtn.addEventListener('click', function() {
-                loadMoreImages();
-                this.textContent = '加载中...';
-                setTimeout(() => {
-                    if (currentIndex < imageList.length) {
-                        this.textContent = `加载更多图片 (${currentIndex}/${imageList.length}) +`;
-                    } else {
-                        this.textContent = '已加载全部图片 ✓';
-                        setTimeout(() => {
-                            this.textContent = '加载更多图片 +';
-                        }, 2000);
-                    }
-                }, 100);
-            });
-        }
-        
+        if (loadMoreBtn) loadMoreBtn.addEventListener('click', () => { loadMoreImages(); });
         initModal();
         
-        // 延迟初始化懒加载，确保所有图片都已添加到DOM
-        setTimeout(initLazyLoad, 200);
+        // ========== 🍁 枫叶飘落特效 (适量减少) ==========
+        const leavesContainer = document.getElementById('fallingLeaves');
+        if (leavesContainer) {
+            const leafIcons = ['🍁', '🍂', '🍁', '🍂', '🍁', '🍂'];
+            // 适量减少枫叶数量：最大并发 12-25 片
+            const MAX_LEAVES = 12 + Math.floor(Math.random() * 15);
+            const LEAF_INTERVAL = 800 + Math.random() * 1200;  // 间隔 0.8-2.0秒
+            let currentLeafCount = 0;
+            function createLeaf() {
+                const leaf = document.createElement('div');
+                leaf.className = 'leaf';
+                leaf.textContent = leafIcons[Math.floor(Math.random() * leafIcons.length)];
+                leaf.style.left = Math.random() * 100 + '%';
+                const size = 16 + Math.random() * 22;
+                leaf.style.fontSize = size + 'px';
+                const duration = 4 + Math.random() * 7;
+                leaf.style.animationDuration = duration + 's';
+                leaf.style.opacity = 0.5 + Math.random() * 0.5;
+                leaf.style.animationDelay = Math.random() * 2 + 's';
+                return leaf;
+            }
+            function addLeaf() {
+                if (currentLeafCount >= MAX_LEAVES) return;
+                const leaf = createLeaf();
+                leavesContainer.appendChild(leaf);
+                currentLeafCount++;
+                leaf.addEventListener('animationend', () => { if (leaf.parentNode) leaf.remove(); currentLeafCount--; });
+            }
+            // 初始生成 5-10 片枫叶
+            const initialLeaves = 5 + Math.floor(Math.random() * 8);
+            for (let i = 0; i < initialLeaves; i++) {
+                setTimeout(() => addLeaf(), i * 100);
+            }
+            // 持续生成新枫叶
+            setInterval(() => addLeaf(), LEAF_INTERVAL);
+            console.log(`🍁 枫叶飘落效果已启用 (最大并发: ${MAX_LEAVES}片)`);
+        }
         
-        const totalItems = document.querySelectorAll('.project-item').length;
-        console.log(`✅ 图片放大功能已启用，已加载 ${totalItems} / ${imageList.length} 张图片`);
+        // ========== 🏆 奖杯飘落特效 (适量减少) ==========
+        const trophiesContainer = document.getElementById('fallingTrophies');
+        if (trophiesContainer) {
+            const trophyIcons = ['🏆', '🏅', '🏆', '🏅', '🏆'];
+            // 适量减少奖杯数量：最大并发 8-18 个
+            const MAX_TROPHIES = 8 + Math.floor(Math.random() * 12);
+            const TROPHY_INTERVAL = 1500 + Math.random() * 2000;  // 间隔 1.5-3.5秒
+            let currentTrophyCount = 0;
+            function createTrophy() {
+                const trophy = document.createElement('div');
+                trophy.className = 'trophy';
+                trophy.textContent = trophyIcons[Math.floor(Math.random() * trophyIcons.length)];
+                trophy.style.left = Math.random() * 100 + '%';
+                const size = 20 + Math.random() * 22;
+                trophy.style.fontSize = size + 'px';
+                const duration = 5 + Math.random() * 7;
+                trophy.style.animationDuration = duration + 's';
+                trophy.style.animationDelay = Math.random() * 2.5 + 's';
+                return trophy;
+            }
+            function addTrophy() {
+                if (currentTrophyCount >= MAX_TROPHIES) return;
+                const trophy = createTrophy();
+                trophiesContainer.appendChild(trophy);
+                currentTrophyCount++;
+                trophy.addEventListener('animationend', () => { if (trophy.parentNode) trophy.remove(); currentTrophyCount--; });
+            }
+            // 初始生成 3-7 个奖杯
+            const initialTrophies = 3 + Math.floor(Math.random() * 6);
+            for (let i = 0; i < initialTrophies; i++) {
+                setTimeout(() => addTrophy(), i * 150);
+            }
+            setInterval(() => addTrophy(), TROPHY_INTERVAL);
+            console.log(`🏆 奖杯飘落效果已启用 (最大并发: ${MAX_TROPHIES}个)`);
+        }
         
-        console.log(`
-        ═══════════════════════════════════════════════════════
-        📷 图片路径配置指南：
+        // ========== ⭐🔥 点击特效：星星和火焰随机出现 ==========
+        const starArray = ['⭐', '🌟', '✨', '💫', '⭐✨', '🌟⭐', '✨✨', '⭐️'];
+        const fireArray = ['🔥', '🔥🔥', '💥', '⚡', '🔥✨', '🔥💥', '⚡🔥'];
         
-        1. 修改图片路径请编辑 IMAGE_CONFIG 对象：
-           - basePath: 图片文件夹路径（当前: '../img/spring/'）
-           - totalImages: 图片总数（当前: ${IMAGE_CONFIG.totalImages}）
-           - namingPattern: 文件名格式
-             * 'bracket': 1 (1).jpg, 1 (2).jpg ...
-             * 'simple': 1.jpg, 2.jpg, 3.jpg ...
-             * 'custom': 使用 customNames 数组自定义
+        function createRandomClickEffect(x, y) {
+            const isStar = Math.random() > 0.5;
+            const element = document.createElement('div');
+            if (isStar) {
+                element.className = 'click-effect-star';
+                const randomStar = starArray[Math.floor(Math.random() * starArray.length)];
+                element.textContent = randomStar;
+            } else {
+                element.className = 'click-effect-fire';
+                const randomFire = fireArray[Math.floor(Math.random() * fireArray.length)];
+                element.textContent = randomFire;
+            }
+            element.style.left = x + 'px';
+            element.style.top = y + 'px';
+            const randSize = 24 + Math.floor(Math.random() * 24);
+            element.style.fontSize = randSize + 'px';
+            document.body.appendChild(element);
+            element.addEventListener('animationend', () => { if (element.parentNode) element.remove(); });
+        }
         
-        2. 当前配置：
-           - 路径: ${IMAGE_CONFIG.basePath}
-           - 总数: ${IMAGE_CONFIG.totalImages}
-           - 格式: ${IMAGE_CONFIG.namingPattern}
-        ═══════════════════════════════════════════════════════
-        `);
+        document.addEventListener('click', (e) => {
+            createRandomClickEffect(e.clientX, e.clientY);
+        });
+        
+        console.log('%c✨ 小叶日常衣橱 | 特效已启用：🍁枫叶 🏆奖杯 点击⭐🔥绽放 ✨', 'color: #f5e7a3; font-size: 14px; font-weight: bold; background: #2d2a4a; padding: 4px 12px; border-radius: 20px;');
     })();
 </script>
 </body>
