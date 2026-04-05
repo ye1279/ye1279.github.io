@@ -13,6 +13,35 @@
     <link rel="icon" href="./picture/favicon.ico">
     
     <style>
+         /* ========== 手机端灰色外框修复 - 与日常衣橱一致 ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            overflow-x: hidden !important;
+            background: linear-gradient(135deg, #1a1c2e 0%, #2d2a4a 100%);
+        }
+
+        /* 主内容容器 - 与日常衣橱一致 */
+        #menu-container, .homepage, .home-section {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 移除装饰性边框元素 */
+        .border-top, .border-left, .border-right, .border-bottom,
+        span[class*="border-"] {
+            display: none !important;
+        }
         /* ========== 全局背景和文字颜色 ========== */
         * {
             margin: 0;
