@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 
@@ -184,6 +185,173 @@
             animation: clickPop 0.6s ease-out forwards;
         }
         
+        /* ========== 公告弹窗样式 ========== */
+        .notice-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 20000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .notice-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .notice-modal {
+            background: linear-gradient(135deg, #2a253e, #1f1b38);
+            border-radius: 24px;
+            max-width: 480px;
+            width: 90%;
+            padding: 0;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(169, 91, 195, 0.3);
+            transform: scale(0.9);
+            animation: modalPop 0.3s ease forwards;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        
+        .notice-modal::-webkit-scrollbar {
+            width: 5px;
+        }
+        
+        .notice-modal::-webkit-scrollbar-track {
+            background: #2b2342;
+            border-radius: 10px;
+        }
+        
+        .notice-modal::-webkit-scrollbar-thumb {
+            background: #a95bc3;
+            border-radius: 10px;
+        }
+        
+        @keyframes modalPop {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        .notice-header {
+            padding: 18px 24px 12px;
+            border-bottom: 1px solid rgba(169, 91, 195, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: linear-gradient(135deg, #2a253e, #1f1b38);
+            border-radius: 24px 24px 0 0;
+        }
+        
+        .notice-header h3 {
+            font-size: 1.2rem;
+            background: linear-gradient(135deg, #f5e7a3, #c084fc);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin: 0;
+        }
+        
+        .notice-close {
+            background: none;
+            border: none;
+            color: #9a8fc2;
+            font-size: 28px;
+            cursor: pointer;
+            transition: 0.2s;
+            line-height: 1;
+            padding: 0 8px;
+        }
+        
+        .notice-close:hover {
+            color: #ff9e9e;
+            transform: scale(1.1);
+        }
+        
+        .notice-content {
+            padding: 20px 24px;
+            color: #e0d4ff;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+        
+        .notice-content h4 {
+            color: #c9a5f0;
+            margin: 15px 0 8px 0;
+            font-size: 1rem;
+        }
+        
+        .notice-content h4:first-child {
+            margin-top: 0;
+        }
+        
+        .notice-content p {
+            margin: 8px 0;
+        }
+        
+        .notice-content .quote {
+            border-left: 3px solid #a95bc3;
+            padding-left: 15px;
+            margin: 12px 0;
+            font-style: italic;
+            color: #c9a5f0;
+        }
+        
+        .update-item {
+            background: rgba(169, 91, 195, 0.1);
+            border-radius: 12px;
+            padding: 10px 15px;
+            margin: 12px 0;
+            border-left: 3px solid #a95bc3;
+        }
+        
+        .update-date {
+            font-size: 0.75rem;
+            color: #c084fc;
+            margin-bottom: 5px;
+        }
+        
+        .update-content {
+            font-size: 0.85rem;
+        }
+        
+        .notice-footer {
+            padding: 15px 24px 20px;
+            text-align: center;
+            border-top: 1px solid rgba(169, 91, 195, 0.2);
+        }
+        
+        .notice-footer button {
+            background: linear-gradient(95deg, #a95bc3, #7b2c9e);
+            border: none;
+            padding: 8px 28px;
+            border-radius: 40px;
+            color: white;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+        
+        .notice-footer button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(169, 91, 195, 0.4);
+        }
+        
         @keyframes fall {
             0% {
                 transform: translateY(-20px) rotate(0deg);
@@ -242,6 +410,17 @@
             .panel-main__inner {
                 margin: 15px;
             }
+            .notice-modal {
+                width: 92%;
+                max-height: 80vh;
+            }
+            .notice-header h3 {
+                font-size: 1rem;
+            }
+            .notice-content {
+                padding: 15px 18px;
+                font-size: 0.85rem;
+            }
         }
     </style>
 </head>
@@ -251,6 +430,49 @@
     <div class="falling-leaves" id="fallingLeaves"></div>
     <!-- 掉落奖杯容器 -->
     <div class="falling-trophies" id="fallingTrophies"></div>
+    
+    <!-- 公告弹窗 -->
+    <div id="noticeOverlay" class="notice-overlay">
+        <div class="notice-modal">
+            <div class="notice-header">
+                <h3>✨ 荣耀公告板 ✨</h3>
+                <button class="notice-close" id="closeNoticeBtn">&times;</button>
+            </div>
+            <div class="notice-content">
+                <!-- 欢迎语部分 -->
+                <h4>📖 欢迎语</h4>
+                <p>亲爱的访客，欢迎光临荣耀之神的空间！</p>
+                <div class="quote">
+                    如果喜欢，就把这一切当做是荣耀，而不是炫耀。
+                </div>
+                <p>这里记录了叶修相关的内容:
+                    衣橱、留言板等……希望这个网站能让你体验愉快！
+                </p>
+                 <p>网址1:https://ye1279.github.io/<br>
+                    网址2:https://yexiu529.netlify.app/<br>
+                    网址12的区别只有留言板信息不互通。<br>
+                    如果加载缓慢建议打开vpn访问。<br>
+                    有任何建议和服设投递请发送至：319930889@qq.com 命名:叶修服设
+                </p>         
+                <!-- 网站更新维护信息 -->
+                <h4>🔧 更新维护日志</h4>
+                <div class="update-item">
+                    <div class="update-date">📅 2026年4月5日</div>
+                    <div class="update-content">
+                        •新增「公告弹窗」功能，首次进入显示欢迎语和更新日志<br>
+                        •新增「日常衣橱」服设15张<br>
+                        •新增「古风衣橱」服设2张<br>
+                        •新增「西幻及其他衣橱」服设2张<br>
+                        •解决手机端导航栏遮挡和底部返回首页失败问题</div>
+                </div>
+                
+                <p style="margin-top: 12px; font-size: 0.8rem; color: #9a8fc2;">💡 提示：每次更新都会显示在此公告板，欢迎关注！</p>
+            </div>
+            <div class="notice-footer">
+                <button id="confirmNoticeBtn">开启旅程 ✨</button>
+            </div>
+        </div>
+    </div>
 
     <span class="mobile btn-mobile-menu">
         <i class="social iconfont icon-list btn-mobile-menu__icon"></i>
@@ -288,7 +510,7 @@
                             <nav class="cover-navigation cover-navigation--primary">
                                 <ul class="navigation">
                                     <li class="navigation__item">
-                                        <a href="html/xinxi.html" class="blog-button">欢迎来到他的世界</a>
+                                        <a href="html/xinxi.html" class="blog-button" id="welcomeBtn">欢迎来到他的世界</a>
                                     </li>
                                 </ul>
                             </nav>
@@ -340,6 +562,59 @@
     <script type="text/javascript" src="js/main.js"></script>
     
     <script>
+        // ========== 公告弹窗功能（每次点击都显示） ==========
+        (function() {
+            const noticeOverlay = document.getElementById('noticeOverlay');
+            const welcomeBtn = document.getElementById('welcomeBtn');
+            const closeBtn = document.getElementById('closeNoticeBtn');
+            const confirmBtn = document.getElementById('confirmNoticeBtn');
+            
+            // 弹窗关闭后跳转到目标页面
+            let pendingUrl = null;
+            
+            function showNotice(callbackUrl) {
+                if (noticeOverlay) {
+                    pendingUrl = callbackUrl;
+                    noticeOverlay.classList.add('show');
+                }
+            }
+            
+            function hideNoticeAndRedirect() {
+                if (noticeOverlay) {
+                    noticeOverlay.classList.remove('show');
+                    if (pendingUrl) {
+                        setTimeout(() => {
+                            window.location.href = pendingUrl;
+                            pendingUrl = null;
+                        }, 200);
+                    }
+                }
+            }
+            
+            if (welcomeBtn) {
+                welcomeBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetUrl = this.getAttribute('href');
+                    showNotice(targetUrl);
+                });
+            }
+            
+            // 关闭弹窗
+            if (closeBtn) {
+                closeBtn.onclick = hideNoticeAndRedirect;
+            }
+            if (confirmBtn) {
+                confirmBtn.onclick = hideNoticeAndRedirect;
+            }
+            if (noticeOverlay) {
+                noticeOverlay.onclick = function(e) {
+                    if (e.target === noticeOverlay) {
+                        hideNoticeAndRedirect();
+                    }
+                };
+            }
+        })();
+        
         // ========== 掉落枫叶动画效果 ==========
         (function() {
             const leavesContainer = document.getElementById('fallingLeaves');
@@ -427,40 +702,32 @@
         
         // ========== 鼠标点击狐狸特效 ==========
         (function() {
-            // 狐狸表情和文字组合，增加趣味性
             const foxIcons = ['🦊', '✨🦊✨', '🦊💨', '🌟🦊🌟', '🦊', '🦊✨', '💫🦊💫'];
             
             function createFoxEffect(x, y) {
                 const fox = document.createElement('div');
                 fox.className = 'click-effect';
                 
-                // 随机选择狐狸图标
                 const randomFox = foxIcons[Math.floor(Math.random() * foxIcons.length)];
                 fox.textContent = randomFox;
                 
-                // 设置位置（鼠标点击位置）
                 fox.style.left = x + 'px';
                 fox.style.top = y + 'px';
                 
-                // 随机大小
                 const size = 24 + Math.random() * 16;
                 fox.style.fontSize = size + 'px';
                 
-                // 随机旋转起始角度
                 const startRotate = (Math.random() - 0.5) * 60;
                 fox.style.transform = `translate(-50%, -50%) rotate(${startRotate}deg) scale(0.5)`;
                 
                 document.body.appendChild(fox);
                 
-                // 动画结束后移除元素
                 fox.addEventListener('animationend', function() {
                     fox.remove();
                 });
             }
             
-            // 监听全局点击事件
             document.addEventListener('click', function(e) {
-                // 获取点击坐标
                 const x = e.clientX;
                 const y = e.clientY;
                 createFoxEffect(x, y);
@@ -471,3 +738,4 @@
     </script>
 </body>
 </html>
+<!--如需修改弹窗内容，可以编辑 .notice-content 部分的 HTML。>
