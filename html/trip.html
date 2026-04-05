@@ -69,9 +69,9 @@
         
         .menu-toggle span {
             width: 100%;
-            height: 2px;
+            height: 3px;
             background: #c9a5f0;
-            border-radius: 2px;
+            border-radius: 3px;
             transition: all 0.3s ease;
         }
         
@@ -79,7 +79,7 @@
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 16px;
             flex-wrap: wrap;
             transition: all 0.3s ease;
         }
@@ -131,16 +131,16 @@
                 width: 100%;
                 padding: 10px 0;
                 border-bottom: 1px solid rgba(169, 91, 195, 0.2);
-                font-size: 0.9rem;
+                font-size: 1rem;
             }
             
             .nav-links a:last-child {
                 border-bottom: none;
             }
             
-            /* 汉堡菜单动画 */
+            /* 汉堡菜单动画（点击后变成X） */
             .menu-toggle.active span:nth-child(1) {
-                transform: rotate(45deg) translate(5px, 5px);
+                transform: rotate(45deg) translate(6px, 6px);
             }
             
             .menu-toggle.active span:nth-child(2) {
@@ -148,7 +148,11 @@
             }
             
             .menu-toggle.active span:nth-child(3) {
-                transform: rotate(-45deg) translate(6px, -6px);
+                transform: rotate(-45deg) translate(5px, -6px);
+            }
+            
+            .nav .title {
+                font-size: 1rem;
             }
         }
         
@@ -187,18 +191,6 @@
             height: 2px;
             background: linear-gradient(90deg, transparent, rgba(169, 91, 195, 0.6), transparent);
             margin: 15px 0 25px;
-        }
-        
-        /* 评论数量统计 */
-        .comments-count {
-            display: inline-block;
-            background: rgba(169, 91, 195, 0.2);
-            border-radius: 40px;
-            padding: 4px 14px;
-            margin-top: 10px;
-            font-size: 0.8rem;
-            color: #c9a5f0;
-            backdrop-filter: blur(4px);
         }
 
         /* ========== Twikoo 评论框样式 - 手机优化 ========== */
@@ -471,8 +463,8 @@
     <div class="page-header">
         <h1>✨ 荣耀留言板 ✨</h1>
         <p>在你眼中，叶修是什么样的人？</p>
-        <p>那些关于你和叶修的故事</p>
-        <div class="comments-count" id="commentsCount">📊 加载中...</div>
+        <p> 那些关于你和叶修的故事</p>
+        
         <div class="divider"></div>
     </div>
 
@@ -498,6 +490,7 @@
             navLinks.classList.toggle('active');
         });
         
+        // 点击导航链接后自动关闭菜单（手机端）
         const navItems = navLinks.querySelectorAll('a');
         navItems.forEach(item => {
             item.addEventListener('click', function() {
@@ -508,6 +501,7 @@
             });
         });
         
+        // 点击页面其他区域关闭菜单
         document.addEventListener('click', function(e) {
             if (window.innerWidth <= 768) {
                 if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
@@ -521,26 +515,10 @@
     // 你的 Twikoo 后端地址
     const TWIKOO_ENV_ID = 'https://calle1.netlify.app/.netlify/functions/twikoo';
     
-    // 更新评论数量显示
-    function updateCommentsCount() {
-        setTimeout(() => {
-            const commentsList = document.querySelector('.twikoo .tk-comments');
-            const countElement = document.getElementById('commentsCount');
-            if (commentsList && countElement) {
-                const commentItems = commentsList.querySelectorAll('.tk-row');
-                const count = commentItems.length;
-                if (count > 0) {
-                    countElement.innerHTML = `📊 已有 ${count} 条留言 ✨`;
-                } else {
-                    countElement.innerHTML = `📊 暂无留言，来写第一句吧 ✨`;
-                }
-            }
-        }, 500);
-    }
-    
-    // 强制隐藏邮箱和网址字段的函数
+    // 强制隐藏邮箱和网址字段的函数（更彻底）
     function hideMailAndUrlFields() {
         try {
+            // 隐藏邮箱和网址输入框的各种可能选择器
             const selectors = [
                 '.tk-field-mail', '.tk-field-url',
                 '.tk-input-mail', '.tk-input-url',
@@ -554,11 +532,13 @@
             selectors.forEach(selector => {
                 document.querySelectorAll(selector).forEach(el => {
                     if (el.style) el.style.display = 'none';
+                    // 如果是表单项，隐藏整个表单项
                     const formItem = el.closest('.el-form-item');
                     if (formItem) formItem.style.display = 'none';
                 });
             });
             
+            // 隐藏包含"邮箱"或"网址"文字的标签
             document.querySelectorAll('.twikoo .el-form-item__label, .twikoo label').forEach(label => {
                 const text = label.textContent || '';
                 if (text.includes('邮箱') || text.includes('邮件') || text.includes('网址') || text.includes('网站')) {
@@ -567,6 +547,7 @@
                 }
             });
             
+            // 让昵称框占满宽度并确保可见
             const nickField = document.querySelector('.tk-field-nick');
             if (nickField) {
                 nickField.style.width = '100%';
@@ -575,14 +556,12 @@
                 if (nickFormItem) nickFormItem.style.display = 'block';
             }
             
+            // 确保评论输入区域可见
             const commentField = document.querySelector('.tk-field-comment');
             if (commentField) {
                 commentField.style.display = 'block';
                 commentField.style.width = '100%';
             }
-            
-            // 更新评论数量
-            updateCommentsCount();
             
             console.log('✅ 已隐藏邮箱和网址字段');
         } catch(e) {
@@ -599,19 +578,22 @@
     }).then(() => {
         console.log('✅ Twikoo 评论系统加载成功');
         
+        // 等待 DOM 完全渲染后隐藏字段
         setTimeout(() => {
             hideMailAndUrlFields();
         }, 200);
         
+        // 多次尝试确保隐藏成功（因为 Twikoo 可能动态渲染）
         const interval = setInterval(() => {
             hideMailAndUrlFields();
-            const commentsExist = document.querySelector('.twikoo .tk-comments .tk-row');
+            // 检查是否已经有评论显示
+            const commentsExist = document.querySelector('.tk-comments .tk-row');
             if (commentsExist) {
                 console.log('✅ 评论已成功显示');
-                updateCommentsCount();
             }
         }, 500);
         
+        // 10秒后停止轮询
         setTimeout(() => clearInterval(interval), 10000);
         
     }).catch(err => {
@@ -628,9 +610,10 @@
         }
     });
     
-    // 监听 DOM 变化
+    // 监听 DOM 变化，确保动态加载的字段也被隐藏
     let observerTimer = null;
     const observer = new MutationObserver(function(mutations) {
+        // 防抖，避免频繁执行
         if (observerTimer) clearTimeout(observerTimer);
         observerTimer = setTimeout(() => {
             hideMailAndUrlFields();
@@ -641,10 +624,12 @@
         subtree: true
     });
     
+    // 页面加载完成后执行一次
     window.addEventListener('load', function() {
         hideMailAndUrlFields();
     });
     
+    // 处理移动端触摸滚动优化
     document.addEventListener('touchstart', function() {}, { passive: true });
 </script>
 </body>
