@@ -139,26 +139,34 @@
             }
         }
         
-        /* ========== 导航栏样式 ========== */
+        /* ========== 导航栏样式（PC端横向，手机端汉堡折叠） ========== */
         .nav {
             background: rgba(20, 18, 32, 0.95);
             backdrop-filter: blur(10px);
             padding: 12px 30px;
             display: flex;
             align-items: center;
-            gap: 20px;
+            justify-content: space-between;
             flex-wrap: wrap;
             position: sticky;
             top: 0;
             z-index: 1000;
             border-bottom: 1px solid rgba(169, 91, 195, 0.3);
         }
+        
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
         .nav img {
             width: 45px;
             height: 45px;
             border-radius: 50%;
             object-fit: cover;
         }
+        
         .nav .title {
             font-size: 1.3rem;
             font-weight: bold;
@@ -167,16 +175,110 @@
             -webkit-background-clip: text;
             color: transparent;
         }
-        .nav a {
+        
+        /* 汉堡菜单按钮（手机端显示） */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 22px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        
+        .menu-toggle span {
+            width: 100%;
+            height: 3px;
+            background: #c9a5f0;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        /* 导航链接容器 */
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a {
             color: #e0d4ff;
             text-decoration: none;
             transition: 0.2s;
         }
-        .nav a:hover {
+        
+        .nav-links a:hover {
             color: #c084fc;
         }
-        .nav p {
+        
+        .nav-links p {
             display: inline;
+        }
+        
+        /* 手机端样式 */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 69px;
+                left: -100%;
+                width: 70%;
+                height: calc(100vh - 69px);
+                background: rgba(20, 18, 32, 0.98);
+                backdrop-filter: blur(15px);
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 20px 25px;
+                gap: 15px;
+                transition: left 0.3s ease;
+                z-index: 999;
+                border-right: 1px solid rgba(169, 91, 195, 0.3);
+                overflow-y: auto;
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links a {
+                width: 100%;
+                padding: 10px 0;
+                border-bottom: 1px solid rgba(169, 91, 195, 0.2);
+            }
+            
+            .nav-links a:last-child {
+                border-bottom: none;
+            }
+            
+            /* 汉堡菜单动画（点击后变成X） */
+            .menu-toggle.active span:nth-child(1) {
+                transform: rotate(45deg) translate(6px, 7px);
+            }
+            
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .menu-toggle.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(6px, -7px);
+            }
+            
+            .nav .title {
+                font-size: 1rem;
+            }
+        }
+        
+        /* PC端保持原有样式 */
+        @media (min-width: 769px) {
+            .nav-links {
+                display: flex !important;
+            }
         }
         
         /* ========== 标题栏样式 ========== */
@@ -197,6 +299,18 @@
             font-size: 1rem;
             color: #b6a9e0;
             margin-top: 5px;
+        }
+        
+        /* 服设数量统计 */
+        .clothes-count {
+            display: inline-block;
+            background: rgba(169, 91, 195, 0.2);
+            border-radius: 40px;
+            padding: 5px 15px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #c9a5f0;
+            backdrop-filter: blur(4px);
         }
         
         /* ========== 图片样式统一 ========== */
@@ -439,19 +553,27 @@
     <div class="falling-leaves" id="fallingLeaves"></div>
     <div class="falling-trophies" id="fallingTrophies"></div>
 
-    <!--头部导航-->
+    <!--头部导航（PC端横向，手机端汉堡折叠）-->
     <div class="nav">
-        <img src="../img/头像.jpg" alt="logo 图">
-        <span class="title">荣耀之神的空间</span>
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
-        <a href="xinxi.html" ><p>小叶的资料</p></a>
-        <a href="collect.html" ><p>小叶的日常衣橱</p></a>
-        <a href="interest.html"><p>小叶的古风衣橱</p></a>
-        <a href="food.html" ><p>小叶的西幻及其他衣橱</p></a>
-        <a href="tongren.html" ><p>小叶同人衣橱</p></a>
-        <a href="trip.html" ><p>荣耀留言板</p></a>
-        <a href="search.html" ><p>导航</p></a>
-        <a href="../index.html" ><p>返回首页</p></a>
+        <div class="nav-left">
+            <img src="../img/头像.jpg" alt="logo 图">
+            <span class="title">荣耀之神的空间</span>
+        </div>
+        <div class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="nav-links" id="navLinks">
+            <a href="xinxi.html"><p>小叶的资料</p></a>
+            <a href="collect.html"><p>小叶的日常衣橱</p></a>
+            <a href="interest.html"><p>小叶的古风衣橱</p></a>
+            <a href="food.html"><p>小叶的西幻及其他衣橱</p></a>
+            <a href="tongren.html"><p>小叶同人衣橱</p></a>
+            <a href="trip.html"><p>荣耀留言板</p></a>
+            <a href="search.html"><p>导航</p></a>
+            <a href="../index.html"><p>返回首页</p></a>
+        </div>
     </div>       
 
 <br/><br/><br/><br/><br/>
@@ -460,7 +582,9 @@
     <div id="menu-1" class="homepage home-section container">
         <div class="home-intro text-center">
             <h2 class="welcome-title animated fadeInLeft">小叶日常衣橱<p>YeXiu'clothes.</p></h2>
-            <div style="border-bottom: 2px solid #46494f;"></div>
+            <div class="clothes-count" id="clothesCount">📊 加载中...</div>
+            <div style="border-bottom: 2px solid #46494f; margin-top: 15px;"></div>
+        </div>
 
         <section id="project">
             <div class="projects-holder">
@@ -476,7 +600,7 @@
             <div class="blog-header text-center">
                 <div class="row">
                     <div class="col-md-12 copyright">
-                        <p><a href="index.html">回到首页</a></p>
+                        <p><a href="../index.html">回到首页</a></p>
                         <p> &copy; 0529&nbsp;&nbsp; By&nbsp;&nbsp;<a href="#">YeXiu</a>&nbsp;&nbsp;&nbsp;&nbsp;</p>
                     </div>
                 </div>
@@ -500,11 +624,43 @@
 
 <script>
     (function() {
+        // ========== 汉堡菜单功能 ==========
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+        
+        if (menuToggle && navLinks) {
+            menuToggle.addEventListener('click', function() {
+                menuToggle.classList.toggle('active');
+                navLinks.classList.toggle('active');
+            });
+            
+            // 点击导航链接后自动关闭菜单（手机端）
+            const navItems = navLinks.querySelectorAll('a');
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) {
+                        menuToggle.classList.remove('active');
+                        navLinks.classList.remove('active');
+                    }
+                });
+            });
+            
+            // 点击页面其他区域关闭菜单
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768) {
+                    if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
+                        menuToggle.classList.remove('active');
+                        navLinks.classList.remove('active');
+                    }
+                }
+            });
+        }
+        
         // ========== 图片配置 ==========
         const IMAGE_CONFIG = {
             basePath: '../img/spring/',
             namingPattern: 'bracket',
-            totalImages: 106,
+            totalImages: 121,
             cols: { md: 3, sm: 6 }
         };
         
@@ -525,6 +681,14 @@
         
         function handleImageLoad(imgElement) {
             imgElement.classList.add('loaded');
+        }
+        
+        // 更新服设数量显示
+        function updateClothesCount(count) {
+            const countElement = document.getElementById('clothesCount');
+            if (countElement) {
+                countElement.innerHTML = `📊 已收录 ${count} 套服设 ✨`;
+            }
         }
         
         function renderImageGrid(images, startIndex = 0, batchSize = 24) {
@@ -607,6 +771,9 @@
         }
         
         let imageList = generateImageList();
+        // 显示总服设数量
+        updateClothesCount(imageList.length);
+        
         const BATCH_SIZE = 24;
         let currentIndex = 0;
         function loadMoreImages() {
@@ -620,13 +787,12 @@
         if (loadMoreBtn) loadMoreBtn.addEventListener('click', () => { loadMoreImages(); });
         initModal();
         
-        // ========== 🍁 枫叶飘落特效 (适量减少) ==========
+        // ========== 🍁 枫叶飘落特效 ==========
         const leavesContainer = document.getElementById('fallingLeaves');
         if (leavesContainer) {
             const leafIcons = ['🍁', '🍂', '🍁', '🍂', '🍁', '🍂'];
-            // 适量减少枫叶数量：最大并发 12-25 片
             const MAX_LEAVES = 12 + Math.floor(Math.random() * 15);
-            const LEAF_INTERVAL = 800 + Math.random() * 1200;  // 间隔 0.8-2.0秒
+            const LEAF_INTERVAL = 800 + Math.random() * 1200;
             let currentLeafCount = 0;
             function createLeaf() {
                 const leaf = document.createElement('div');
@@ -648,23 +814,19 @@
                 currentLeafCount++;
                 leaf.addEventListener('animationend', () => { if (leaf.parentNode) leaf.remove(); currentLeafCount--; });
             }
-            // 初始生成 5-10 片枫叶
             const initialLeaves = 5 + Math.floor(Math.random() * 8);
             for (let i = 0; i < initialLeaves; i++) {
                 setTimeout(() => addLeaf(), i * 100);
             }
-            // 持续生成新枫叶
             setInterval(() => addLeaf(), LEAF_INTERVAL);
-            console.log(`🍁 枫叶飘落效果已启用 (最大并发: ${MAX_LEAVES}片)`);
         }
         
-        // ========== 🏆 奖杯飘落特效 (适量减少) ==========
+        // ========== 🏆 奖杯飘落特效 ==========
         const trophiesContainer = document.getElementById('fallingTrophies');
         if (trophiesContainer) {
             const trophyIcons = ['🏆', '🏅', '🏆', '🏅', '🏆'];
-            // 适量减少奖杯数量：最大并发 8-18 个
             const MAX_TROPHIES = 8 + Math.floor(Math.random() * 12);
-            const TROPHY_INTERVAL = 1500 + Math.random() * 2000;  // 间隔 1.5-3.5秒
+            const TROPHY_INTERVAL = 1500 + Math.random() * 2000;
             let currentTrophyCount = 0;
             function createTrophy() {
                 const trophy = document.createElement('div');
@@ -685,16 +847,14 @@
                 currentTrophyCount++;
                 trophy.addEventListener('animationend', () => { if (trophy.parentNode) trophy.remove(); currentTrophyCount--; });
             }
-            // 初始生成 3-7 个奖杯
             const initialTrophies = 3 + Math.floor(Math.random() * 6);
             for (let i = 0; i < initialTrophies; i++) {
                 setTimeout(() => addTrophy(), i * 150);
             }
             setInterval(() => addTrophy(), TROPHY_INTERVAL);
-            console.log(`🏆 奖杯飘落效果已启用 (最大并发: ${MAX_TROPHIES}个)`);
         }
         
-        // ========== ⭐🔥 点击特效：星星和火焰随机出现 ==========
+        // ========== ⭐🔥 点击特效 ==========
         const starArray = ['⭐', '🌟', '✨', '💫', '⭐✨', '🌟⭐', '✨✨', '⭐️'];
         const fireArray = ['🔥', '🔥🔥', '💥', '⚡', '🔥✨', '🔥💥', '⚡🔥'];
         
@@ -722,7 +882,7 @@
             createRandomClickEffect(e.clientX, e.clientY);
         });
         
-        console.log('%c✨ 小叶日常衣橱 | 特效已启用：🍁枫叶 🏆奖杯 点击⭐🔥绽放 ✨', 'color: #f5e7a3; font-size: 14px; font-weight: bold; background: #2d2a4a; padding: 4px 12px; border-radius: 20px;');
+        console.log(`✨ 小叶日常衣橱 | 特效已启用：🍁枫叶 🏆奖杯 点击⭐🔥绽放 ✨ | 共收录 ${imageList.length} 套服设`);
     })();
 </script>
 </body>
