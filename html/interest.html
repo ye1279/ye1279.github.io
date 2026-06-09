@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="cn">
+<html lang="zh-CN">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
-    <title>荣耀之神的空间 - 小叶的古风衣橱 </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>荣耀之神的空间 - 小叶的古风衣橱 | 正比·Q版双风格</title>
     <link rel="stylesheet" href="../css/nav.css">
     <link rel="stylesheet" href="../css/index.css" >
     <link rel="stylesheet" href="../css/bootstrap.min.css">
@@ -13,7 +13,7 @@
     <link rel="icon" href="../img/picture/favicon.ico">
     
     <style>
-         /* ========== 手机端灰色外框修复 - 与日常衣橱一致 ========== */
+        /* ========== 全局样式 - 与衣橱风格统一 ========== */
         * {
             margin: 0;
             padding: 0;
@@ -27,156 +27,68 @@
             max-width: 100% !important;
             overflow-x: hidden !important;
             background: linear-gradient(135deg, #1a1c2e 0%, #2d2a4a 100%);
+            scroll-behavior: smooth;
         }
 
-        /* 主内容容器 - 与日常衣橱一致 */
-        #menu-container, .homepage, .home-section {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* 移除装饰性边框元素 */
-        .border-top, .border-left, .border-right, .border-bottom,
-        span[class*="border-"] {
-            display: none !important;
-        }
-        
-        /* ========== 全局背景和文字颜色 ========== */
         body {
-            background: linear-gradient(135deg, #1a1c2e 0%, #2d2a4a 100%);
             font-family: 'Segoe UI', 'PingFang SC', Roboto, 'Helvetica Neue', sans-serif;
             color: #f0f0f0;
             position: relative;
             min-height: 100vh;
         }
-        
-        /* ========== 飘落特效容器 ========== */
-        .falling-stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9999;
-            overflow: hidden;
+
+        /* ========== 筛选栏样式（正比/Q版） ========== */
+        .filter-section {
+            margin: 20px 0 10px;
+            text-align: center;
         }
         
-        .star-item {
-            position: absolute;
-            top: -35px;
-            font-size: 26px;
-            animation: starFall linear forwards;
-            pointer-events: none;
-            filter: drop-shadow(0 0 3px gold);
-            will-change: transform;
+        .filter-group {
+            margin-bottom: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
         }
         
-        .falling-moons {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9998;
-            overflow: hidden;
+        .tag-btn {
+            background: rgba(34, 30, 54, 0.7);
+            border: 1px solid rgba(169, 91, 195, 0.3);
+            border-radius: 40px;
+            padding: 8px 28px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #e0d4ff;
+            cursor: pointer;
+            transition: all 0.2s;
+            backdrop-filter: blur(4px);
         }
         
-        .moon-item {
-            position: absolute;
-            top: -40px;
-            font-size: 28px;
-            animation: moonFall linear forwards;
-            pointer-events: none;
-            filter: drop-shadow(0 0 4px silver);
-            will-change: transform;
+        .tag-btn:hover {
+            background: rgba(169, 91, 195, 0.3);
+            border-color: #a95bc3;
+            transform: translateY(-2px);
         }
         
-        /* 点击特效 - 流星与花牌 */
-        .click-shootingstar {
-            position: fixed;
-            pointer-events: none;
-            z-index: 10001;
-            font-size: 32px;
-            animation: shootingStarPop 0.7s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+        .tag-btn.active {
+            background: linear-gradient(95deg, #a95bc3, #7b2c9e);
+            border-color: #a95bc3;
+            color: white;
+            box-shadow: 0 4px 12px rgba(169, 91, 195, 0.4);
         }
         
-        .click-flowercard {
-            position: fixed;
-            pointer-events: none;
-            z-index: 10002;
-            font-size: 34px;
-            animation: flowerCardPop 0.65s ease-out forwards;
+        .filter-stats {
+            text-align: center;
+            margin: 10px 0 15px;
+            font-size: 0.9rem;
+            color: #c9a5f0;
         }
         
-        @keyframes starFall {
-            0% {
-                transform: translateY(-35px) rotate(0deg) scale(1);
-                opacity: 0.95;
-            }
-            60% {
-                transform: translateY(60vh) rotate(180deg) scale(1.1);
-                opacity: 0.8;
-            }
-            100% {
-                transform: translateY(100vh) rotate(360deg) scale(0.7);
-                opacity: 0;
-            }
-        }
-        
-        @keyframes moonFall {
-            0% {
-                transform: translateY(-40px) rotate(-5deg);
-                opacity: 0.9;
-            }
-            50% {
-                transform: translateY(55vh) rotate(10deg);
-                opacity: 0.85;
-            }
-            100% {
-                transform: translateY(100vh) rotate(350deg);
-                opacity: 0;
-            }
-        }
-        
-        @keyframes shootingStarPop {
-            0% {
-                transform: translate(-50%, -50%) scale(0.2) rotate(0deg);
-                opacity: 1;
-            }
-            40% {
-                transform: translate(-50%, -50%) scale(1.3) rotate(30deg);
-                opacity: 0.9;
-            }
-            100% {
-                transform: translate(-50%, -50%) scale(1.7) rotate(60deg);
-                opacity: 0;
-            }
-        }
-        
-        @keyframes flowerCardPop {
-            0% {
-                transform: translate(-50%, -50%) scale(0.3) rotate(-15deg);
-                opacity: 1;
-            }
-            50% {
-                transform: translate(-50%, -50%) scale(1.2) rotate(10deg);
-                opacity: 0.85;
-            }
-            100% {
-                transform: translate(-50%, -50%) scale(1.6) rotate(40deg);
-                opacity: 0;
-            }
-        }
-        
-        /* ========== 导航栏样式（PC端横向，手机端汉堡折叠） ========== */
+        /* ========== 导航栏样式 ========== */
         .nav {
             background: rgba(20, 18, 32, 0.95);
             backdrop-filter: blur(10px);
-            padding: 12px 30px;
+            padding: 12px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -185,23 +97,24 @@
             top: 0;
             z-index: 1000;
             border-bottom: 1px solid rgba(169, 91, 195, 0.3);
+            width: 100%;
         }
         
         .nav-left {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
         
         .nav img {
-            width: 45px;
-            height: 45px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             object-fit: cover;
         }
         
         .nav .title {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: bold;
             background: linear-gradient(135deg, #f5e7a3, #c084fc);
             background-clip: text;
@@ -209,30 +122,28 @@
             color: transparent;
         }
         
-        /* 汉堡菜单按钮（手机端显示） */
         .menu-toggle {
             display: none;
             flex-direction: column;
             justify-content: space-between;
-            width: 30px;
-            height: 22px;
+            width: 28px;
+            height: 20px;
             cursor: pointer;
             z-index: 1001;
         }
         
         .menu-toggle span {
             width: 100%;
-            height: 3px;
+            height: 2px;
             background: #c9a5f0;
-            border-radius: 3px;
+            border-radius: 2px;
             transition: all 0.3s ease;
         }
         
-        /* 导航链接容器 */
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 16px;
             flex-wrap: wrap;
             transition: all 0.3s ease;
         }
@@ -241,83 +152,68 @@
             color: #e0d4ff;
             text-decoration: none;
             transition: 0.2s;
+            font-size: 0.9rem;
         }
         
         .nav-links a:hover {
             color: #c084fc;
         }
         
-        .nav-links p {
-            display: inline;
-        }
-        
-        /* 手机端样式 */
         @media (max-width: 768px) {
             .menu-toggle {
                 display: flex;
             }
-            
             .nav-links {
                 position: fixed;
-                top: 69px;
+                top: 64px;
                 left: -100%;
                 width: 70%;
-                height: calc(100vh - 69px);
+                height: calc(100vh - 64px);
                 background: rgba(20, 18, 32, 0.98);
                 backdrop-filter: blur(15px);
                 flex-direction: column;
                 align-items: flex-start;
                 padding: 20px 25px;
-                gap: 15px;
+                gap: 12px;
                 transition: left 0.3s ease;
                 z-index: 999;
                 border-right: 1px solid rgba(169, 91, 195, 0.3);
                 overflow-y: auto;
             }
-            
             .nav-links.active {
                 left: 0;
             }
-            
             .nav-links a {
                 width: 100%;
                 padding: 10px 0;
                 border-bottom: 1px solid rgba(169, 91, 195, 0.2);
             }
-            
-            .nav-links a:last-child {
-                border-bottom: none;
-            }
-            
-            /* 汉堡菜单动画（点击后变成X） */
             .menu-toggle.active span:nth-child(1) {
-                transform: rotate(45deg) translate(6px, 7px);
+                transform: rotate(45deg) translate(5px, 5px);
             }
-            
             .menu-toggle.active span:nth-child(2) {
                 opacity: 0;
             }
-            
             .menu-toggle.active span:nth-child(3) {
-                transform: rotate(-45deg) translate(6px, -7px);
+                transform: rotate(-45deg) translate(6px, -6px);
             }
-            
-            .nav .title {
-                font-size: 1rem;
+            .tag-btn {
+                padding: 6px 20px;
+                font-size: 0.85rem;
             }
         }
         
-        /* PC端保持原有样式 */
         @media (min-width: 769px) {
             .nav-links {
                 display: flex !important;
             }
         }
         
-        /* ========== 标题栏样式 ========== */
+        /* ========== 标题栏 ========== */
         .home-intro {
             text-align: center;
             margin-bottom: 30px;
+            padding-top: 10px;
         }
         .welcome-title {
             font-size: 2rem;
@@ -329,38 +225,64 @@
             margin-bottom: 10px;
         }
         .welcome-title p {
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: #b6a9e0;
             margin-top: 5px;
         }
-        
-        /* 服设数量统计 */
         .clothes-count {
             display: inline-block;
             background: rgba(169, 91, 195, 0.2);
             border-radius: 40px;
-            padding: 5px 15px;
+            padding: 5px 18px;
             margin-top: 10px;
             font-size: 0.9rem;
             color: #c9a5f0;
-            backdrop-filter: blur(4px);
         }
         
-        /* ========== 统一图片尺寸和样式 ========== */
-        .animated.umScaleIn {
-            animation-name: umScaleIn;
-            animation-duration: 0.6s;
-            animation-fill-mode: both;
+        /* ========== 图片网格 - 电脑6列，手机3列 ========== */
+        .projects-holder .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -8px !important;
         }
         
-        @keyframes umScaleIn {
-            0% {
-                opacity: 0;
-                transform: scale(0.9);
+        .projects-holder [class*="col-"] {
+            padding: 0 8px 16px 8px !important;
+        }
+        
+        /* 电脑端：一行6列 */
+        @media (min-width: 992px) {
+            .projects-holder .col-md-2 {
+                flex: 0 0 auto !important;
+                width: 16.66666667% !important;
+                max-width: 16.66666667% !important;
             }
-            100% {
-                opacity: 1;
-                transform: scale(1);
+        }
+        
+        /* 平板端：一行4列 */
+        @media (min-width: 768px) and (max-width: 991px) {
+            .projects-holder .col-sm-4 {
+                flex: 0 0 auto !important;
+                width: 25% !important;
+                max-width: 25% !important;
+            }
+        }
+        
+        /* 手机端：一行3列 */
+        @media (max-width: 767px) {
+            .projects-holder .col-sm-4 {
+                flex: 0 0 auto !important;
+                width: 33.33333333% !important;
+                max-width: 33.33333333% !important;
+            }
+        }
+        
+        /* 极小屏手机：一行2列 */
+        @media (max-width: 450px) {
+            .projects-holder .col-sm-4 {
+                flex: 0 0 auto !important;
+                width: 50% !important;
+                max-width: 50% !important;
             }
         }
         
@@ -372,8 +294,8 @@
             border-radius: 12px;
             background: #2c2e33;
             width: 100%;
-            aspect-ratio: 4 / 3;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            aspect-ratio: 1 / 1;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
         
         .project-item img {
@@ -391,46 +313,102 @@
         }
         
         .project-item:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
         }
         
         .project-item:hover img {
-            filter: brightness(0.92);
-            transform: scale(1.02);
+            filter: brightness(0.9);
+            transform: scale(1.03);
         }
         
         .project-item::after {
             content: "🔍";
             position: absolute;
-            bottom: 12px;
-            right: 12px;
-            background: rgba(0, 0, 0, 0.6);
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.65);
             color: #fff;
-            font-size: 16px;
-            padding: 5px 10px;
+            font-size: 14px;
+            padding: 4px 10px;
             border-radius: 30px;
             opacity: 0;
             transition: opacity 0.2s ease;
             pointer-events: none;
             backdrop-filter: blur(4px);
             z-index: 5;
-            font-family: system-ui;
         }
         
         .project-item:hover::after {
-            opacity: 0.9;
+            opacity: 0.95;
         }
         
-        .projects-holder .row {
-            margin: 0 -12px;
+        /* 缩略图上不显示任何标签 */
+        .img-badge, .type-badge {
+            display: none !important;
         }
         
-        .projects-holder [class*="col-"] {
-            padding: 0 12px 24px 12px;
+        /* ========== 收藏按钮样式 ========== */
+        .fav-btn {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.2s;
+            font-size: 18px;
+            opacity: 0;
+            color: #ff6b6b;
         }
         
-        /* 模态框样式 */
+        .project-item:hover .fav-btn {
+            opacity: 1;
+        }
+        
+        .fav-btn:hover {
+            transform: scale(1.1);
+            background: rgba(0, 0, 0, 0.8);
+        }
+        
+        .fav-btn.favorited {
+            opacity: 1;
+            background: rgba(255, 107, 107, 0.8);
+            color: white;
+        }
+        
+        /* 提示消息 */
+        .toast-msg {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: linear-gradient(135deg, #a95bc3, #7b2c9e);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 40px;
+            z-index: 10002;
+            opacity: 0;
+            transition: all 0.3s;
+            pointer-events: none;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+        
+        .toast-msg.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+        
+        /* ========== 模态框 ========== */
         .image-modal {
             display: none;
             position: fixed;
@@ -443,7 +421,6 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
-        
         .image-modal.show {
             display: block;
             z-index: 9998;
@@ -451,28 +428,21 @@
             backdrop-filter: blur(10px);
             opacity: 1;
         }
-        
         .modal-image-wrapper {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            width: 100%;
-            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 9999;
             pointer-events: none;
         }
-        
         .modal-image-wrapper img {
-            display: block;
             max-width: 85vw;
             max-height: 85vh;
-            width: auto;
-            height: auto;
             object-fit: contain;
             border-radius: 20px;
             box-shadow: 0 30px 55px rgba(0, 0, 0, 0.5), 0 0 0 5px rgba(169, 91, 195, 0.6);
@@ -480,14 +450,11 @@
             opacity: 0;
             transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.2), opacity 0.25s ease;
             pointer-events: auto;
-            background: #1a1c1f;
         }
-        
         .modal-image-wrapper img.show {
             transform: scale(1);
             opacity: 1;
         }
-        
         .modal-close-btn {
             position: fixed;
             top: 25px;
@@ -503,474 +470,566 @@
             font-weight: bold;
             color: white;
             cursor: pointer;
-            transition: all 0.2s;
-            backdrop-filter: blur(4px);
             z-index: 10000;
-            pointer-events: auto;
             border: 2px solid rgba(255, 255, 255, 0.9);
-        }
-        
-        .modal-close-btn:hover {
-            background: #6e2a85;
-            transform: scale(1.08) rotate(90deg);
-        }
-        
-        .load-more-container {
-            text-align: center;
-            margin: 30px 0;
-        }
-        
-        .load-more-btn {
-            background: #a95bc3;
-            color: white;
-            border: none;
-            padding: 12px 32px;
-            border-radius: 40px;
-            font-size: 16px;
-            cursor: pointer;
             transition: all 0.2s;
         }
-        
-        .load-more-btn:hover {
+        .modal-close-btn:hover {
+            transform: scale(1.08) rotate(90deg);
             background: #6e2a85;
-            transform: translateY(-2px);
         }
         
+        footer {
+            background: rgba(44, 46, 51, 0.5);
+            padding: 20px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        /* 返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #a95bc3, #7b2c9e);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .back-to-top:hover {
+            transform: translateY(-3px);
+            background: linear-gradient(135deg, #bc74da, #8f3db6);
+        }
+        .back-to-top svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
         @media (max-width: 768px) {
-            .project-item::after {
-                font-size: 14px;
-                padding: 4px 8px;
-            }
-            .modal-image-wrapper img {
-                max-width: 92vw;
-                max-height: 80vh;
-            }
-            .modal-close-btn {
-                width: 40px;
-                height: 40px;
-                top: 15px;
+            .back-to-top {
+                width: 42px;
+                height: 42px;
+                bottom: 20px;
                 right: 20px;
-                font-size: 28px;
             }
-            .welcome-title {
-                font-size: 1.5rem;
-            }
-            .star-item { font-size: 20px; }
-            .moon-item { font-size: 22px; }
-            .click-shootingstar, .click-flowercard { font-size: 26px; }
         }
         
-        body.modal-open {
+        /* 飘落特效 */
+        .falling-stars, .falling-moons {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
             overflow: hidden;
         }
-        
-        .overlay {
-            display: none;
+        .star-item, .moon-item {
+            position: absolute;
+            top: -40px;
+            animation: fall linear forwards;
+            pointer-events: none;
+            will-change: transform;
         }
-        
-        .copyright p a {
-            color: #ccc;
-            text-decoration: none;
+        @keyframes fall {
+            0% { transform: translateY(-40px) rotate(0deg); opacity: 0.9; }
+            100% { transform: translateY(100vh) rotate(380deg); opacity: 0; }
         }
-        .copyright p a:hover {
-            color: #a95bc3;
+        .click-shootingstar, .click-flowercard {
+            position: fixed;
+            pointer-events: none;
+            z-index: 10001;
+            animation: pop 0.6s ease-out forwards;
         }
-        
-        .project-item img {
-            background: linear-gradient(135deg, #2c2e33 0%, #3a3d44 100%);
+        @keyframes pop {
+            0% { transform: translate(-50%, -50%) scale(0.3) rotate(0deg); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1.6) rotate(45deg); opacity: 0; }
         }
     </style>
 </head>
 
 <body>
-    <!-- 飘落特效容器 -->
     <div class="falling-stars" id="fallingStars"></div>
     <div class="falling-moons" id="fallingMoons"></div>
+    <div class="back-to-top" id="backToTop">
+        <svg viewBox="0 0 24 24"><path d="M12 4l-8 8h6v8h4v-8h6z"/></svg>
+    </div>
 
-    <!--头部导航（PC端横向，手机端汉堡折叠）-->
     <div class="nav">
         <div class="nav-left">
-            <img src="../img/头像.jpg" alt="logo 图">
+            <img src="../img/头像.jpg" alt="logo">
             <span class="title">荣耀之神的空间</span>
         </div>
-        <div class="menu-toggle" id="menuToggle">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+        <div class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></div>
         <div class="nav-links" id="navLinks">
             <a href="xinxi.html"><p>小叶的资料</p></a>
             <a href="collect.html"><p>小叶的日常衣橱</p></a>
             <a href="interest.html"><p>小叶的古风衣橱</p></a>
-            <a href="food.html"><p>小叶的西幻及其他衣橱</p></a>
+            <a href="food.html"><p>小叶的帐号卡衣橱</p></a>
             <a href="tongren.html"><p>小叶同人衣橱</p></a>
+            <a href="dashboard.html"><p>我的衣橱管理</p></a>
             <a href="trip.html"><p>荣耀留言板</p></a>
             <a href="search.html"><p>导航</p></a>
             <a href="../index.html"><p>返回首页</p></a>
         </div>
-    </div>       
+    </div>
 
-<header class="site-header container animated fadeInDown">
-    <div class="header-wrapper"></div>
-</header>
-
-<div id="menu-container">
-    <div id="menu-1" class="homepage home-section container">
-        <div class="home-intro text-center">
-            <h2 class="welcome-title animated fadeInLeft">小叶的古风衣橱<p>YeXiu'clothes.</p></h2>
-            <div class="clothes-count" id="clothesCount">📊 加载中...</div>
-            <div style="border-bottom: 2px solid #46494f; margin-top: 15px;"></div>
-        </div>
-
-        <div class="projects-holder">
-            <div class="row" id="imageGridContainer"></div>
-            <div class="load-more-container" id="loadMoreContainer" style="display: none;">
-                <button class="load-more-btn" id="loadMoreBtn">加载更多图片 +</button>
-            </div>
-        </div>
-        
-        <div style="border-bottom: 2px solid #46494f;"></div> <br />
-        
-        <footer>
-            <div class="blog-header text-center">
-                <div class="row">
-                    <div class="col-md-12 copyright">
-                        <p><a href="../index.html">回到首页</a></p>
-                        <p> &copy; 0529&nbsp;&nbsp; By&nbsp;&nbsp;<a href="#">YeXiu</a>&nbsp;&nbsp;&nbsp;&nbsp;</p>
+    <div id="menu-container">
+        <div id="menu-1" class="homepage home-section container">
+            <div class="home-intro text-center">
+                <h2 class="welcome-title animated fadeInLeft">小叶的古风衣橱</h2>
+                <div class="clothes-count" id="clothesCount">📊 加载中...</div>
+                
+                <!-- 筛选栏：正比 / Q版 -->
+                <div class="filter-section">
+                    <div class="filter-group" id="typeFilterGroup">
+                        <button class="tag-btn active" data-type="all">🎴 全部</button>
+                        <button class="tag-btn" data-type="normal">✨ 正比</button>
+                        <button class="tag-btn" data-type="q">🍡 Q版</button>
                     </div>
                 </div>
+                <div class="filter-stats" id="filterStats"></div>
+                <div style="border-bottom: 2px solid #46494f; margin-top: 15px;"></div>
             </div>
-        </footer>
-        
-        <span class="border-top"></span>
-        <span class="border-left"></span>
-        <span class="border-right"></span>
-        <span class="border-bottom"></span>
-    </div>
-</div>
 
-<!-- 模态框组件 -->
-<div id="imageModal" class="image-modal">
-    <div class="modal-backdrop-area"></div>
-    <div class="modal-close-btn" id="modalCloseBtn">✕</div>
-    <div class="modal-image-wrapper">
-        <img id="modalImage" alt="放大图片">
-    </div>
-</div>
+            <section id="project">
+                <div class="projects-holder">
+                    <div id="imageGridContainer" class="row"></div>
+                </div>
+            </section>
 
-<script>
-    (function() {
-        // ========== 汉堡菜单功能 ==========
-        const menuToggle = document.getElementById('menuToggle');
-        const navLinks = document.getElementById('navLinks');
-        
-        if (menuToggle && navLinks) {
-            menuToggle.addEventListener('click', function() {
-                menuToggle.classList.toggle('active');
-                navLinks.classList.toggle('active');
-            });
+            <footer>
+                <div class="blog-header text-center">
+                    <div class="row"><div class="col-md-12 copyright">
+                        <p><a href="../index.html">回到首页</a></p>
+                        <p>© 荣耀档案馆 | 古风衣橱 </p>
+                    </div></div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <div id="imageModal" class="image-modal">
+        <div class="modal-close-btn" id="modalCloseBtn">✕</div>
+        <div class="modal-image-wrapper"><img id="modalImage" alt="放大图片"></div>
+    </div>
+
+    <div id="toastMsg" class="toast-msg">✨ 提示消息</div>
+
+    <script>
+        (function() {
+            // ========== 收藏功能 ==========
+            let favorites = [];
             
-            const navItems = navLinks.querySelectorAll('a');
-            navItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    if (window.innerWidth <= 768) {
-                        menuToggle.classList.remove('active');
-                        navLinks.classList.remove('active');
-                    }
-                });
-            });
-            
-            document.addEventListener('click', function(e) {
-                if (window.innerWidth <= 768) {
-                    if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
-                        menuToggle.classList.remove('active');
-                        navLinks.classList.remove('active');
-                    }
+            function loadFavorites() {
+                const saved = localStorage.getItem('global_favorites');
+                if (saved) {
+                    try {
+                        favorites = JSON.parse(saved);
+                    } catch(e) { favorites = []; }
                 }
-            });
-        }
-        
-        // ============================================================
-        // 图片配置区域
-        // ============================================================
-        const IMAGE_CONFIG = {
-            basePath: '../img/gufeng/',
-            namingPattern: 'bracket',
-            totalImages: 21,
-            batchSize: 24
-        };
-        
-        const useCustomList = false;
-        
-        function generateImageList() {
-            if (useCustomList && typeof IMAGE_LIST !== 'undefined') {
-                return IMAGE_LIST;
             }
-            const images = [];
-            const config = IMAGE_CONFIG;
-            for (let i = 1; i <= config.totalImages; i++) {
-                let fileName = config.namingPattern === 'bracket' ? `1 (${i}).jpg` : `${i}.jpg`;
-                images.push(config.basePath + fileName);
+            
+            function saveFavorites() {
+                localStorage.setItem('global_favorites', JSON.stringify(favorites));
             }
-            return images;
-        }
-        
-        function handleImageLoad(imgElement) {
-            imgElement.classList.add('loaded');
-        }
-        
-        // 更新服设数量显示
-        function updateClothesCount(count) {
-            const countElement = document.getElementById('clothesCount');
-            if (countElement) {
-                countElement.innerHTML = `📊 已收录 ${count} 套服设 ✨`;
+            
+            function isFavorited(src) {
+                return favorites.some(fav => fav.src === src);
             }
-        }
-        
-        function getColumnClass(index, total) {
-            if (total <= 9) return 'col-md-4 col-sm-6';
-            if (index < 4 && total > 12) return 'col-md-3 col-sm-6';
-            return 'col-md-4 col-sm-6';
-        }
-        
-        const container = document.getElementById('imageGridContainer');
-        let allImages = [];
-        let currentIndex = 0;
-        let batchSize = 24;
-        
-        function renderBatch() {
-            if (!container) return;
-            const endIndex = Math.min(currentIndex + batchSize, allImages.length);
-            const newImages = allImages.slice(currentIndex, endIndex);
-            newImages.forEach((imgSrc, idx) => {
-                const actualIndex = currentIndex + idx;
-                const colDiv = document.createElement('div');
-                const colClass = getColumnClass(actualIndex, allImages.length);
-                colDiv.className = `${colClass} animated umScaleIn`;
-                colDiv.innerHTML = `
-                    <div class="project-item" data-img-src="${imgSrc}">
-                        <img src="${imgSrc}" alt="古风图片${actualIndex + 1}" loading="lazy">
-                    </div>
-                `;
-                container.appendChild(colDiv);
-                const img = colDiv.querySelector('img');
-                if (img.complete) handleImageLoad(img);
-                else img.addEventListener('load', () => handleImageLoad(img));
-            });
-            currentIndex = endIndex;
-            const loadMoreContainer = document.getElementById('loadMoreContainer');
-            if (loadMoreContainer) {
-                if (currentIndex < allImages.length) {
-                    loadMoreContainer.style.display = 'block';
-                    const btn = document.getElementById('loadMoreBtn');
-                    if (btn) btn.textContent = `加载更多图片 (${currentIndex}/${allImages.length}) +`;
+            
+            function addFavorite(src, name) {
+                if (!isFavorited(src)) {
+                    favorites.push({ src: src, name: name });
+                    saveFavorites();
+                    showToast('❤️ 已添加到收藏夹');
+                    return true;
                 } else {
-                    loadMoreContainer.style.display = 'none';
+                    showToast('📌 已在收藏夹中');
+                    return false;
                 }
             }
-        }
-        
-        // 模态框功能
-        const modal = document.getElementById('imageModal');
-        const modalImage = document.getElementById('modalImage');
-        const closeBtn = document.getElementById('modalCloseBtn');
-        let isModalOpen = false;
-        
-        function openModal(imgSrc) {
-            if (!modal || !modalImage) return;
-            modalImage.src = imgSrc;
-            modalImage.classList.remove('show');
-            void modalImage.offsetWidth;
-            modal.classList.add('show');
-            setTimeout(() => modalImage.classList.add('show'), 10);
-            document.body.classList.add('modal-open');
-            isModalOpen = true;
-        }
-        
-        function closeModal() {
-            if (!modal || !modalImage) return;
-            modalImage.classList.remove('show');
-            setTimeout(() => {
-                modal.classList.remove('show');
-                setTimeout(() => { if (!modal.classList.contains('show')) modalImage.src = ''; }, 100);
-            }, 200);
-            document.body.classList.remove('modal-open');
-            isModalOpen = false;
-        }
-        
-        if (container) {
-            container.addEventListener('click', function(e) {
-                let target = e.target;
-                let projectItem = null;
-                while (target && target !== container) {
-                    if (target.classList && target.classList.contains('project-item')) {
-                        projectItem = target;
-                        break;
+            
+            function removeFavorite(src) {
+                favorites = favorites.filter(fav => fav.src !== src);
+                saveFavorites();
+                showToast('🗑️ 已从收藏夹移除');
+                updateAllFavoriteButtons();
+            }
+            
+            function updateAllFavoriteButtons() {
+                document.querySelectorAll('.fav-btn').forEach(btn => {
+                    const src = btn.getAttribute('data-src');
+                    if (src && isFavorited(src)) {
+                        btn.classList.add('favorited');
+                        btn.innerHTML = '❤️';
+                    } else if (btn) {
+                        btn.classList.remove('favorited');
+                        btn.innerHTML = '🤍';
                     }
-                    target = target.parentElement;
-                }
-                if (projectItem) {
-                    e.stopPropagation();
-                    let imgSrc = projectItem.getAttribute('data-img-src');
-                    if (!imgSrc) {
-                        const img = projectItem.querySelector('img');
-                        if (img) imgSrc = img.getAttribute('src');
-                    }
-                    if (imgSrc) openModal(imgSrc);
-                }
-            });
-        }
-        
-        if (closeBtn) closeBtn.addEventListener('click', (e) => { e.stopPropagation(); closeModal(); });
-        const backdropArea = document.querySelector('.modal-backdrop-area');
-        if (backdropArea) backdropArea.addEventListener('click', () => closeModal());
-        if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && isModalOpen) closeModal(); });
-        if (modalImage) modalImage.addEventListener('click', (e) => e.stopPropagation());
-        const modalWrapper = document.querySelector('.modal-image-wrapper');
-        if (modalWrapper) modalWrapper.addEventListener('click', (e) => e.stopPropagation());
-        
-        function initLazyLoad() {
-            if ('IntersectionObserver' in window) {
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const img = entry.target;
-                            observer.unobserve(img);
-                            if (img.complete) handleImageLoad(img);
-                            else img.addEventListener('load', () => handleImageLoad(img));
-                        }
-                    });
                 });
-                document.querySelectorAll('.project-item img').forEach(img => observer.observe(img));
-            } else {
-                document.querySelectorAll('.project-item img').forEach(img => {
+            }
+            
+            function showToast(message) {
+                const toast = document.getElementById('toastMsg');
+                if (!toast) return;
+                toast.textContent = message;
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2000);
+            }
+            
+            // ============================================================
+            // 🍃 古风衣橱数据配置 - 图片数量自动计算
+            // 正比图片编号: 1,2,3,4,5,6,8
+            // Q版图片编号: 7,9,10,11,12,13,14,15,16,17,18,19,20,21
+            // 图片路径: ../img/gufeng/1 (X).jpg (X从1开始连续)
+            // ============================================================
+            
+            const NORMAL_LIST = [1, 2, 3, 4, 5, 6, 8];
+            
+            function getTypeByIndex(idx) {
+                return NORMAL_LIST.includes(idx) ? 'normal' : 'q';
+            }
+            
+            const MAX_SCAN = 50;
+            const CONSECUTIVE_FAILURE_LIMIT = 3;
+            
+            function scanImageList() {
+                return new Promise((resolve) => {
+                    const existingImages = [];
+                    let consecutiveFailures = 0;
+                    let currentIdx = 1;
+                    
+                    function checkNext() {
+                        if (currentIdx > MAX_SCAN) {
+                            resolve(existingImages);
+                            return;
+                        }
+                        const imgUrl = `../img/gufeng/1 (${currentIdx}).jpg`;
+                        const img = new Image();
+                        img.onload = () => {
+                            existingImages.push({
+                                src: imgUrl,
+                                type: getTypeByIndex(currentIdx),
+                                index: currentIdx
+                            });
+                            consecutiveFailures = 0;
+                            currentIdx++;
+                            checkNext();
+                        };
+                        img.onerror = () => {
+                            consecutiveFailures++;
+                            if (consecutiveFailures >= CONSECUTIVE_FAILURE_LIMIT) {
+                                resolve(existingImages);
+                            } else {
+                                currentIdx++;
+                                checkNext();
+                            }
+                        };
+                        img.src = imgUrl;
+                        setTimeout(() => {
+                            if (!img.complete) {
+                                consecutiveFailures++;
+                                if (consecutiveFailures >= CONSECUTIVE_FAILURE_LIMIT) {
+                                    resolve(existingImages);
+                                } else {
+                                    currentIdx++;
+                                    checkNext();
+                                }
+                            }
+                        }, 500);
+                    }
+                    checkNext();
+                });
+            }
+            
+            let IMAGES_DATA = [];
+            let currentType = 'all';
+            let normalCount = 0;
+            let qCount = 0;
+            
+            function getFilteredImages() {
+                if (currentType === 'all') return [...IMAGES_DATA];
+                return IMAGES_DATA.filter(img => img.type === currentType);
+            }
+            
+            function renderTypeFilters() {
+                const container = document.getElementById('typeFilterGroup');
+                if (!container) return;
+                const btns = container.querySelectorAll('.tag-btn');
+                btns.forEach(btn => {
+                    const typeVal = btn.getAttribute('data-type');
+                    if ((typeVal === 'all' && currentType === 'all') ||
+                        (typeVal === 'normal' && currentType === 'normal') ||
+                        (typeVal === 'q' && currentType === 'q')) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+            }
+            
+            function updateFilterStats() {
+                const filtered = getFilteredImages();
+                const statsDiv = document.getElementById('filterStats');
+                if (statsDiv) {
+                    let typeName = '全部服饰';
+                    if (currentType === 'normal') typeName = '✨ 正比角色';
+                    if (currentType === 'q') typeName = '🍡 Q版角色';
+                    statsDiv.innerHTML = `🏷️ 当前分类：${typeName} &nbsp;|&nbsp; 📸 共 ${filtered.length} 件藏品`;
+                }
+                const countEle = document.getElementById('clothesCount');
+                if (countEle) {
+                    countEle.innerHTML = `📊 已收录 ${IMAGES_DATA.length} 套古风服设 (正比:${normalCount} / Q版:${qCount}) ✨`;
+                }
+            }
+            
+            function handleImageLoad(imgElement) { 
+                imgElement.classList.add('loaded'); 
+            }
+            
+            function getColumnClass() { 
+                return `col-md-2 col-sm-4`; 
+            }
+            
+            function bindFavoriteButtons() {
+                document.querySelectorAll('.fav-btn').forEach(btn => {
+                    btn.removeEventListener('click', handleFavClick);
+                    btn.addEventListener('click', handleFavClick);
+                });
+            }
+            
+            function handleFavClick(e) {
+                e.stopPropagation();
+                const btn = e.currentTarget;
+                const src = btn.getAttribute('data-src');
+                const name = btn.getAttribute('data-name') || '古风服饰';
+                
+                if (btn.classList.contains('favorited')) {
+                    removeFavorite(src);
+                } else {
+                    addFavorite(src, name);
+                }
+                updateAllFavoriteButtons();
+            }
+            
+            function renderImageGrid() {
+                const container = document.getElementById('imageGridContainer');
+                if (!container) return;
+                const filteredImages = getFilteredImages();
+                container.innerHTML = '';
+                filteredImages.forEach((image) => {
+                    const colDiv = document.createElement('div');
+                    colDiv.className = `${getColumnClass()} animated umScaleIn`;
+                    const imgName = `古风服饰${image.index}`;
+                    colDiv.innerHTML = `
+                        <div class="project-item" data-img-src="${image.src}" data-type="${image.type}">
+                            <button class="fav-btn" data-src="${image.src}" data-name="${imgName}">🤍</button>
+                            <img src="${image.src}" alt="${imgName}" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22 viewBox=%220 0 200 200%22%3E%3Crect width=%22200%22 height=%22200%22 fill=%22%232e2a4a%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23c9a5f0%22 font-size=%2214%22%3E🌸 古风 🌸%3C/text%3E%3C/svg%3E'; this.onerror=null;">
+                        </div>
+                    `;
+                    container.appendChild(colDiv);
+                    const img = colDiv.querySelector('img');
                     if (img.complete) handleImageLoad(img);
                     else img.addEventListener('load', () => handleImageLoad(img));
                 });
+                updateFilterStats();
+                bindFavoriteButtons();
+                updateAllFavoriteButtons();
             }
-        }
-        
-        allImages = generateImageList();
-        // 显示总服设数量
-        updateClothesCount(allImages.length);
-        
-        batchSize = IMAGE_CONFIG.batchSize || 24;
-        console.log(`📷 古风衣橱图片配置：共 ${allImages.length} 张图片`);
-        renderBatch();
-        setTimeout(initLazyLoad, 200);
-        
-        const loadMoreBtn = document.getElementById('loadMoreBtn');
-        if (loadMoreBtn) {
-            loadMoreBtn.addEventListener('click', function() {
-                renderBatch();
-                this.textContent = '加载中...';
-                setTimeout(() => {
-                    if (currentIndex < allImages.length) {
-                        this.textContent = `加载更多图片 (${currentIndex}/${allImages.length}) +`;
-                    } else {
-                        this.textContent = '已加载全部图片 ✓';
-                        setTimeout(() => {
-                            const lc = document.getElementById('loadMoreContainer');
-                            if (lc) lc.style.display = 'none';
-                        }, 1500);
+            
+            function initModal() {
+                const modal = document.getElementById('imageModal');
+                const modalImage = document.getElementById('modalImage');
+                const closeBtn = document.getElementById('modalCloseBtn');
+                let isOpen = false;
+                function openModal(src) {
+                    if (!modal || !modalImage) return;
+                    modalImage.src = src;
+                    modalImage.classList.remove('show');
+                    void modalImage.offsetWidth;
+                    modal.classList.add('show');
+                    setTimeout(() => modalImage.classList.add('show'), 10);
+                    document.body.classList.add('modal-open');
+                    isOpen = true;
+                }
+                function closeModal() {
+                    if (!modal || !modalImage) return;
+                    modalImage.classList.remove('show');
+                    setTimeout(() => {
+                        modal.classList.remove('show');
+                        setTimeout(() => { if (!modal.classList.contains('show')) modalImage.src = ''; }, 100);
+                    }, 200);
+                    document.body.classList.remove('modal-open');
+                    isOpen = false;
+                }
+                const container = document.getElementById('imageGridContainer');
+                if (container) {
+                    container.addEventListener('click', (e) => {
+                        let target = e.target;
+                        let item = null;
+                        while (target && target !== container) {
+                            if (target.classList && target.classList.contains('project-item')) { 
+                                item = target; 
+                                break; 
+                            }
+                            target = target.parentElement;
+                        }
+                        if (item) {
+                            e.stopPropagation();
+                            let src = item.getAttribute('data-img-src');
+                            if (src) openModal(src);
+                        }
+                    });
+                }
+                if (closeBtn) closeBtn.addEventListener('click', closeModal);
+                if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+                document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && isOpen) closeModal(); });
+            }
+            
+            function initEffects() {
+                const starsContainer = document.getElementById('fallingStars');
+                if (starsContainer) {
+                    const stars = ['🌟', '⭐', '✨', '💫', '🌟✨', '⭐✨'];
+                    let starCount = 0;
+                    function addStar() {
+                        if (starCount >= 10) return;
+                        const s = document.createElement('div');
+                        s.className = 'star-item';
+                        s.textContent = stars[Math.floor(Math.random() * stars.length)];
+                        s.style.left = Math.random() * 100 + '%';
+                        s.style.fontSize = (20 + Math.random() * 20) + 'px';
+                        s.style.animationDuration = (5 + Math.random() * 8) + 's';
+                        starsContainer.appendChild(s);
+                        starCount++;
+                        s.addEventListener('animationend', () => { s.remove(); starCount--; });
                     }
-                }, 100);
+                    setInterval(addStar, 2000);
+                    for (let i = 0; i < 3; i++) setTimeout(addStar, i * 300);
+                }
+                const moonsContainer = document.getElementById('fallingMoons');
+                if (moonsContainer) {
+                    const moons = ['🌙', '🌙✨', '🌙🌟', '🌙💫', '🌙🌙'];
+                    let moonCount = 0;
+                    function addMoon() {
+                        if (moonCount >= 8) return;
+                        const m = document.createElement('div');
+                        m.className = 'moon-item';
+                        m.textContent = moons[Math.floor(Math.random() * moons.length)];
+                        m.style.left = Math.random() * 100 + '%';
+                        m.style.fontSize = (22 + Math.random() * 20) + 'px';
+                        m.style.animationDuration = (6 + Math.random() * 8) + 's';
+                        moonsContainer.appendChild(m);
+                        moonCount++;
+                        m.addEventListener('animationend', () => { m.remove(); moonCount--; });
+                    }
+                    setInterval(addMoon, 2300);
+                    for (let i = 0; i < 2; i++) setTimeout(addMoon, i * 400);
+                }
+            }
+            
+            const shootingStars = ['🌠', '🌠✨', '⭐🌠', '🌠💫', '✨🌠', '🌠🌠'];
+            const flowerCards = ['💮', '🌸💮', '💮🌸', '🌼💮', '💮✨', '🌺💮'];
+            function createClickEffect(x, y) {
+                const isStar = Math.random() > 0.45;
+                const el = document.createElement('div');
+                el.className = isStar ? 'click-shootingstar' : 'click-flowercard';
+                el.textContent = isStar ? shootingStars[Math.floor(Math.random() * shootingStars.length)] : flowerCards[Math.floor(Math.random() * flowerCards.length)];
+                el.style.left = x + 'px';
+                el.style.top = y + 'px';
+                el.style.fontSize = (26 + Math.random() * 22) + 'px';
+                document.body.appendChild(el);
+                el.addEventListener('animationend', () => el.remove());
+            }
+            document.addEventListener('click', (e) => createClickEffect(e.clientX, e.clientY));
+            
+            const backTop = document.getElementById('backToTop');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) backTop.classList.add('show');
+                else backTop.classList.remove('show');
             });
-        }
-        
-        // ========== 🌟 星星飘落特效 - 适量减少 ==========
-        const starsContainer = document.getElementById('fallingStars');
-        if (starsContainer) {
-            const starIcons = ['🌟', '⭐', '✨', '💫', '🌟✨', '⭐✨'];
-            const MAX_STARS = 6 + Math.floor(Math.random() * 8);
-            const STAR_INTERVAL = 2000 + Math.random() * 1800;
-            let currentStarCount = 0;
-            function createStar() {
-                const star = document.createElement('div');
-                star.className = 'star-item';
-                star.textContent = starIcons[Math.floor(Math.random() * starIcons.length)];
-                star.style.left = Math.random() * 100 + '%';
-                const size = 20 + Math.random() * 20;
-                star.style.fontSize = size + 'px';
-                const duration = 5 + Math.random() * 8;
-                star.style.animationDuration = duration + 's';
-                star.style.opacity = 0.7 + Math.random() * 0.3;
-                return star;
+            backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+            
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinksDom = document.getElementById('navLinks');
+            if (menuToggle && navLinksDom) {
+                menuToggle.addEventListener('click', () => { 
+                    menuToggle.classList.toggle('active'); 
+                    navLinksDom.classList.toggle('active'); 
+                });
+                document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => {
+                    if (window.innerWidth <= 768) { 
+                        menuToggle.classList.remove('active'); 
+                        navLinksDom.classList.remove('active'); 
+                    }
+                }));
             }
-            function addStar() {
-                if (currentStarCount >= MAX_STARS) return;
-                const star = createStar();
-                starsContainer.appendChild(star);
-                currentStarCount++;
-                star.addEventListener('animationend', () => { if (star.parentNode) star.remove(); currentStarCount--; });
+            
+            function bindFilters() {
+                const container = document.getElementById('typeFilterGroup');
+                if (!container) return;
+                const btns = container.querySelectorAll('.tag-btn');
+                btns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const newType = btn.getAttribute('data-type');
+                        if (newType === 'all') currentType = 'all';
+                        else if (newType === 'normal') currentType = 'normal';
+                        else if (newType === 'q') currentType = 'q';
+                        renderTypeFilters();
+                        renderImageGrid();
+                    });
+                });
             }
-            for (let i = 0; i < 2 + Math.floor(Math.random() * 3); i++) setTimeout(() => addStar(), i * 300);
-            setInterval(() => addStar(), STAR_INTERVAL);
-            console.log(`🌟 星星飘落效果已启用 (最大并发: ${MAX_STARS}颗)`);
-        }
-        
-        // ========== 🌙 月亮飘落特效 - 适量减少 ==========
-        const moonsContainer = document.getElementById('fallingMoons');
-        if (moonsContainer) {
-            const moonIcons = ['🌙', '🌙✨', '🌙🌟', '🌙💫', '🌙🌙'];
-            const MAX_MOONS = 4 + Math.floor(Math.random() * 6);
-            const MOON_INTERVAL = 2500 + Math.random() * 2000;
-            let currentMoonCount = 0;
-            function createMoon() {
-                const moon = document.createElement('div');
-                moon.className = 'moon-item';
-                moon.textContent = moonIcons[Math.floor(Math.random() * moonIcons.length)];
-                moon.style.left = Math.random() * 100 + '%';
-                const size = 22 + Math.random() * 22;
-                moon.style.fontSize = size + 'px';
-                const duration = 6 + Math.random() * 8;
-                moon.style.animationDuration = duration + 's';
-                moon.style.opacity = 0.8 + Math.random() * 0.2;
-                return moon;
-            }
-            function addMoon() {
-                if (currentMoonCount >= MAX_MOONS) return;
-                const moon = createMoon();
-                moonsContainer.appendChild(moon);
-                currentMoonCount++;
-                moon.addEventListener('animationend', () => { if (moon.parentNode) moon.remove(); currentMoonCount--; });
-            }
-            for (let i = 0; i < 1 + Math.floor(Math.random() * 3); i++) setTimeout(() => addMoon(), i * 400);
-            setInterval(() => addMoon(), MOON_INTERVAL);
-            console.log(`🌙 月亮飘落效果已启用 (最大并发: ${MAX_MOONS}颗)`);
-        }
-        
-        // ========== 🌠💮 点击特效：流星与花牌随机 ==========
-        const shootingStarArray = ['🌠', '🌠✨', '⭐🌠', '🌠💫', '✨🌠', '🌠🌠', '🌟🌠'];
-        const flowerCardArray = ['💮', '🌸💮', '💮🌸', '🌼💮', '💮✨', '🌺💮', '💮🌼'];
-        
-        function createRandomClickEffect(x, y) {
-            const isShootingStar = Math.random() > 0.45;
-            const element = document.createElement('div');
-            if (isShootingStar) {
-                element.className = 'click-shootingstar';
-                const randomStar = shootingStarArray[Math.floor(Math.random() * shootingStarArray.length)];
-                element.textContent = randomStar;
-            } else {
-                element.className = 'click-flowercard';
-                const randomCard = flowerCardArray[Math.floor(Math.random() * flowerCardArray.length)];
-                element.textContent = randomCard;
-            }
-            element.style.left = x + 'px';
-            element.style.top = y + 'px';
-            const randSize = 26 + Math.floor(Math.random() * 24);
-            element.style.fontSize = randSize + 'px';
-            document.body.appendChild(element);
-            element.addEventListener('animationend', () => { if (element.parentNode) element.remove(); });
-        }
-        
-        document.addEventListener('click', (e) => {
-            createRandomClickEffect(e.clientX, e.clientY);
-        });
-        
-        console.log(`✅ 古风衣橱加载完成 | 🌟星星适量飘落 + 🌙月亮适量飘落 + 点击🌠流星💮花牌随机特效 | 共收录 ${allImages.length} 套服设`);
-    })();
-</script>
+            
+            loadFavorites();
+            
+            scanImageList().then(images => {
+                IMAGES_DATA = images;
+                normalCount = IMAGES_DATA.filter(img => img.type === 'normal').length;
+                qCount = IMAGES_DATA.filter(img => img.type === 'q').length;
+                console.log(`📚 古风衣橱动态扫描完成，共检测到 ${IMAGES_DATA.length} 张图片`);
+                console.log(`✨ 正比: ${normalCount} | 🍡 Q版: ${qCount}`);
+                renderImageGrid();
+                updateFilterStats();
+            }).catch(err => {
+                console.warn("扫描图片时出现异常，使用后备数据", err);
+                for (let i = 1; i <= 21; i++) {
+                    const type = NORMAL_LIST.includes(i) ? 'normal' : 'q';
+                    IMAGES_DATA.push({
+                        src: `../img/gufeng/1 (${i}).jpg`,
+                        type: type,
+                        index: i
+                    });
+                }
+                normalCount = IMAGES_DATA.filter(img => img.type === 'normal').length;
+                qCount = IMAGES_DATA.filter(img => img.type === 'q').length;
+                renderImageGrid();
+                updateFilterStats();
+            });
+            
+            initModal();
+            initEffects();
+            bindFilters();
+            
+            console.log("🌸 古风衣橱 | 收藏功能已启用 | 鼠标悬浮图片显示🤍按钮");
+        })();
+    </script>
 </body>
 </html>

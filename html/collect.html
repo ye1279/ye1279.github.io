@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="cn">
+<html lang="zh-CN">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
@@ -13,7 +13,6 @@
     <link rel="icon" href="./picture/favicon.ico">
     
     <style>
-         /* ========== 手机端灰色外框修复 - 与日常衣橱一致 ========== */
         * {
             margin: 0;
             padding: 0;
@@ -27,163 +26,80 @@
             max-width: 100% !important;
             overflow-x: hidden !important;
             background: linear-gradient(135deg, #1a1c2e 0%, #2d2a4a 100%);
+            scroll-behavior: smooth;
         }
 
-        /* 主内容容器 - 与日常衣橱一致 */
-        #menu-container, .homepage, .home-section {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* 移除装饰性边框元素 */
-        .border-top, .border-left, .border-right, .border-bottom,
-        span[class*="border-"] {
-            display: none !important;
-        }
-        /* ========== 全局背景和文字颜色 ========== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
         body {
-            background: linear-gradient(135deg, #1a1c2e 0%, #2d2a4a 100%);
             font-family: 'Segoe UI', 'PingFang SC', Roboto, 'Helvetica Neue', sans-serif;
             color: #f0f0f0;
             position: relative;
             min-height: 100vh;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
+        }
+
+        .filter-section {
+            margin: 20px 0 10px;
+            text-align: center;
         }
         
-        /* 移除所有可能产生边框的全局样式 */
-        .container, .container-fluid, .row, [class*="col-"] {
-            margin: 0;
-            padding: 0;
+        .filter-group {
+            margin-bottom: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
         }
         
-        /* ========== 飘落特效容器 ========== */
-        .falling-leaves {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9999;
-            overflow: hidden;
+        .filter-label {
+            display: inline-block;
+            background: rgba(34, 30, 54, 0.5);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            color: #c9a5f0;
+            margin-right: 8px;
         }
         
-        .leaf {
-            position: absolute;
-            top: -30px;
-            font-size: 24px;
-            animation: fall linear forwards;
-            pointer-events: none;
-            color: rgba(255, 180, 70, 0.9);
-            text-shadow: 0 0 2px rgba(0,0,0,0.2);
-            will-change: transform;
+        .tag-btn {
+            background: rgba(34, 30, 54, 0.7);
+            border: 1px solid rgba(169, 91, 195, 0.3);
+            border-radius: 30px;
+            padding: 5px 14px;
+            font-size: 0.8rem;
+            color: #e0d4ff;
+            cursor: pointer;
+            transition: all 0.2s;
+            backdrop-filter: blur(4px);
         }
         
-        .falling-trophies {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9998;
-            overflow: hidden;
+        .tag-btn:hover {
+            background: rgba(169, 91, 195, 0.3);
+            border-color: #a95bc3;
+            transform: translateY(-1px);
         }
         
-        .trophy {
-            position: absolute;
-            top: -40px;
-            font-size: 28px;
-            animation: trophyFall linear forwards;
-            pointer-events: none;
-            filter: drop-shadow(0 0 4px gold);
-            will-change: transform;
+        .tag-btn.active {
+            background: linear-gradient(95deg, #a95bc3, #7b2c9e);
+            border-color: #a95bc3;
+            color: white;
+            box-shadow: 0 2px 8px rgba(169, 91, 195, 0.3);
         }
         
-        /* 点击特效 - 星光火焰组合 */
-        .click-effect-star {
-            position: fixed;
-            pointer-events: none;
-            z-index: 10001;
-            font-size: 32px;
-            animation: clickPopStar 0.65s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+        .tag-btn.reset-btn {
+            background: rgba(169, 91, 195, 0.15);
+            border-color: rgba(169, 91, 195, 0.4);
         }
         
-        .click-effect-fire {
-            position: fixed;
-            pointer-events: none;
-            z-index: 10002;
-            font-size: 34px;
-            animation: clickPopFire 0.7s ease-out forwards;
+        .tag-btn.reset-btn:hover {
+            background: #6e2a85;
         }
         
-        @keyframes fall {
-            0% {
-                transform: translateY(-30px) rotate(0deg);
-                opacity: 0.9;
-            }
-            100% {
-                transform: translateY(100vh) rotate(380deg);
-                opacity: 0;
-            }
+        .filter-stats {
+            text-align: center;
+            margin: 10px 0 15px;
+            font-size: 0.85rem;
+            color: #b6a9e0;
         }
         
-        @keyframes trophyFall {
-            0% {
-                transform: translateY(-40px) rotate(0deg) scale(1);
-                opacity: 1;
-            }
-            60% {
-                transform: translateY(60vh) rotate(200deg) scale(1.1);
-                opacity: 0.8;
-            }
-            100% {
-                transform: translateY(100vh) rotate(400deg) scale(0.7);
-                opacity: 0;
-            }
-        }
-        
-        @keyframes clickPopStar {
-            0% {
-                transform: translate(-50%, -50%) scale(0.2) rotate(0deg);
-                opacity: 1;
-            }
-            40% {
-                transform: translate(-50%, -50%) scale(1.3) rotate(25deg);
-                opacity: 0.9;
-            }
-            100% {
-                transform: translate(-50%, -50%) scale(1.8) rotate(50deg);
-                opacity: 0;
-            }
-        }
-        
-        @keyframes clickPopFire {
-            0% {
-                transform: translate(-50%, -50%) scale(0.3) rotate(-10deg);
-                opacity: 1;
-            }
-            50% {
-                transform: translate(-50%, -50%) scale(1.2) rotate(15deg);
-                opacity: 0.8;
-            }
-            100% {
-                transform: translate(-50%, -50%) scale(1.6) rotate(30deg);
-                opacity: 0;
-            }
-        }
-        
-        /* ========== 导航栏样式（PC端横向，手机端汉堡折叠） ========== */
         .nav {
             background: rgba(20, 18, 32, 0.95);
             backdrop-filter: blur(10px);
@@ -221,7 +137,6 @@
             color: transparent;
         }
         
-        /* 汉堡菜单按钮（手机端显示） */
         .menu-toggle {
             display: none;
             flex-direction: column;
@@ -240,7 +155,6 @@
             transition: all 0.3s ease;
         }
         
-        /* 导航链接容器 */
         .nav-links {
             display: flex;
             align-items: center;
@@ -260,16 +174,10 @@
             color: #c084fc;
         }
         
-        .nav-links p {
-            display: inline;
-        }
-        
-        /* 手机端样式 */
         @media (max-width: 768px) {
             .menu-toggle {
                 display: flex;
             }
-            
             .nav-links {
                 position: fixed;
                 top: 64px;
@@ -287,66 +195,36 @@
                 border-right: 1px solid rgba(169, 91, 195, 0.3);
                 overflow-y: auto;
             }
-            
             .nav-links.active {
                 left: 0;
             }
-            
             .nav-links a {
                 width: 100%;
                 padding: 10px 0;
                 border-bottom: 1px solid rgba(169, 91, 195, 0.2);
                 font-size: 0.9rem;
             }
-            
-            .nav-links a:last-child {
-                border-bottom: none;
-            }
-            
             .menu-toggle.active span:nth-child(1) {
                 transform: rotate(45deg) translate(5px, 5px);
             }
-            
             .menu-toggle.active span:nth-child(2) {
                 opacity: 0;
             }
-            
             .menu-toggle.active span:nth-child(3) {
                 transform: rotate(-45deg) translate(6px, -6px);
             }
-            
-            .nav .title {
-                font-size: 1rem;
-            }
-            
-            .nav img {
-                width: 35px;
-                height: 35px;
+            .tag-btn {
+                padding: 4px 10px;
+                font-size: 0.7rem;
             }
         }
         
-        /* PC端保持原有样式 */
         @media (min-width: 769px) {
             .nav-links {
                 display: flex !important;
             }
         }
         
-        /* ========== 主内容容器 - 无边框无外边距 ========== */
-        #menu-container {
-            width: 100%;
-            max-width: 100%;
-            overflow-x: hidden;
-        }
-        
-        .homepage {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        /* ========== 标题栏样式 ========== */
         .home-intro {
             text-align: center;
             margin-bottom: 30px;
@@ -361,13 +239,6 @@
             font-weight: normal;
             margin-bottom: 10px;
         }
-        .welcome-title p {
-            font-size: 1rem;
-            color: #b6a9e0;
-            margin-top: 5px;
-        }
-        
-        /* 服设数量统计 */
         .clothes-count {
             display: inline-block;
             background: rgba(169, 91, 195, 0.2);
@@ -376,24 +247,37 @@
             margin-top: 10px;
             font-size: 0.9rem;
             color: #c9a5f0;
-            backdrop-filter: blur(4px);
         }
         
-        /* ========== 图片样式统一 ========== */
-        .animated.umScaleIn {
-            animation-name: umScaleIn;
-            animation-duration: 0.6s;
-            animation-fill-mode: both;
-        }
-        
-        @keyframes umScaleIn {
-            0% {
-                opacity: 0;
-                transform: scale(0.9);
+        @media (min-width: 992px) {
+            .projects-holder .col-md-3 {
+                flex: 0 0 auto !important;
+                width: 16.66666667% !important;
+                max-width: 16.66666667% !important;
             }
-            100% {
-                opacity: 1;
-                transform: scale(1);
+        }
+        
+        @media (min-width: 768px) and (max-width: 991px) {
+            .projects-holder .col-sm-6 {
+                flex: 0 0 auto !important;
+                width: 25% !important;
+                max-width: 25% !important;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .projects-holder .col-sm-6 {
+                flex: 0 0 auto !important;
+                width: 33.33333333% !important;
+                max-width: 33.33333333% !important;
+            }
+        }
+        
+        @media (max-width: 450px) {
+            .projects-holder .col-sm-6 {
+                flex: 0 0 auto !important;
+                width: 50% !important;
+                max-width: 50% !important;
             }
         }
         
@@ -402,11 +286,11 @@
             cursor: pointer;
             transition: transform 0.25s ease, box-shadow 0.25s ease;
             overflow: hidden;
-            border-radius: 12px;
+            border-radius: 10px;
             background: #2c2e33;
             width: 100%;
-            aspect-ratio: 4 / 3;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            aspect-ratio: 1 / 1;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
         
         .project-item img {
@@ -424,8 +308,8 @@
         }
         
         .project-item:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
         
         .project-item:hover img {
@@ -436,13 +320,13 @@
         .project-item::after {
             content: "🔍";
             position: absolute;
-            bottom: 12px;
-            right: 12px;
+            bottom: 8px;
+            right: 8px;
             background: rgba(0, 0, 0, 0.6);
             color: #fff;
-            font-size: 16px;
-            padding: 5px 10px;
-            border-radius: 30px;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 20px;
             opacity: 0;
             transition: opacity 0.2s ease;
             pointer-events: none;
@@ -454,7 +338,99 @@
             opacity: 0.9;
         }
         
-        /* 模态框样式 */
+        /* ========== 收藏按钮样式 ========== */
+        .fav-btn {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.2s;
+            font-size: 18px;
+            opacity: 0;
+            color: #ff6b6b;
+        }
+        
+        .project-item:hover .fav-btn {
+            opacity: 1;
+        }
+        
+        .fav-btn:hover {
+            transform: scale(1.1);
+            background: rgba(0, 0, 0, 0.8);
+        }
+        
+        .fav-btn.favorited {
+            opacity: 1;
+            background: rgba(255, 107, 107, 0.8);
+            color: white;
+        }
+        
+        /* 提示消息 */
+        .toast-msg {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: linear-gradient(135deg, #a95bc3, #7b2c9e);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 40px;
+            z-index: 10002;
+            opacity: 0;
+            transition: all 0.3s;
+            pointer-events: none;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+        
+        .toast-msg.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #a95bc3, #7b2c9e);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+            display: block;
+            margin: 0 auto;
+        }
+        
         .image-modal {
             display: none;
             position: fixed;
@@ -467,7 +443,6 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
-        
         .image-modal.show {
             display: block;
             z-index: 9998;
@@ -475,7 +450,6 @@
             backdrop-filter: blur(10px);
             opacity: 1;
         }
-        
         .modal-image-wrapper {
             position: fixed;
             top: 0;
@@ -490,7 +464,6 @@
             z-index: 9999;
             pointer-events: none;
         }
-        
         .modal-image-wrapper img {
             display: block;
             max-width: 85vw;
@@ -506,12 +479,10 @@
             pointer-events: auto;
             background: #1a1c1f;
         }
-        
         .modal-image-wrapper img.show {
             transform: scale(1);
             opacity: 1;
         }
-        
         .modal-close-btn {
             position: fixed;
             top: 25px;
@@ -527,95 +498,8 @@
             font-weight: bold;
             color: white;
             cursor: pointer;
-            transition: all 0.2s;
-            backdrop-filter: blur(4px);
             z-index: 10000;
-            pointer-events: auto;
             border: 2px solid rgba(255, 255, 255, 0.9);
-        }
-        
-        .modal-close-btn:hover {
-            background: #6e2a85;
-            transform: scale(1.08) rotate(90deg);
-        }
-        
-        .projects-holder .row {
-            margin: 0 -12px;
-        }
-        
-        .projects-holder [class*="col-"] {
-            padding: 0 12px 24px 12px;
-        }
-        
-        .load-more-container {
-            text-align: center;
-            margin: 30px 0;
-        }
-        
-        .load-more-btn {
-            background: #a95bc3;
-            color: white;
-            border: none;
-            padding: 12px 32px;
-            border-radius: 40px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .load-more-btn:hover {
-            background: #6e2a85;
-            transform: translateY(-2px);
-        }
-        
-        @media (max-width: 768px) {
-            .project-item::after {
-                font-size: 14px;
-                padding: 4px 8px;
-                bottom: 8px;
-                right: 8px;
-            }
-            .modal-image-wrapper img {
-                max-width: 92vw;
-                max-height: 80vh;
-            }
-            .modal-close-btn {
-                width: 40px;
-                height: 40px;
-                top: 15px;
-                right: 20px;
-                font-size: 28px;
-            }
-            .welcome-title {
-                font-size: 1.5rem;
-            }
-            .leaf { font-size: 18px; }
-            .trophy { font-size: 22px; }
-            .click-effect-star, .click-effect-fire { font-size: 26px; }
-            .homepage {
-                padding: 0 12px;
-            }
-        }
-        
-        body.modal-open {
-            overflow: hidden;
-        }
-        
-        .copyright p a {
-            color: #ccc;
-            text-decoration: none;
-        }
-        .copyright p a:hover {
-            color: #a95bc3;
-        }
-        
-        .project-item img {
-            background: linear-gradient(135deg, #2c2e33 0%, #3a3d44 100%);
-        }
-        
-        /* 移除可能产生边框的额外样式 */
-        .border-top, .border-left, .border-right, .border-bottom {
-            display: none;
         }
         
         footer {
@@ -624,336 +508,667 @@
             text-align: center;
             margin-top: 30px;
         }
+        
+        .falling-leaves, .falling-trophies {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+        }
+        .leaf, .trophy {
+            position: absolute;
+            top: -30px;
+            animation: fall linear forwards;
+            pointer-events: none;
+            will-change: transform;
+        }
+        .leaf { font-size: 20px; color: rgba(255, 180, 70, 0.8); }
+        .trophy { font-size: 24px; filter: drop-shadow(0 0 3px gold); }
+        @keyframes fall {
+            0% { transform: translateY(-30px) rotate(0deg); opacity: 0.9; }
+            100% { transform: translateY(100vh) rotate(380deg); opacity: 0; }
+        }
+        .click-effect-star, .click-effect-fire {
+            position: fixed;
+            pointer-events: none;
+            z-index: 10001;
+            font-size: 28px;
+            animation: clickPop 0.6s ease-out forwards;
+        }
+        @keyframes clickPop {
+            0% { transform: translate(-50%, -50%) scale(0.5) rotate(0deg); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1.5) rotate(40deg); opacity: 0; }
+        }
     </style>
 </head>
 
 <body>
-    <!-- 飘落特效容器 -->
     <div class="falling-leaves" id="fallingLeaves"></div>
     <div class="falling-trophies" id="fallingTrophies"></div>
 
-    <!--头部导航（PC端横向，手机端汉堡折叠）-->
+    <div class="back-to-top" id="backToTop" title="返回顶部">
+        <svg viewBox="0 0 24 24"><path d="M12 4l-8 8h6v8h4v-8h6z"/></svg>
+    </div>
+
     <div class="nav">
         <div class="nav-left">
             <img src="../img/头像.jpg" alt="logo 图">
             <span class="title">荣耀之神的空间</span>
         </div>
         <div class="menu-toggle" id="menuToggle">
-            <span></span>
-            <span></span>
-            <span></span>
+            <span></span><span></span><span></span>
         </div>
         <div class="nav-links" id="navLinks">
             <a href="xinxi.html"><p>小叶的资料</p></a>
             <a href="collect.html"><p>小叶的日常衣橱</p></a>
-            <a href="interest.html"><p>小叶的古风及帐号卡衣橱</p></a>
-            <a href="food.html"><p>小叶的西幻及其他衣橱</p></a>
+            <a href="interest.html"><p>小叶的古风衣橱</p></a>
+            <a href="food.html"><p>小叶的帐号卡衣橱</p></a>
             <a href="tongren.html"><p>小叶同人衣橱</p></a>
+            <a href="dashboard.html"><p>我的衣橱管理</p></a>
             <a href="trip.html"><p>荣耀留言板</p></a>
             <a href="search.html"><p>导航</p></a>
             <a href="../index.html"><p>返回首页</p></a>
         </div>
-    </div>       
+    </div>
 
-<div id="menu-container">
-    <div id="menu-1" class="homepage home-section container">
-        <div class="home-intro text-center">
-            <h2 class="welcome-title animated fadeInLeft">小叶日常衣橱<p>YeXiu'clothes.</p></h2>
-            <div class="clothes-count" id="clothesCount">📊 加载中...</div>
-            <div style="border-bottom: 2px solid #46494f; margin-top: 15px;"></div>
+    <div id="menu-container">
+        <div id="menu-1" class="homepage home-section container">
+            <div class="home-intro text-center">
+                <h2 class="welcome-title animated fadeInLeft">小叶日常衣橱<p>YeXiu'clothes.</p></h2>
+                <div class="clothes-count" id="clothesCount">📊 加载中...</div>
+                
+                <div class="filter-section">
+                    <div class="filter-group" id="styleFilter"></div>
+                    <div class="filter-group" id="seasonFilter"></div>
+                    <div class="filter-group">
+                        <button class="tag-btn reset-btn" id="resetFilterBtn">🔄 重置全部筛选</button>
+                    </div>
+                </div>
+                <div class="filter-stats" id="filterStats"></div>
+                <div style="border-bottom: 2px solid #46494f; margin-top: 15px;"></div>
+            </div>
+
+            <section id="project">
+                <div class="projects-holder">
+                    <div id="imageGridContainer" class="row"></div>
+                </div>
+            </section>
+
+            <div style="border-bottom: 2px solid #46494f;"></div> <br />
+            
+            <footer>
+                <div class="blog-header text-center">
+                    <div class="row">
+                        <div class="col-md-12 copyright">
+                            <p><a href="../index.html">回到首页</a></p>
+                            <p> &copy; 0529&nbsp;&nbsp; By&nbsp;&nbsp;<a href="#">YeXiu</a>&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                        </div>
+                    </div>
+                </div>
+            </footer>
         </div>
-
-        <section id="project">
-            <div class="projects-holder">
-                <div id="imageGridContainer" class="row"></div>
-                <div class="load-more-container" id="loadMoreContainer" style="display: none;">
-                    <button class="load-more-btn" id="loadMoreBtn">加载更多图片 +</button>
-                </div>
-            </div>
-        </section>
-
-        <div style="border-bottom: 2px solid #46494f;"></div> <br />
-        
-        <footer>
-            <div class="blog-header text-center">
-                <div class="row">
-                    <div class="col-md-12 copyright">
-                        <p><a href="../index.html">回到首页</a></p>
-                        <p> &copy; 0529&nbsp;&nbsp; By&nbsp;&nbsp;<a href="#">YeXiu</a>&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                    </div>
-                </div>
-            </div>
-        </footer>
     </div>
-</div>
 
-<!-- 模态框 -->
-<div id="imageModal" class="image-modal">
-    <div class="modal-backdrop-area"></div>
-    <div class="modal-close-btn" id="modalCloseBtn">✕</div>
-    <div class="modal-image-wrapper">
-        <img id="modalImage" alt="放大图片">
+    <div id="imageModal" class="image-modal">
+        <div class="modal-backdrop-area"></div>
+        <div class="modal-close-btn" id="modalCloseBtn">✕</div>
+        <div class="modal-image-wrapper">
+            <img id="modalImage" alt="放大图片">
+        </div>
     </div>
-</div>
 
-<script>
-    (function() {
-        // ========== 汉堡菜单功能 ==========
-        const menuToggle = document.getElementById('menuToggle');
-        const navLinks = document.getElementById('navLinks');
-        
-        if (menuToggle && navLinks) {
-            menuToggle.addEventListener('click', function() {
-                menuToggle.classList.toggle('active');
-                navLinks.classList.toggle('active');
-            });
+    <div id="toastMsg" class="toast-msg">✨ 提示消息</div>
+
+    <script>
+        (function() {
+            // ========== 收藏功能 ==========
+            let favorites = [];
             
-            const navItems = navLinks.querySelectorAll('a');
-            navItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    if (window.innerWidth <= 768) {
-                        menuToggle.classList.remove('active');
-                        navLinks.classList.remove('active');
-                    }
-                });
-            });
-            
-            document.addEventListener('click', function(e) {
-                if (window.innerWidth <= 768) {
-                    if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
-                        menuToggle.classList.remove('active');
-                        navLinks.classList.remove('active');
-                    }
+            function loadFavorites() {
+                const saved = localStorage.getItem('global_favorites');
+                if (saved) {
+                    try {
+                        favorites = JSON.parse(saved);
+                    } catch(e) { favorites = []; }
                 }
-            });
-        }
-        
-        // ========== 图片配置 ==========
-        const IMAGE_CONFIG = {
-            basePath: '../img/spring/',
-            namingPattern: 'bracket',
-            totalImages: 139,
-            cols: { md: 3, sm: 6 }
-        };
-        
-        function generateImageList() {
-            const config = IMAGE_CONFIG;
-            const images = [];
-            for (let i = 1; i <= config.totalImages; i++) {
-                let fileName = config.namingPattern === 'bracket' ? `1 (${i}).jpg` : `${i}.jpg`;
-                images.push(config.basePath + fileName);
             }
-            return images;
-        }
-        
-        function getColumnClass() {
-            const cols = IMAGE_CONFIG.cols;
-            return `col-md-${cols.md} col-sm-${cols.sm}`;
-        }
-        
-        function handleImageLoad(imgElement) {
-            imgElement.classList.add('loaded');
-        }
-        
-        function updateClothesCount(count) {
-            const countElement = document.getElementById('clothesCount');
-            if (countElement) {
-                countElement.innerHTML = `📊 已收录 ${count} 套服设 ✨`;
+            
+            function saveFavorites() {
+                localStorage.setItem('global_favorites', JSON.stringify(favorites));
             }
-        }
-        
-        function renderImageGrid(images, startIndex = 0, batchSize = 24) {
-            const container = document.getElementById('imageGridContainer');
-            if (!container) return;
-            const endIndex = Math.min(startIndex + batchSize, images.length);
-            const newImages = images.slice(startIndex, endIndex);
-            newImages.forEach((imgSrc, idx) => {
-                const actualIndex = startIndex + idx;
-                const colDiv = document.createElement('div');
-                colDiv.className = `${getColumnClass()} animated umScaleIn`;
-                colDiv.innerHTML = `
-                    <div class="project-item" data-img-src="${imgSrc}">
-                        <img src="${imgSrc}" alt="现代日常服设${actualIndex + 1}" loading="lazy">
-                    </div>
-                `;
-                container.appendChild(colDiv);
-                const img = colDiv.querySelector('img');
-                if (img.complete) handleImageLoad(img);
-                else img.addEventListener('load', () => handleImageLoad(img));
-            });
-            return endIndex;
-        }
-        
-        function initModal() {
-            const modal = document.getElementById('imageModal');
-            const modalImage = document.getElementById('modalImage');
-            const closeBtn = document.getElementById('modalCloseBtn');
-            let isModalOpen = false;
-            function openModal(imgSrc) {
-                if (!modal || !modalImage) return;
-                modalImage.src = imgSrc;
-                modalImage.classList.remove('show');
-                void modalImage.offsetWidth;
-                modal.classList.add('show');
-                setTimeout(() => modalImage.classList.add('show'), 10);
-                document.body.classList.add('modal-open');
-                isModalOpen = true;
+            
+            function isFavorited(src) {
+                return favorites.some(fav => fav.src === src);
             }
-            function closeModal() {
-                if (!modal || !modalImage) return;
-                modalImage.classList.remove('show');
-                setTimeout(() => {
-                    modal.classList.remove('show');
-                    setTimeout(() => { if (!modal.classList.contains('show')) modalImage.src = ''; }, 100);
-                }, 200);
-                document.body.classList.remove('modal-open');
-                isModalOpen = false;
+            
+            function addFavorite(src, name) {
+                if (!isFavorited(src)) {
+                    favorites.push({ src: src, name: name });
+                    saveFavorites();
+                    showToast('❤️ 已添加到收藏夹');
+                    return true;
+                } else {
+                    showToast('📌 已在收藏夹中');
+                    return false;
+                }
             }
-            const container = document.getElementById('imageGridContainer');
-            if (container) {
-                container.addEventListener('click', function(e) {
-                    let target = e.target;
-                    let projectItem = null;
-                    while (target && target !== container) {
-                        if (target.classList && target.classList.contains('project-item')) {
-                            projectItem = target;
-                            break;
-                        }
-                        target = target.parentElement;
-                    }
-                    if (projectItem) {
-                        e.stopPropagation();
-                        let imgSrc = projectItem.getAttribute('data-img-src');
-                        if (!imgSrc) {
-                            const img = projectItem.querySelector('img');
-                            if (img) imgSrc = img.getAttribute('src');
-                        }
-                        if (imgSrc) openModal(imgSrc);
+            
+            function removeFavorite(src) {
+                favorites = favorites.filter(fav => fav.src !== src);
+                saveFavorites();
+                showToast('🗑️ 已从收藏夹移除');
+                updateAllFavoriteButtons();
+            }
+            
+            function updateAllFavoriteButtons() {
+                document.querySelectorAll('.fav-btn').forEach(btn => {
+                    const src = btn.getAttribute('data-src');
+                    if (src && isFavorited(src)) {
+                        btn.classList.add('favorited');
+                        btn.innerHTML = '❤️';
+                    } else if (btn) {
+                        btn.classList.remove('favorited');
+                        btn.innerHTML = '🤍';
                     }
                 });
             }
-            if (closeBtn) closeBtn.addEventListener('click', (e) => { e.stopPropagation(); closeModal(); });
-            const backdropArea = document.querySelector('.modal-backdrop-area');
-            if (backdropArea) backdropArea.addEventListener('click', () => closeModal());
-            if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-            document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && isModalOpen) closeModal(); });
-            const modalWrapper = document.querySelector('.modal-image-wrapper');
-            if (modalWrapper) modalWrapper.addEventListener('click', (e) => e.stopPropagation());
-        }
-        
-        let imageList = generateImageList();
-        updateClothesCount(imageList.length);
-        
-        const BATCH_SIZE = 24;
-        let currentIndex = 0;
-        function loadMoreImages() {
-            const newIndex = renderImageGrid(imageList, currentIndex, BATCH_SIZE);
-            currentIndex = newIndex;
-            const loadMoreContainer = document.getElementById('loadMoreContainer');
-            if (loadMoreContainer) loadMoreContainer.style.display = currentIndex < imageList.length ? 'block' : 'none';
-        }
-        loadMoreImages();
-        const loadMoreBtn = document.getElementById('loadMoreBtn');
-        if (loadMoreBtn) loadMoreBtn.addEventListener('click', () => { loadMoreImages(); });
-        initModal();
-        
-        // ========== 🍁 枫叶飘落特效 ==========
-        const leavesContainer = document.getElementById('fallingLeaves');
-        if (leavesContainer) {
-            const leafIcons = ['🍁', '🍂', '🍁', '🍂', '🍁', '🍂'];
-            const MAX_LEAVES = 12 + Math.floor(Math.random() * 15);
-            const LEAF_INTERVAL = 800 + Math.random() * 1200;
-            let currentLeafCount = 0;
-            function createLeaf() {
-                const leaf = document.createElement('div');
-                leaf.className = 'leaf';
-                leaf.textContent = leafIcons[Math.floor(Math.random() * leafIcons.length)];
-                leaf.style.left = Math.random() * 100 + '%';
-                const size = 16 + Math.random() * 22;
-                leaf.style.fontSize = size + 'px';
-                const duration = 4 + Math.random() * 7;
-                leaf.style.animationDuration = duration + 's';
-                leaf.style.opacity = 0.5 + Math.random() * 0.5;
-                leaf.style.animationDelay = Math.random() * 2 + 's';
-                return leaf;
+            
+            function showToast(message) {
+                const toast = document.getElementById('toastMsg');
+                if (!toast) return;
+                toast.textContent = message;
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2000);
             }
-            function addLeaf() {
-                if (currentLeafCount >= MAX_LEAVES) return;
-                const leaf = createLeaf();
-                leavesContainer.appendChild(leaf);
-                currentLeafCount++;
-                leaf.addEventListener('animationend', () => { if (leaf.parentNode) leaf.remove(); currentLeafCount--; });
+            
+            // ============================================================
+            // 根据您提供的标签信息，完整配置 205 张图片
+            // ============================================================
+            
+            const IMAGES_DATA = [
+                { src: '../img/spring/1 (1).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (2).jpg', style: '制服', season: ['春', '秋'] },
+                { src: '../img/spring/1 (3).jpg', style: '制服', season: ['春', '秋'] },
+                { src: '../img/spring/1 (4).jpg', style: '日韩系', season: ['春', '秋'] },
+                { src: '../img/spring/1 (5).jpg', style: '日韩系', season: ['春', '秋'] },
+                { src: '../img/spring/1 (6).jpg', style: '制服', season: ['春', '秋'] },
+                { src: '../img/spring/1 (7).jpg', style: '设计感', season: ['春', '秋'] },
+                { src: '../img/spring/1 (8).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (9).jpg', style: ['Q版', '日常'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (10).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (11).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (12).jpg', style: '日常', season: '夏' },
+                { src: '../img/spring/1 (13).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (14).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (15).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (16).jpg', style: '日常', season: '夏' },
+                { src: '../img/spring/1 (17).jpg', style: '制服', season: ['春', '秋'] },
+                { src: '../img/spring/1 (18).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (19).jpg', style: '日常', season: '冬' },
+                { src: '../img/spring/1 (20).jpg', style: '制服', season: ['春', '秋'] },
+                { src: '../img/spring/1 (21).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (22).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (23).jpg', style: '工装', season: ['春', '秋'] },
+                { src: '../img/spring/1 (24).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (25).jpg', style: '工装', season: ['春', '秋'] },
+                { src: '../img/spring/1 (26).jpg', style: '制服', season: ['春', '秋'] },
+                { src: '../img/spring/1 (27).jpg', style: '制服', season: ['春', '秋'] },
+                { src: '../img/spring/1 (28).jpg', style: '设计感', season: ['春', '秋'] },
+                { src: '../img/spring/1 (29).jpg', style: ['Q版', '日常'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (30).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (31).jpg', style: ['Q版', '日常'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (32).jpg', style: ['Q版', '日常'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (33).jpg', style: ['Q版', '日常'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (34).jpg', style: ['Q版', '日常'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (35).jpg', style: ['Q版', '日常'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (36).jpg', style: ['Q版', '日常'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (37).jpg', style: ['Q版', '日常'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (38).jpg', style: ['Q版', '休闲'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (39).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (40).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (41).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (42).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (43).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (44).jpg', style: '日常', season: '冬' },
+                { src: '../img/spring/1 (45).jpg', style: 'Q版', season: '冬' },
+                { src: '../img/spring/1 (46).jpg', style: 'Q版', season: '冬' },
+                { src: '../img/spring/1 (47).jpg', style: '设计感', season: ['春', '秋'] },
+                { src: '../img/spring/1 (48).jpg', style: '制服', season: ['春', '秋'] },
+                { src: '../img/spring/1 (49).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (50).jpg', style: '日常', season:  ['春', '夏','秋','冬']  },
+                { src: '../img/spring/1 (51).jpg', style: ['Q版', '日常'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (52).jpg', style: ['Q版', '工装'], season: '夏' },
+                { src: '../img/spring/1 (53).jpg', style: '日常', season: '冬' },
+                { src: '../img/spring/1 (54).jpg', style: '日常', season: '夏' },
+                { src: '../img/spring/1 (55).jpg', style: '日常', season: '冬' },
+                { src: '../img/spring/1 (56).jpg', style: '日常', season: '冬' },
+                { src: '../img/spring/1 (57).jpg', style: 'Q版', season: '冬' },
+                { src: '../img/spring/1 (58).jpg', style: 'Q版', season: '冬' },
+                { src: '../img/spring/1 (59).jpg', style: 'Q版', season: '冬' },
+                { src: '../img/spring/1 (60).jpg', style: '日常', season: '冬' },
+                { src: '../img/spring/1 (61).jpg', style: '设计感', season: ['春', '秋'] },
+                { src: '../img/spring/1 (62).jpg', style: '制服', season: ['春', '秋'] },
+                { src: '../img/spring/1 (63).jpg', style: 'Q版', season: '冬' },
+                { src: '../img/spring/1 (64).jpg', style: 'Q版', season: '夏' },
+                { src: '../img/spring/1 (65).jpg', style: '工装', season: '夏' },
+                { src: '../img/spring/1 (66).jpg', style: ['Q版', '日常'], season: '夏' },
+                { src: '../img/spring/1 (67).jpg', style: '制服', season: ['春', '秋'] },
+                { src: '../img/spring/1 (68).jpg', style: 'Q版', season: ['春', '秋'] },
+                { src: '../img/spring/1 (69).jpg', style: ['Q版', '其他'], season: '冬' },
+                { src: '../img/spring/1 (70).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (71).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (72).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (73).jpg', style: 'Q版', season: ['春', '秋'] },
+                { src: '../img/spring/1 (74).jpg', style: '制服', season: ['春', '秋'] },
+                { src: '../img/spring/1 (75).jpg', style: ['Q版', '日常'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (76).jpg', style: '其他', season: ['春', '秋'] },
+                { src: '../img/spring/1 (77).jpg', style: '日常', season: '夏' },
+                { src: '../img/spring/1 (78).jpg', style: '其他', season: ['春', '秋'] },
+                { src: '../img/spring/1 (79).jpg', style: '其他', season: ['春', '秋'] },
+                { src: '../img/spring/1 (80).jpg', style: '设计感', season: ['春', '秋'] },
+                { src: '../img/spring/1 (81).jpg', style: '其他', season: ['春', '秋'] },
+                { src: '../img/spring/1 (82).jpg', style: '日常', season: '冬' },
+                { src: '../img/spring/1 (83).jpg', style: '设计感', season: ['春', '秋'] },
+                { src: '../img/spring/1 (84).jpg', style: '其他', season: '冬' },
+                { src: '../img/spring/1 (85).jpg', style: ['Q版', '日常'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (86).jpg', style: ['Q版', '日常'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (87).jpg', style: '日韩系', season: ['春', '秋'] },
+                { src: '../img/spring/1 (88).jpg', style: '制服', season: ['春', '秋'] },
+                { src: '../img/spring/1 (89).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (90).jpg', style: ['Q版', '日常'], season: '夏' },
+                { src: '../img/spring/1 (91).jpg', style: '工装', season: ['春', '秋'] },
+                { src: '../img/spring/1 (92).jpg', style: '工装', season: ['春', '秋'] },
+                { src: '../img/spring/1 (93).jpg', style: '日常', season: '夏' },
+                { src: '../img/spring/1 (94).jpg', style: 'Q版', season: '冬' },
+                { src: '../img/spring/1 (95).jpg', style: ['制服', '日韩系'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (96).jpg', style: ['制服', '其他', 'Q版'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (97).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (98).jpg', style: '设计感', season: ['春', '秋'] },
+                { src: '../img/spring/1 (99).jpg', style: ['Q版', '工装'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (100).jpg', style: '日韩系', season: ['春', '秋'] },
+                { src: '../img/spring/1 (101).jpg', style: 'Q版', season: ['春', '秋'] },
+                { src: '../img/spring/1 (102).jpg', style: ['Q版', '日常'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (103).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (104).jpg', style: 'Q版', season: ['春', '秋'] },
+                { src: '../img/spring/1 (105).jpg', style: ['Q版', '日常'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (106).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (107).jpg', style: 'Q版', season: ['春', '秋'] },
+                { src: '../img/spring/1 (108).jpg', style: '工装', season: ['春', '秋'] },
+                { src: '../img/spring/1 (109).jpg', style: '工装', season: ['春', '秋'] },
+                { src: '../img/spring/1 (110).jpg', style: '工装', season: ['春', '秋'] },
+                { src: '../img/spring/1 (111).jpg', style: '工装', season: ['春', '秋'] },
+                { src: '../img/spring/1 (112).jpg', style: '工装', season: ['春', '秋'] },
+                { src: '../img/spring/1 (113).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (114).jpg', style: '日常', season: '夏' },
+                { src: '../img/spring/1 (115).jpg', style: '日常', season: '冬' },
+                { src: '../img/spring/1 (116).jpg', style: '工装', season: ['春', '秋'] },
+                { src: '../img/spring/1 (117).jpg', style: '工装', season: ['春', '秋'] },
+                { src: '../img/spring/1 (118).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (119).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (120).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (121).jpg', style: '日常', season: '冬' },
+                { src: '../img/spring/1 (122).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (123).jpg', style: '制服', season: ['春', '秋'] },
+                { src: '../img/spring/1 (124).jpg', style: 'Q版', season: '冬' },
+                { src: '../img/spring/1 (125).jpg', style: 'Q版', season: '夏' },
+                { src: '../img/spring/1 (126).jpg', style: ['Q版', '其他'], season: '冬' },
+                { src: '../img/spring/1 (127).jpg', style: '制服', season: ['春', '秋'] },
+                { src: '../img/spring/1 (128).jpg', style: '日韩系', season: ['春', '秋'] },
+                { src: '../img/spring/1 (129).jpg', style: ['Q版', '休闲', '日常'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (130).jpg', style: ['Q版', '制服'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (131).jpg', style: 'Q版', season: '冬' },
+                { src: '../img/spring/1 (132).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (133).jpg', style: '制服', season: ['春', '秋'] },
+                { src: '../img/spring/1 (134).jpg', style: ['制服', '其他'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (135).jpg', style: ['Q版', '制服'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (136).jpg', style: '其他', season: ['春', '秋'] },
+                { src: '../img/spring/1 (137).jpg', style: '设计感', season: ['春', '秋'] },
+                { src: '../img/spring/1 (138).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (139).jpg', style: '日常', season: '夏' },
+                { src: '../img/spring/1 (140).jpg', style: '制服', season: ['春', '秋'] },
+                { src: '../img/spring/1 (141).jpg', style: ['Q版', '制服'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (142).jpg', style: 'Q版', season: '冬' },
+                { src: '../img/spring/1 (143).jpg', style: 'Q版', season: ['春', '秋'] },
+                { src: '../img/spring/1 (144).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (145).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (146).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (147).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (148).jpg', style: '工装', season: ['春', '秋'] },
+                { src: '../img/spring/1 (149).jpg', style: '日常', season: '夏' },
+                { src: '../img/spring/1 (150).jpg', style: '日常', season: '夏' },
+                { src: '../img/spring/1 (151).jpg', style: '日常', season: '冬' },
+                { src: '../img/spring/1 (152).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (153).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (154).jpg', style: '工装', season: '冬' },
+                { src: '../img/spring/1 (155).jpg', style: '其他', season: '冬' },
+                { src: '../img/spring/1 (156).jpg', style: ['Q版', '其他'], season: '冬' },
+                { src: '../img/spring/1 (157).jpg', style: ['Q版', '日常'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (158).jpg', style: '其他', season: '冬' },
+                { src: '../img/spring/1 (159).jpg', style: '制服', season: ['春', '秋'] },
+                { src: '../img/spring/1 (160).jpg', style: ['Q版', '日常'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (161).jpg', style: 'Q版', season: ['春', '秋'] },
+                { src: '../img/spring/1 (162).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (163).jpg', style: '设计感', season: ['春', '秋'] },
+                { src: '../img/spring/1 (164).jpg', style: ['制服', '其他'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (165).jpg', style: ['制服', '其他'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (166).jpg', style: ['Q版', '日常'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (167).jpg', style: '休闲', season: ['春', '秋'] },
+                { src: '../img/spring/1 (168).jpg', style: '工装', season: '夏' },
+                { src: '../img/spring/1 (169).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (170).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (171).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (172).jpg', style: ['Q版', '日常'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (173).jpg', style: ['Q版', '日常'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (174).jpg', style: '工装', season: ['春', '秋'] },
+                { src: '../img/spring/1 (175).jpg', style: '制服', season: ['春', '秋'] },
+                { src: '../img/spring/1 (176).jpg', style: ['Q版', '休闲'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (177).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (178).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (179).jpg', style: ['日常', '工装'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (180).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (181).jpg', style: ['日常', '工装'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (182).jpg', style: '日常', season: ['春', '秋'] },
+                { src: '../img/spring/1 (183).jpg', style: '制服', season: ['春', '秋'] },
+                { src: '../img/spring/1 (184).jpg', style: ['日常', '日韩系'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (185).jpg', style: ['制服', '日韩系'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (186).jpg', style: ['Q版', '其他'], season: '冬' },
+                { src: '../img/spring/1 (187).jpg', style: ['Q版', '其他'], season: '冬' },
+                { src: '../img/spring/1 (188).jpg', style: ['制服', '其他'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (189).jpg', style: '制服', season: ['春', '秋'] },
+                { src: '../img/spring/1 (190).jpg', style: '制服', season: ['春', '秋'] },
+                { src: '../img/spring/1 (191).jpg', style: '制服', season: ['春', '秋'] },
+                { src: '../img/spring/1 (192).jpg', style: '制服', season: ['春', '秋'] },
+                { src: '../img/spring/1 (193).jpg', style: '制服', season: ['春', '秋'] },
+                { src: '../img/spring/1 (194).jpg', style: ['制服', '其他'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (195).jpg', style: '制服', season: ['春', '秋'] },
+                { src: '../img/spring/1 (196).jpg', style: '制服', season: ['春', '秋'] },
+                { src: '../img/spring/1 (197).jpg', style: ['制服', '其他'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (198).jpg', style: '制服', season: ['春', '秋'] },
+                { src: '../img/spring/1 (199).jpg', style: ['Q版', '其他'], season: '冬' },
+                { src: '../img/spring/1 (200).jpg', style: '制服', season: ['春', '秋'] },
+                { src: '../img/spring/1 (201).jpg', style: ['Q版', '其他'], season: '冬' },
+                { src: '../img/spring/1 (202).jpg', style: ['Q版', '其他'], season: '冬' },
+                { src: '../img/spring/1 (203).jpg', style: ['制服', '其他'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (204).jpg', style: ['制服', '其他'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (205).jpg', style: ['制服', '其他'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (206).jpg', style: '日常', season: ['春', '秋'] },
+            ];
+            
+            console.log(`✅ 衣橱数据加载完成，共 ${IMAGES_DATA.length} 套服设`);
+            
+            // ========== 以下代码保持不变 ==========
+            const FIXED_STYLE_ORDER = ['全部', '日常', '制服', '休闲', '工装', '设计感', '日韩系', 'Q版', '其他'];
+            const FIXED_SEASON_ORDER = ['全部', '春', '夏', '秋', '冬'];
+            
+            let currentStyle = '全部';
+            let currentSeason = '全部';
+            
+            function getFilteredImages() {
+                let filtered = IMAGES_DATA;
+                if (currentStyle !== '全部') {
+                    filtered = filtered.filter(img => {
+                        if (Array.isArray(img.style)) return img.style.includes(currentStyle);
+                        else return img.style === currentStyle;
+                    });
+                }
+                if (currentSeason !== '全部') {
+                    filtered = filtered.filter(img => {
+                        if (Array.isArray(img.season)) return img.season.includes(currentSeason);
+                        else return img.season === currentSeason;
+                    });
+                }
+                return filtered;
             }
-            const initialLeaves = 5 + Math.floor(Math.random() * 8);
-            for (let i = 0; i < initialLeaves; i++) {
-                setTimeout(() => addLeaf(), i * 100);
+            
+            function renderStyleFilters() {
+                const container = document.getElementById('styleFilter');
+                if (!container) return;
+                let html = `<span class="filter-label">🎨 风格：</span>`;
+                FIXED_STYLE_ORDER.forEach(style => {
+                    if (style === '全部' || IMAGES_DATA.some(img => img.style === style || (Array.isArray(img.style) && img.style.includes(style)))) {
+                        const activeClass = (currentStyle === style) ? 'active' : '';
+                        html += `<button class="tag-btn ${activeClass}" data-style="${style}">${style}</button>`;
+                    }
+                });
+                container.innerHTML = html;
+                document.querySelectorAll('#styleFilter .tag-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        currentStyle = btn.getAttribute('data-style');
+                        renderStyleFilters();
+                        renderSeasonFilters();
+                        renderImageGridWithFilter();
+                        updateFilterStats();
+                    });
+                });
             }
-            setInterval(() => addLeaf(), LEAF_INTERVAL);
-        }
-        
-        // ========== 🏆 奖杯飘落特效 ==========
-        const trophiesContainer = document.getElementById('fallingTrophies');
-        if (trophiesContainer) {
-            const trophyIcons = ['🏆', '🏅', '🏆', '🏅', '🏆'];
-            const MAX_TROPHIES = 8 + Math.floor(Math.random() * 12);
-            const TROPHY_INTERVAL = 1500 + Math.random() * 2000;
-            let currentTrophyCount = 0;
-            function createTrophy() {
-                const trophy = document.createElement('div');
-                trophy.className = 'trophy';
-                trophy.textContent = trophyIcons[Math.floor(Math.random() * trophyIcons.length)];
-                trophy.style.left = Math.random() * 100 + '%';
-                const size = 20 + Math.random() * 22;
-                trophy.style.fontSize = size + 'px';
-                const duration = 5 + Math.random() * 7;
-                trophy.style.animationDuration = duration + 's';
-                trophy.style.animationDelay = Math.random() * 2.5 + 's';
-                return trophy;
+            
+            function renderSeasonFilters() {
+                const container = document.getElementById('seasonFilter');
+                if (!container) return;
+                let html = `<span class="filter-label">🌸 季节：</span>`;
+                FIXED_SEASON_ORDER.forEach(season => {
+                    if (season === '全部' || IMAGES_DATA.some(img => img.season === season || (Array.isArray(img.season) && img.season.includes(season)))) {
+                        const activeClass = (currentSeason === season) ? 'active' : '';
+                        html += `<button class="tag-btn ${activeClass}" data-season="${season}">${season}</button>`;
+                    }
+                });
+                container.innerHTML = html;
+                document.querySelectorAll('#seasonFilter .tag-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        currentSeason = btn.getAttribute('data-season');
+                        renderStyleFilters();
+                        renderSeasonFilters();
+                        renderImageGridWithFilter();
+                        updateFilterStats();
+                    });
+                });
             }
-            function addTrophy() {
-                if (currentTrophyCount >= MAX_TROPHIES) return;
-                const trophy = createTrophy();
-                trophiesContainer.appendChild(trophy);
-                currentTrophyCount++;
-                trophy.addEventListener('animationend', () => { if (trophy.parentNode) trophy.remove(); currentTrophyCount--; });
+            
+            function resetFilters() {
+                currentStyle = '全部';
+                currentSeason = '全部';
+                renderStyleFilters();
+                renderSeasonFilters();
+                renderImageGridWithFilter();
+                updateFilterStats();
             }
-            const initialTrophies = 3 + Math.floor(Math.random() * 6);
-            for (let i = 0; i < initialTrophies; i++) {
-                setTimeout(() => addTrophy(), i * 150);
+            
+            function updateFilterStats() {
+                const filteredImages = getFilteredImages();
+                const statsDiv = document.getElementById('filterStats');
+                if (statsDiv) {
+                    let filterText = [];
+                    if (currentStyle !== '全部') filterText.push(`风格「${currentStyle}」`);
+                    if (currentSeason !== '全部') filterText.push(`季节「${currentSeason}」`);
+                    const filterDesc = filterText.length > 0 ? filterText.join(' + ') : '全部';
+                    statsDiv.innerHTML = `🏷️ 当前筛选：${filterDesc} &nbsp;|&nbsp; 📸 共 ${filteredImages.length} 套服设 ✨`;
+                }
+                const countEle = document.getElementById('clothesCount');
+                if(countEle) countEle.innerHTML = `📊 已收录 ${IMAGES_DATA.length} 套完整服设 · 小叶衣橱 🌟`;
             }
-            setInterval(() => addTrophy(), TROPHY_INTERVAL);
-        }
-        
-        // ========== ⭐🔥 点击特效 ==========
-        const starArray = ['⭐', '🌟', '✨', '💫', '⭐✨', '🌟⭐', '✨✨', '⭐️'];
-        const fireArray = ['🔥', '🔥🔥', '💥', '⚡', '🔥✨', '🔥💥', '⚡🔥'];
-        
-        function createRandomClickEffect(x, y) {
-            const isStar = Math.random() > 0.5;
-            const element = document.createElement('div');
-            if (isStar) {
-                element.className = 'click-effect-star';
-                const randomStar = starArray[Math.floor(Math.random() * starArray.length)];
-                element.textContent = randomStar;
-            } else {
-                element.className = 'click-effect-fire';
-                const randomFire = fireArray[Math.floor(Math.random() * fireArray.length)];
-                element.textContent = randomFire;
+            
+            function handleImageLoad(imgElement) { imgElement.classList.add('loaded'); }
+            function getColumnClass() { return `col-md-3 col-sm-6`; }
+            
+            function renderImageGridWithFilter() {
+                const container = document.getElementById('imageGridContainer');
+                if (!container) return;
+                const filteredImages = getFilteredImages();
+                container.innerHTML = '';
+                filteredImages.forEach((image, idx) => {
+                    const colDiv = document.createElement('div');
+                    colDiv.className = `${getColumnClass()} animated umScaleIn`;
+                    const imgName = `小叶衣橱${idx+1}`;
+                    colDiv.innerHTML = `
+                        <div class="project-item" data-img-src="${image.src}">
+                            <button class="fav-btn" data-src="${image.src}" data-name="${imgName}">🤍</button>
+                            <img src="${image.src}" alt="${imgName}" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%23333%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2212%22%3E图片缺失%3C/text%3E%3C/svg%3E'; this.onerror=null;">
+                        </div>
+                    `;
+                    container.appendChild(colDiv);
+                    const img = colDiv.querySelector('img');
+                    if (img.complete) handleImageLoad(img);
+                    else img.addEventListener('load', () => handleImageLoad(img));
+                });
+                updateFilterStats();
+                // 绑定收藏按钮事件
+                bindFavoriteButtons();
+                // 更新收藏按钮状态
+                updateAllFavoriteButtons();
             }
-            element.style.left = x + 'px';
-            element.style.top = y + 'px';
-            const randSize = 24 + Math.floor(Math.random() * 24);
-            element.style.fontSize = randSize + 'px';
-            document.body.appendChild(element);
-            element.addEventListener('animationend', () => { if (element.parentNode) element.remove(); });
-        }
-        
-        document.addEventListener('click', (e) => {
-            createRandomClickEffect(e.clientX, e.clientY);
-        });
-        
-        console.log(`✨ 小叶日常衣橱 | 特效已启用：🍁枫叶 🏆奖杯 点击⭐🔥绽放 ✨ | 共收录 ${imageList.length} 套服设`);
-    })();
-</script>
+            
+            function bindFavoriteButtons() {
+                document.querySelectorAll('.fav-btn').forEach(btn => {
+                    btn.removeEventListener('click', handleFavClick);
+                    btn.addEventListener('click', handleFavClick);
+                });
+            }
+            
+            function handleFavClick(e) {
+                e.stopPropagation();
+                const btn = e.currentTarget;
+                const src = btn.getAttribute('data-src');
+                const name = btn.getAttribute('data-name') || '服饰图片';
+                
+                if (btn.classList.contains('favorited')) {
+                    removeFavorite(src);
+                } else {
+                    addFavorite(src, name);
+                }
+                updateAllFavoriteButtons();
+            }
+            
+            function initModal() {
+                const modal = document.getElementById('imageModal');
+                const modalImage = document.getElementById('modalImage');
+                const closeBtn = document.getElementById('modalCloseBtn');
+                let isModalOpen = false;
+                function openModal(imgSrc) {
+                    if (!modal || !modalImage) return;
+                    modalImage.src = imgSrc;
+                    modalImage.classList.remove('show');
+                    void modalImage.offsetWidth;
+                    modal.classList.add('show');
+                    setTimeout(() => modalImage.classList.add('show'), 10);
+                    document.body.classList.add('modal-open');
+                    isModalOpen = true;
+                }
+                function closeModal() {
+                    if (!modal || !modalImage) return;
+                    modalImage.classList.remove('show');
+                    setTimeout(() => { modal.classList.remove('show'); setTimeout(() => { if (!modal.classList.contains('show')) modalImage.src = ''; }, 100); }, 200);
+                    document.body.classList.remove('modal-open');
+                    isModalOpen = false;
+                }
+                const container = document.getElementById('imageGridContainer');
+                if (container) {
+                    container.addEventListener('click', (e) => {
+                        let target = e.target;
+                        let projectItem = null;
+                        while (target && target !== container) {
+                            if (target.classList && target.classList.contains('project-item')) { projectItem = target; break; }
+                            target = target.parentElement;
+                        }
+                        if (projectItem) {
+                            e.stopPropagation();
+                            let imgSrc = projectItem.getAttribute('data-img-src');
+                            if (imgSrc) openModal(imgSrc);
+                        }
+                    });
+                }
+                if (closeBtn) closeBtn.addEventListener('click', closeModal);
+                const backdropArea = document.querySelector('.modal-backdrop-area');
+                if (backdropArea) backdropArea.addEventListener('click', closeModal);
+                if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+                document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && isModalOpen) closeModal(); });
+            }
+            
+            function initEffects() {
+                const leavesContainer = document.getElementById('fallingLeaves');
+                if (leavesContainer) {
+                    const leafIcons = ['🍁', '🍂', '🍁', '🍂', '🍁', '🍂'];
+                    let leafCount = 0;
+                    function addLeaf() {
+                        if (leafCount >= 25) return;
+                        const leaf = document.createElement('div');
+                        leaf.className = 'leaf';
+                        leaf.textContent = leafIcons[Math.floor(Math.random() * leafIcons.length)];
+                        leaf.style.left = Math.random() * 100 + '%';
+                        leaf.style.fontSize = (14 + Math.random() * 18) + 'px';
+                        leaf.style.animationDuration = (4 + Math.random() * 7) + 's';
+                        leaf.style.opacity = 0.5 + Math.random() * 0.5;
+                        leaf.style.animationDelay = Math.random() * 2 + 's';
+                        leavesContainer.appendChild(leaf);
+                        leafCount++;
+                        leaf.addEventListener('animationend', () => { leaf.remove(); leafCount--; });
+                    }
+                    for (let i = 0; i < 8; i++) setTimeout(() => addLeaf(), i * 100);
+                    setInterval(addLeaf, 1200);
+                }
+                const trophiesContainer = document.getElementById('fallingTrophies');
+                if (trophiesContainer) {
+                    const trophyIcons = ['🏆', '🏅', '🏆', '🏅', '🏆'];
+                    let trophyCount = 0;
+                    function addTrophy() {
+                        if (trophyCount >= 15) return;
+                        const trophy = document.createElement('div');
+                        trophy.className = 'trophy';
+                        trophy.textContent = trophyIcons[Math.floor(Math.random() * trophyIcons.length)];
+                        trophy.style.left = Math.random() * 100 + '%';
+                        trophy.style.fontSize = (18 + Math.random() * 20) + 'px';
+                        trophy.style.animationDuration = (5 + Math.random() * 7) + 's';
+                        trophy.style.animationDelay = Math.random() * 2.5 + 's';
+                        trophiesContainer.appendChild(trophy);
+                        trophyCount++;
+                        trophy.addEventListener('animationend', () => { trophy.remove(); trophyCount--; });
+                    }
+                    for (let i = 0; i < 5; i++) setTimeout(() => addTrophy(), i * 150);
+                    setInterval(addTrophy, 2000);
+                }
+            }
+            
+            const starArray = ['⭐', '🌟', '✨', '💫', '⭐✨', '🌟⭐', '✨✨', '⭐️'];
+            const fireArray = ['🔥', '🔥🔥', '💥', '⚡', '🔥✨', '🔥💥', '⚡🔥'];
+            function createRandomClickEffect(x, y) {
+                const isStar = Math.random() > 0.5;
+                const element = document.createElement('div');
+                element.className = isStar ? 'click-effect-star' : 'click-effect-fire';
+                element.textContent = isStar ? starArray[Math.floor(Math.random() * starArray.length)] : fireArray[Math.floor(Math.random() * fireArray.length)];
+                element.style.left = x + 'px';
+                element.style.top = y + 'px';
+                element.style.fontSize = (20 + Math.floor(Math.random() * 20)) + 'px';
+                document.body.appendChild(element);
+                element.addEventListener('animationend', () => { if (element.parentNode) element.remove(); });
+            }
+            document.addEventListener('click', (e) => { createRandomClickEffect(e.clientX, e.clientY); });
+            
+            const backToTop = document.getElementById('backToTop');
+            window.addEventListener('scroll', function() { backToTop.classList.toggle('show', window.scrollY > 300); });
+            backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+            
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinksDom = document.getElementById('navLinks');
+            if (menuToggle && navLinksDom) {
+                menuToggle.addEventListener('click', () => { menuToggle.classList.toggle('active'); navLinksDom.classList.toggle('active'); });
+                document.querySelectorAll('.nav-links a').forEach(item => item.addEventListener('click', () => { if (window.innerWidth <= 768) { menuToggle.classList.remove('active'); navLinksDom.classList.remove('active'); } }));
+            }
+            
+            // 初始化收藏
+            loadFavorites();
+            
+            renderStyleFilters();
+            renderSeasonFilters();
+            renderImageGridWithFilter();
+            initModal();
+            initEffects();
+            document.getElementById('resetFilterBtn')?.addEventListener('click', resetFilters);
+        })();
+    </script>
 </body>
 </html>
