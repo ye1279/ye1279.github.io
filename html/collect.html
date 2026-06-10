@@ -249,6 +249,18 @@
             color: #c9a5f0;
         }
         
+        /* ========== 修复手机端网格布局 ========== */
+        .projects-holder .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -6px !important;
+        }
+        
+        .projects-holder [class*="col-"] {
+            padding: 0 6px 12px 6px !important;
+        }
+        
+        /* 电脑端：一行6列 */
         @media (min-width: 992px) {
             .projects-holder .col-md-3 {
                 flex: 0 0 auto !important;
@@ -257,6 +269,7 @@
             }
         }
         
+        /* 平板端：一行4列 */
         @media (min-width: 768px) and (max-width: 991px) {
             .projects-holder .col-sm-6 {
                 flex: 0 0 auto !important;
@@ -265,16 +278,18 @@
             }
         }
         
+        /* 手机端：一行3列（重要修复） */
         @media (max-width: 767px) {
-            .projects-holder .col-sm-6 {
+            .projects-holder [class*="col-"] {
                 flex: 0 0 auto !important;
                 width: 33.33333333% !important;
                 max-width: 33.33333333% !important;
             }
         }
         
-        @media (max-width: 450px) {
-            .projects-holder .col-sm-6 {
+        /* 极小屏手机：一行2列 */
+        @media (max-width: 480px) {
+            .projects-holder [class*="col-"] {
                 flex: 0 0 auto !important;
                 width: 50% !important;
                 max-width: 50% !important;
@@ -338,7 +353,7 @@
             opacity: 0.9;
         }
         
-        /* ========== 收藏按钮样式 ========== */
+        /* 收藏按钮样式 */
         .fav-btn {
             position: absolute;
             top: 8px;
@@ -543,6 +558,28 @@
             0% { transform: translate(-50%, -50%) scale(0.5) rotate(0deg); opacity: 1; }
             100% { transform: translate(-50%, -50%) scale(1.5) rotate(40deg); opacity: 0; }
         }
+        
+        /* 手机端收藏按钮适配 */
+        @media (max-width: 768px) {
+            .fav-btn {
+                width: 28px;
+                height: 28px;
+                font-size: 14px;
+                top: 5px;
+                left: 5px;
+            }
+            .project-item::after {
+                font-size: 10px;
+                padding: 2px 6px;
+                bottom: 5px;
+                right: 5px;
+            }
+            .toast-msg {
+                font-size: 0.8rem;
+                white-space: nowrap;
+                padding: 8px 16px;
+            }
+        }
     </style>
 </head>
 
@@ -563,15 +600,15 @@
             <span></span><span></span><span></span>
         </div>
         <div class="nav-links" id="navLinks">
-            <a href="xinxi.html"><p>小叶的资料</p></a>
-            <a href="collect.html"><p>小叶的日常衣橱</p></a>
-            <a href="interest.html"><p>小叶的古风衣橱</p></a>
-            <a href="food.html"><p>小叶的帐号卡衣橱</p></a>
-            <a href="tongren.html"><p>小叶同人衣橱</p></a>
-            <a href="dashboard.html"><p>我的衣橱管理</p></a>
-            <a href="trip.html"><p>荣耀留言板</p></a>
-            <a href="search.html"><p>导航</p></a>
-            <a href="../index.html"><p>返回首页</p></a>
+            <a href="xinxi.html"><p>⭐ 小叶的资料</p></a>
+            <a href="collect.html"><p>⭐ 小叶的日常衣橱</p></a>
+            <a href="interest.html"><p>⭐ 小叶的古风衣橱</p></a>
+            <a href="food.html"><p>⭐ 小叶的帐号卡衣橱</p></a>
+            <a href="tongren.html"><p>⭐ 小叶同人衣橱</p></a>
+            <a href="dashboard.html"><p>⭐ 我的衣橱管理</p></a>
+            <a href="trip.html"><p>⭐ 荣耀留言板</p></a>
+            <a href="search.html"><p>⭐ 导航</p></a>
+            <a href="../index.html"><p>⭐ 返回首页</p></a>
         </div>
     </div>
 
@@ -688,7 +725,7 @@
             }
             
             // ============================================================
-            // 根据您提供的标签信息，完整配置 205 张图片
+            // 图片数据配置（完整206张）
             // ============================================================
             
             const IMAGES_DATA = [
@@ -994,7 +1031,11 @@
             }
             
             function handleImageLoad(imgElement) { imgElement.classList.add('loaded'); }
-            function getColumnClass() { return `col-md-3 col-sm-6`; }
+            
+            // 修正：使用 col-xs-6 确保手机端每行2列，同时兼容3列布局
+            function getColumnClass() { 
+                return `col-md-3 col-sm-6 col-xs-6`; 
+            }
             
             function renderImageGridWithFilter() {
                 const container = document.getElementById('imageGridContainer');
@@ -1004,6 +1045,8 @@
                 filteredImages.forEach((image, idx) => {
                     const colDiv = document.createElement('div');
                     colDiv.className = `${getColumnClass()} animated umScaleIn`;
+                    // 添加样式确保宽度正确
+                    colDiv.style.flex = '0 0 auto';
                     const imgName = `小叶衣橱${idx+1}`;
                     colDiv.innerHTML = `
                         <div class="project-item" data-img-src="${image.src}">
@@ -1017,9 +1060,7 @@
                     else img.addEventListener('load', () => handleImageLoad(img));
                 });
                 updateFilterStats();
-                // 绑定收藏按钮事件
                 bindFavoriteButtons();
-                // 更新收藏按钮状态
                 updateAllFavoriteButtons();
             }
             
