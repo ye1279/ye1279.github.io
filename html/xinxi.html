@@ -397,7 +397,76 @@
             margin: 0;
         }
 
-        /* ========== 模态框样式（图片放大+拖拽缩放） ========== */
+        /* ========== 下载区域样式 ========== */
+        .download-section {
+            background: linear-gradient(135deg, rgba(169, 91, 195, 0.2), rgba(123, 44, 158, 0.2));
+            border-radius: 28px;
+            padding: 28px 24px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(169, 91, 195, 0.4);
+            backdrop-filter: blur(4px);
+        }
+        .download-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        .download-card {
+            background: rgba(34, 30, 54, 0.7);
+            border-radius: 20px;
+            padding: 20px 30px;
+            text-align: center;
+            min-width: 200px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(169, 91, 195, 0.3);
+        }
+        .download-card:hover {
+            transform: translateY(-5px);
+            border-color: #a95bc3;
+            box-shadow: 0 10px 25px rgba(169, 91, 195, 0.3);
+        }
+        .download-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+        .download-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: #f0e6ff;
+        }
+        .download-card p {
+            font-size: 0.8rem;
+            color: #b6a9e0;
+            margin-bottom: 15px;
+        }
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #a95bc3, #7b2c9e);
+            border: none;
+            border-radius: 40px;
+            padding: 8px 20px;
+            color: white;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(169, 91, 195, 0.4);
+        }
+        .note-text {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.75rem;
+            color: #9a8fc2;
+        }
+
+        /* ========== 模态框样式 ========== */
         .image-modal {
             display: none;
             position: fixed;
@@ -549,6 +618,9 @@
             .leaf-item, .petal-item { font-size: 18px; }
             .click-flower, .click-bouquet { font-size: 26px; }
             .page-header h1 { font-size: 1.6rem; }
+            .download-card { padding: 15px 20px; min-width: 160px; }
+            .download-icon { font-size: 38px; }
+            .download-btn { padding: 6px 16px; font-size: 0.8rem; }
         }
     </style>
 </head>
@@ -637,6 +709,27 @@
         </p>
     </div>
 
+    <!-- ========== 📱 应用下载区域 ========== -->
+    <h2 class="section-title">📱 小叶衣橱 App 下载</h2>
+    <div class="download-section">
+        <div class="download-grid">
+            <div class="download-card">
+                <div class="download-icon">📱</div>
+                <h4>安卓 APP</h4>
+                <p>手机端</p>
+               通过百度网盘分享的文件：小叶衣橱安卓AP…
+链接:https://pan.baidu.com/s/127reh1DFlywAQUGceF_zBg?pwd=0529 
+复制这段内容打开「百度网盘APP 即可获取」
+                </a>
+            </div>
+         
+        </div>
+        <div class="note-text">
+            💡 提示：安卓 APP 可直接安装到手机 即可使用。<br>
+            ✨ 后续更新请留意网站公告
+        </div>
+    </div>
+
     <!-- 题外话/鸣谢 -->
     <h2 class="section-title">📢 题外话 & 鸣谢</h2>
     <div class="honor-box">
@@ -681,31 +774,29 @@
 <script>
     // ==================== 汉堡菜单功能 ====================
     const menuToggle = document.getElementById('menuToggle');
-    const navLinks = document.getElementById('navLinks');
+    const navLinksDom = document.getElementById('navLinks');
     
-    if (menuToggle && navLinks) {
+    if (menuToggle && navLinksDom) {
         menuToggle.addEventListener('click', function() {
             menuToggle.classList.toggle('active');
-            navLinks.classList.toggle('active');
+            navLinksDom.classList.toggle('active');
         });
         
-        // 点击导航链接后自动关闭菜单（手机端）
-        const navItems = navLinks.querySelectorAll('a');
+        const navItems = navLinksDom.querySelectorAll('a');
         navItems.forEach(item => {
             item.addEventListener('click', function() {
                 if (window.innerWidth <= 768) {
                     menuToggle.classList.remove('active');
-                    navLinks.classList.remove('active');
+                    navLinksDom.classList.remove('active');
                 }
             });
         });
         
-        // 点击页面其他区域关闭菜单（可选）
         document.addEventListener('click', function(e) {
             if (window.innerWidth <= 768) {
-                if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
+                if (!navLinksDom.contains(e.target) && !menuToggle.contains(e.target)) {
                     menuToggle.classList.remove('active');
-                    navLinks.classList.remove('active');
+                    navLinksDom.classList.remove('active');
                 }
             }
         });

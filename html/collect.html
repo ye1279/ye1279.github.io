@@ -180,15 +180,16 @@
             }
             .nav-links {
                 position: fixed;
-                top: 64px;
+                top: 0;
                 left: -100%;
-                width: 70%;
-                height: calc(100vh - 64px);
-                background: rgba(20, 18, 32, 0.98);
+                width: 75%;
+                max-width: 300px;
+                height: 100vh;
+                background: rgba(20, 18, 32, 0.99);
                 backdrop-filter: blur(15px);
                 flex-direction: column;
                 align-items: flex-start;
-                padding: 20px 25px;
+                padding: 80px 25px 30px;
                 gap: 12px;
                 transition: left 0.3s ease;
                 z-index: 999;
@@ -212,6 +213,19 @@
             }
             .menu-toggle.active span:nth-child(3) {
                 transform: rotate(-45deg) translate(6px, -6px);
+            }
+            .nav-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 998;
+            }
+            .nav-overlay.active {
+                display: block;
             }
             .tag-btn {
                 padding: 4px 10px;
@@ -591,6 +605,7 @@
         <svg viewBox="0 0 24 24"><path d="M12 4l-8 8h6v8h4v-8h6z"/></svg>
     </div>
 
+    <div class="nav-overlay" id="navOverlay"></div>
     <div class="nav">
         <div class="nav-left">
             <img src="../img/头像.jpg" alt="logo 图">
@@ -935,6 +950,8 @@
                 { src: '../img/spring/1 (204).jpg', style: ['制服', '其他'], season: ['春', '秋'] },
                 { src: '../img/spring/1 (205).jpg', style: ['制服', '其他'], season: ['春', '秋'] },
                 { src: '../img/spring/1 (206).jpg', style: '日常', season: ['春', '秋'] },
+                 { src: '../img/spring/1 (207).jpg', style: ['制服', '其他'], season: ['春', '秋'] },
+                { src: '../img/spring/1 (208).jpg', style: '设计感', season: ['春', '秋'] },
             ];
             
             console.log(`✅ 衣橱数据加载完成，共 ${IMAGES_DATA.length} 套服设`);
@@ -1195,9 +1212,29 @@
             
             const menuToggle = document.getElementById('menuToggle');
             const navLinksDom = document.getElementById('navLinks');
+            const navOverlay = document.getElementById('navOverlay');
+
+            function openMenu() {
+                menuToggle.classList.add('active');
+                navLinksDom.classList.add('active');
+                navOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+            function closeMenu() {
+                menuToggle.classList.remove('active');
+                navLinksDom.classList.remove('active');
+                navOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
             if (menuToggle && navLinksDom) {
-                menuToggle.addEventListener('click', () => { menuToggle.classList.toggle('active'); navLinksDom.classList.toggle('active'); });
-                document.querySelectorAll('.nav-links a').forEach(item => item.addEventListener('click', () => { if (window.innerWidth <= 768) { menuToggle.classList.remove('active'); navLinksDom.classList.remove('active'); } }));
+                menuToggle.addEventListener('click', () => {
+                    navLinksDom.classList.contains('active') ? closeMenu() : openMenu();
+                });
+                navOverlay.addEventListener('click', closeMenu);
+                document.querySelectorAll('.nav-links a').forEach(item => item.addEventListener('click', () => {
+                    if (window.innerWidth <= 768) closeMenu();
+                }));
             }
             
             // 初始化收藏
